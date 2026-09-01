@@ -1,15 +1,12 @@
 # Parabellum Works
 
-Parabellum Works'ün siyah-beyaz, minimal ve cam yüzeyli kurumsal web sitesi.
+Marka, dijital deneyim, büyüme ve veri sistemleri tasarlayan bağımsız stüdyonun web sitesi.
 
-## İçerik
+## Sayfalar
 
-- Marka ve hizmet sunumu
+- Ana sayfa
+- Çalışmalar
 - Italian Chef Pizza vaka çalışması
-- Hizmet modeli ve proje yöntemi
-- Başlangıç paketleri
-- İletişim alanı
+- Fiyatlar
 
-Site yapısı alan adına bağımlı değildir. `parabellum.works` alındığında tek merkezden bağlanabilir.
-
-GitHub Pages, ana daldaki `index.html` dosyasını doğrudan yayınlar. Kaynak tasarım güncellendiğinde `pnpm build` ve ardından `pnpm export:pages` çalıştırılarak statik çıktı yenilenir.
+Site yapısı alan adına bağımlı değildir. Özel alan adı alındığında aynı içerik korunarak bağlanabilir.
