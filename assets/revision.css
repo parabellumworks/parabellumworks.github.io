@@ -1,0 +1,245 @@
+/* Parabellum Works — focused editorial revisions */
+
+/* Service descriptions: keep the existing editorial list, but make the value visible. */
+.service-line > p {
+  display: block !important;
+  max-width: 46rem;
+  color: rgba(12, 12, 12, .54) !important;
+  font-size: clamp(.92rem, 1.15vw, 1.04rem) !important;
+  line-height: 1.58 !important;
+  text-wrap: pretty;
+}
+
+.phase-grid h3 {
+  letter-spacing: .045em;
+  font-weight: 500;
+}
+
+/* Home pricing: deliberately row-based, not card-heavy. */
+.pw-pricing {
+  padding-top: clamp(5.5rem, 9vw, 9rem);
+  padding-bottom: clamp(5.5rem, 9vw, 9rem);
+  border-top: 1px solid rgba(10, 10, 10, .13);
+}
+
+.pw-pricing-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 2rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.pw-pricing-head h2 {
+  margin-top: 1.1rem;
+  font-size: clamp(2.6rem, 6vw, 5.8rem);
+  line-height: .96;
+  letter-spacing: -.055em;
+  font-weight: 500;
+}
+
+.pw-campaign {
+  align-self: end;
+  margin-bottom: .35rem;
+  padding: .68rem .9rem;
+  border: 1px solid rgba(10, 10, 10, .22);
+  border-radius: 999px;
+  font-size: .68rem;
+  letter-spacing: .16em;
+  white-space: nowrap;
+}
+
+.pw-pricing-list {
+  border-top: 1px solid rgba(10, 10, 10, .18);
+}
+
+.pw-price-row {
+  display: grid;
+  grid-template-columns: 3.2rem minmax(14rem, 1.3fr) minmax(10rem, 2fr) auto 2.7rem;
+  align-items: center;
+  gap: clamp(1rem, 2.3vw, 2.5rem);
+  min-height: 9rem;
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(10, 10, 10, .18);
+  transition: background-color .25s ease, color .25s ease, padding .25s ease;
+}
+
+.pw-price-row:hover {
+  background: #111;
+  color: #f2f1ed;
+  padding-inline: 1.35rem;
+}
+
+.pw-price-no {
+  color: rgba(10, 10, 10, .42);
+  font-size: .78rem;
+  letter-spacing: .12em;
+}
+
+.pw-price-row:hover .pw-price-no,
+.pw-price-featured .pw-price-no {
+  color: rgba(242, 241, 237, .55);
+}
+
+.pw-price-copy h3 {
+  font-size: clamp(1.8rem, 3.2vw, 3.35rem);
+  line-height: 1;
+  letter-spacing: -.045em;
+  font-weight: 500;
+}
+
+.pw-price-copy p {
+  margin-top: .7rem;
+  max-width: 40rem;
+  color: rgba(10, 10, 10, .5);
+  font-size: clamp(.9rem, 1.2vw, 1rem);
+  line-height: 1.55;
+}
+
+.pw-price-row:hover .pw-price-copy p,
+.pw-price-featured .pw-price-copy p {
+  color: rgba(242, 241, 237, .62);
+}
+
+.pw-price-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: .18rem;
+  white-space: nowrap;
+}
+
+.pw-price-amount del {
+  color: rgba(10, 10, 10, .4);
+  font-size: .88rem;
+}
+
+.pw-price-amount strong {
+  font-size: clamp(1.55rem, 2.6vw, 2.6rem);
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -.035em;
+}
+
+.pw-price-row:hover .pw-price-amount del,
+.pw-price-featured .pw-price-amount del {
+  color: rgba(242, 241, 237, .45);
+}
+
+.pw-price-arrow {
+  display: grid;
+  place-items: center;
+  width: 2.7rem;
+  height: 2.7rem;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 1.1rem;
+}
+
+.pw-price-featured {
+  background: #111;
+  color: #f2f1ed;
+}
+
+.pw-pricing-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding-top: 1.4rem;
+  color: rgba(10, 10, 10, .5);
+  font-size: .85rem;
+  line-height: 1.55;
+}
+
+.pw-pricing-footer p {
+  max-width: 43rem;
+}
+
+.pw-pricing-footer a {
+  color: #0b0b0b;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(10, 10, 10, .35);
+  padding-bottom: .16rem;
+}
+
+@media (max-width: 760px) {
+  .service-line {
+    display: grid !important;
+    grid-template-columns: 3rem minmax(0, 1fr) 3.4rem !important;
+    grid-template-areas:
+      "number title icon"
+      ". copy icon" !important;
+    align-items: start !important;
+    column-gap: .9rem !important;
+    row-gap: .75rem !important;
+    padding-top: 2.15rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+
+  .service-line > span { grid-area: number; padding-top: .25rem; }
+  .service-line > h3 { grid-area: title; }
+  .service-line > p {
+    grid-area: copy;
+    margin: 0 !important;
+    padding-right: .25rem;
+    font-size: .94rem !important;
+    line-height: 1.52 !important;
+  }
+  .service-line > i { grid-area: icon; align-self: start; }
+
+  .phase-grid h3 {
+    font-size: clamp(2.7rem, 13vw, 4.5rem) !important;
+    letter-spacing: -.035em;
+  }
+
+  .phase-grid p {
+    max-width: 31rem;
+    font-size: 1rem !important;
+    line-height: 1.62 !important;
+  }
+
+  .pw-pricing-head {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 1.4rem;
+  }
+
+  .pw-campaign {
+    justify-self: start;
+    margin: 0;
+  }
+
+  .pw-price-row {
+    grid-template-columns: 2.4rem minmax(0, 1fr) auto;
+    grid-template-areas:
+      "no copy arrow"
+      ". amount arrow";
+    min-height: 0;
+    padding: 1.9rem .2rem;
+    gap: .9rem 1rem;
+  }
+
+  .pw-price-row:hover {
+    padding-inline: .65rem;
+  }
+
+  .pw-price-no { grid-area: no; }
+  .pw-price-copy { grid-area: copy; }
+  .pw-price-amount {
+    grid-area: amount;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: .75rem;
+    margin-top: .25rem;
+  }
+  .pw-price-amount del { align-self: center; }
+  .pw-price-arrow { grid-area: arrow; width: 2.5rem; height: 2.5rem; }
+  .pw-price-copy h3 { font-size: clamp(2rem, 9vw, 3rem); }
+  .pw-price-copy p { margin-top: .65rem; font-size: .9rem; line-height: 1.5; }
+
+  .pw-pricing-footer {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+}
