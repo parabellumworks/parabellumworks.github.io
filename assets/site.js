@@ -1,13 +1,12 @@
 (() => {
-  const body = document.body;
   const toggle = document.querySelector("[data-nav-toggle]");
   const nav = document.querySelector("[data-nav]");
+  const mobileNav = window.matchMedia("(max-width: 960px)");
   const closeNav = () => {
     if (!toggle || !nav) return;
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "Menüyü aç");
     nav.classList.remove("is-open");
-    body.classList.remove("nav-open");
   };
 
   if (toggle && nav) {
@@ -16,13 +15,18 @@
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Menüyü kapat" : "Menüyü aç");
       nav.classList.toggle("is-open", open);
-      body.classList.toggle("nav-open", open);
     });
     nav.addEventListener("click", (event) => { if (event.target.closest("a")) closeNav(); });
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") { closeNav(); toggle.focus(); }
+      if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
+        closeNav();
+        toggle.focus();
+      }
     });
-    window.addEventListener("resize", () => { if (window.innerWidth > 880) closeNav(); });
+    mobileNav.addEventListener("change", closeNav);
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".site-header")) closeNav();
+    });
   }
 
   const path = window.location.pathname.replace(/index\.html$/, "");
@@ -30,19 +34,6 @@
     const target = new URL(link.href).pathname.replace(/index\.html$/, "");
     if ((target === "/" && path === "/") || (target !== "/" && path.startsWith(target))) link.setAttribute("aria-current", "page");
   });
-
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const reveals = document.querySelectorAll(".reveal");
-  if (reduceMotion || !("IntersectionObserver" in window)) {
-    reveals.forEach((item) => item.classList.add("is-visible"));
-  } else {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) { entry.target.classList.add("is-visible"); observer.unobserve(entry.target); }
-      });
-    }, { threshold: .12, rootMargin: "0px 0px -7%" });
-    reveals.forEach((item) => observer.observe(item));
-  }
 
   document.querySelectorAll("[data-year]").forEach((item) => { item.textContent = String(new Date().getFullYear()); });
 
@@ -80,7 +71,7 @@
       });
       lines.push("", "Bu talep Parabellum Works proje formundan oluşturuldu.");
       const status = form.querySelector("[data-form-status]");
-      if (status) status.textContent = "Brief hazır. E-posta uygulaman açılıyor…";
+      if (status) status.textContent = "Proje özetiniz hazır. Gönderimi açılan e-posta uygulamasından tamamlayın. Uygulama açılmazsa hello@parabellum.works adresine doğrudan yazabilirsiniz. Bu form bilgilerinizi sunucuya kaydetmez.";
       window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(`Yeni proje talebi — ${company || name}`)}&body=${encodeURIComponent(lines.join("\n"))}`;
     });
   });
