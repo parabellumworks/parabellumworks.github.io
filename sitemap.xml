@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://parabellumworks.github.io/</loc></url><url><loc>https://parabellumworks.github.io/calismalar/</loc></url><url><loc>https://parabellumworks.github.io/calismalar/italian-chef-pizza/</loc></url><url><loc>https://parabellumworks.github.io/fiyatlar/</loc></url></urlset>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://parabellumworks.github.io/</loc></url>
+  <url><loc>https://parabellumworks.github.io/hizmetler/</loc></url>
+  <url><loc>https://parabellumworks.github.io/hizmetler/brand-systems/</loc></url>
+  <url><loc>https://parabellumworks.github.io/hizmetler/content-production/</loc></url>
+  <url><loc>https://parabellumworks.github.io/hizmetler/performance-marketing/</loc></url>
+  <url><loc>https://parabellumworks.github.io/hizmetler/growth-revenue/</loc></url>
+  <url><loc>https://parabellumworks.github.io/calismalar/</loc></url>
+  <url><loc>https://parabellumworks.github.io/calismalar/italian-chef-pizza/</loc></url>
+  <url><loc>https://parabellumworks.github.io/surec/</loc></url>
+  <url><loc>https://parabellumworks.github.io/hakkimizda/</loc></url>
+  <url><loc>https://parabellumworks.github.io/fiyatlar/</loc></url>
+  <url><loc>https://parabellumworks.github.io/iletisim/</loc></url>
+</urlset>

@@ -1,12 +1,16 @@
 # Parabellum Works
 
-Marka, dijital deneyim, büyüme ve veri sistemleri tasarlayan bağımsız stüdyonun web sitesi.
+Brand Systems, Content Production, Performance Marketing ve Growth / Revenue disiplinlerini tek büyüme sistemi içinde yöneten reklam ajansının web sitesi.
 
 ## Sayfalar
 
 - Ana sayfa
-- Çalışmalar
+- Hizmetler ve dört hizmet detay sayfası
+- Vaka çalışmaları
 - Italian Chef Pizza vaka çalışması
-- Fiyatlar
+- Süreç
+- Hakkımızda
+- Çalışma modelleri
+- İletişim ve proje briefi
 
-Site yapısı alan adına bağımlı değildir. Özel alan adı alındığında aynı içerik korunarak bağlanabilir.
+Site saf HTML, CSS ve JavaScript ile GitHub Pages üzerinde çalışır. Yapı alan adına bağımlı değildir.
