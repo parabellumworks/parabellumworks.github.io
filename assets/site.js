@@ -338,9 +338,6 @@
     const track = gallery.querySelector('.package-grid');
     const originals = [...track.children];
     if (originals.length !== 4 || typeof track.animate !== 'function') return;
-    const previous = gallery.querySelector('[data-package-prev]');
-    const next = gallery.querySelector('[data-package-next]');
-    const controls = gallery.querySelector('.carousel-controls');
     let step = 0, visible = 1, animation = null, pending = 0, drag = null, dragFrame = 0;
     let suppressClick = false, width = 0;
     const base = () => `translate3d(${-step}px,0,0)`;
@@ -350,13 +347,11 @@
     });
     track.prepend(originals[3]);
     gallery.classList.add('is-ready');
-    controls.hidden = false;
     const describe = () => {
       const ordered = [...track.children];
       const current = ordered[1];
       const index = originals.indexOf(current);
       gallery.querySelector('[data-package-current]').textContent = String(index + 1).padStart(2, '0');
-      gallery.querySelector('[data-package-name]').textContent = current.querySelector('h3').textContent;
       ordered.forEach((card, i) => {
         const hidden = i < 1 || i > visible;
         if (hidden && card.contains(document.activeElement)) viewport.focus({ preventScroll: true });
@@ -372,14 +367,12 @@
       else if (direction < 0) track.prepend(track.lastElementChild);
       track.style.transform = base();
       gallery.classList.remove('is-dragging');
-      previous.disabled = next.disabled = false;
       describe();
     };
     const move = (direction, offset = 0) => {
       if (animation || !step) return;
       pending = direction;
       if (reduced.matches) { settle(); return; }
-      previous.disabled = next.disabled = true;
       animation = track.animate([
         { transform: `translate3d(${-step + offset}px,0,0)` },
         { transform: `translate3d(${-step - direction * step}px,0,0)` }
@@ -397,12 +390,6 @@
       track.style.transform = base();
       describe();
     };
-    previous.addEventListener('click', () => move(-1));
-    next.addEventListener('click', () => move(1));
-    viewport.addEventListener('keydown', event => {
-      if (event.target !== viewport || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
-      event.preventDefault(); move(event.key === 'ArrowRight' ? 1 : -1);
-    });
     viewport.addEventListener('pointerdown', event => {
       if (animation || event.button !== 0 || event.target.closest('a,button,summary,input,select,textarea')) return;
       suppressClick = false;
