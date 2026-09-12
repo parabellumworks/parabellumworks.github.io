@@ -247,10 +247,18 @@
     popover.setAttribute('aria-hidden', String(!open));
     button.closest('.builder-card')?.classList.toggle('is-info-open', open);
   };
+  let pointerInfoTarget = null;
+  let pointerInfoAt = 0;
+  const pointerRecentlyFocused = button => pointerInfoTarget === button && (performance.now() - pointerInfoAt) < 900;
   const handleAction = event => {
     const button = event.target.closest('button');
     if (!button) return;
-    if (button.hasAttribute('data-info')) { event.stopPropagation(); setInfoOpen(button, button.getAttribute('aria-expanded') !== 'true'); return; }
+    if (button.hasAttribute('data-info')) {
+      pointerInfoTarget = null;
+      event.stopPropagation();
+      setInfoOpen(button, button.getAttribute('aria-expanded') !== 'true');
+      return;
+    }
     if (button.hasAttribute('data-select')) state.selected[button.dataset.select] = !state.selected[button.dataset.select];
     else if (button.hasAttribute('data-variant')) { state.variants[button.dataset.group] = button.dataset.variant; state.selected[button.dataset.group] = true; }
     else if (button.hasAttribute('data-setup')) state.setup = !state.setup;
@@ -263,9 +271,15 @@
   };
   root.addEventListener('click', handleAction);
   sheet.addEventListener('click', handleAction);
+  root.addEventListener('pointerdown', event => {
+    const button = event.target.closest('[data-info]');
+    if (!button) return;
+    pointerInfoTarget = button;
+    pointerInfoAt = performance.now();
+  }, true);
   root.addEventListener('focusin', event => {
     const button = event.target.closest('[data-info]');
-    if (button) setInfoOpen(button, true);
+    if (button && !pointerRecentlyFocused(button)) setInfoOpen(button, true);
   });
   root.addEventListener('pointerenter', event => {
     const button = event.target.closest('[data-info]');
