@@ -720,3 +720,5 @@ h1,h2,h3{text-wrap:balance}
  .discipline-progress span{background:CanvasText}
  .discipline-progress .is-current{outline:2px solid Highlight;outline-offset:3px}
 }
+/* Use the approved monochrome wordmark on dark surfaces. */
+.brand-wordmark,.hero-signature>img{filter:invert(1)}
