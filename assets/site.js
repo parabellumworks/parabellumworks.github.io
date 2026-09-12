@@ -64,12 +64,12 @@
       const name = String(data.get("name") || "").trim();
       const company = String(data.get("company") || "").trim();
       const labels = { name: "Ad soyad", company: "Marka / şirket", email: "E-posta", phone: "Telefon", website: "Web sitesi / sosyal hesap", service: "Öncelikli ihtiyaç", budget: "Aylık medya bütçesi", timeline: "Başlangıç zamanı", goal: "Hedef / mevcut sorun" };
-      const lines = ["Merhaba Parabellum Works,", "", "Yeni bir proje için görüşmek istiyorum.", ""];
+      const lines = ["Merhaba Eightfold,", "", "Yeni bir proje için görüşmek istiyorum.", ""];
       Object.entries(labels).forEach(([key, label]) => {
         const value = String(data.get(key) || "").trim();
         if (value) lines.push(`${label}: ${value}`);
       });
-      lines.push("", "Bu talep Parabellum Works proje formundan oluşturuldu.");
+      lines.push("", "Bu talep Eightfold proje formundan oluşturuldu.");
       const status = form.querySelector("[data-form-status]");
       if (status) status.textContent = "Proje özetiniz hazır. Gönderimi açılan e-posta uygulamasından tamamlayın. Uygulama açılmazsa hello@parabellum.works adresine doğrudan yazabilirsiniz. Bu form bilgilerinizi sunucuya kaydetmez.";
       window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(`Yeni proje talebi — ${company || name}`)}&body=${encodeURIComponent(lines.join("\n"))}`;

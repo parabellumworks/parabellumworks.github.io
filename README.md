@@ -1,4 +1,6 @@
-# Parabellum Works
+# Eightfold
+
+Eightfold reklam ve growth ajansı web sitesi.
 
 Brand Systems, Content Production, Performance Marketing ve Growth / Revenue disiplinlerini tek büyüme sistemi içinde yöneten reklam ajansının web sitesi.
 
