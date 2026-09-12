@@ -424,7 +424,6 @@
     };
     viewport.addEventListener('pointerup', endDrag);
     viewport.addEventListener('pointercancel', endDrag);
-    viewport.addEventListener('lostpointercapture', event => { if (drag) endDrag(event); });
     viewport.addEventListener('click', event => {
       if (suppressClick) { event.preventDefault(); event.stopPropagation(); suppressClick = false; }
     }, true);
