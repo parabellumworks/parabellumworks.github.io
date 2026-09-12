@@ -410,6 +410,13 @@ h1,h2,h3{text-wrap:balance}
 .project-backdrop{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;gap:32px;padding:5%;color:rgba(237,232,221,.08);font-size:clamp(2rem,5.8vw,6rem);font-weight:700;letter-spacing:-.06em;pointer-events:none}
 .project-media .case-device{position:relative;width:250px;transform:rotate(-5deg);transition:transform .7s cubic-bezier(.2,.65,.2,1)}
 .featured-project:hover .case-device{transform:rotate(-2deg) scale(1.035)}
+.project-media-cover{min-height:570px;padding:24px;background:#0b0a09}
+.project-media-cover::before{position:absolute;z-index:-1;inset:-5%;content:"";background:linear-gradient(rgba(6,6,6,.38),rgba(6,6,6,.6)),url('/assets/cases/italian-chef-pizza/work-cover.webp') center 58%/cover no-repeat;filter:blur(22px) saturate(.78);opacity:.36;transform:scale(1.07);pointer-events:none}
+.project-media-cover::after{position:absolute;z-index:-1;inset:0;content:"";background:radial-gradient(circle at 50% 48%,rgba(195,137,63,.12),transparent 58%),linear-gradient(90deg,rgba(6,6,6,.72),transparent 28%,transparent 72%,rgba(6,6,6,.72));pointer-events:none}
+.project-cover-frame{position:relative;z-index:1;width:min(54%,590px);aspect-ratio:1145/1374;overflow:hidden;border:1px solid rgba(220,200,169,.22);border-radius:8px;background:#0a0908;box-shadow:0 30px 85px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.025);transition:transform 700ms var(--ease-out),border-color var(--motion-ui) ease,box-shadow var(--motion-ui) ease}
+.project-cover-frame img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform 800ms var(--ease-out),filter 500ms ease}
+.featured-project:hover .project-cover-frame{transform:translateY(-3px);border-color:rgba(216,189,133,.4);box-shadow:0 36px 96px rgba(0,0,0,.56),0 0 34px rgba(185,129,58,.08)}
+.featured-project:hover .project-cover-frame img{transform:scale(1.012);filter:brightness(1.025)}
 .project-stamp{position:absolute;bottom:22px;left:28px;color:#aaa399;font:400 .65rem/1.5 var(--mono);letter-spacing:.08em}
 .project-caption{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:26px}
 .project-caption h3{margin-top:10px;font-size:clamp(1.5rem,2.5vw,2.1rem);font-weight:500;letter-spacing:-.035em}
@@ -684,6 +691,9 @@ h1,h2,h3{text-wrap:balance}
  @starting-style{.main-nav.is-open{opacity:0;transform:translateY(-5px)}}
 }
 @media(max-width:680px){
+ .project-media-cover{min-height:0;padding:0;background:#0b0a09}
+ .project-media-cover::before,.project-media-cover::after{display:none}
+ .project-cover-frame{width:100%;border:0;border-radius:4px;box-shadow:none}
  .package-grid{grid-template-columns:1fr;gap:22px}
  .package-card{padding:28px 24px}
  .package-top{margin-bottom:26px}
@@ -707,13 +717,15 @@ h1,h2,h3{text-wrap:balance}
 @media(hover:none),(pointer:coarse){
  .featured-project,.concept-card,.package-card,.button{transform:none!important}
  .featured-project:hover .case-device{transform:rotate(-5deg)}
+ .featured-project:hover .project-cover-frame{transform:none}
+ .featured-project:hover .project-cover-frame img{transform:none;filter:none}
  .featured-project:hover .project-caption h3,.concept-card:hover h3,.concept-card:hover .concept-art>span{transform:none}
 }
 @media(prefers-reduced-motion:reduce){
  html{scroll-behavior:auto!important}
  *,*::before,*::after{animation:none!important;transition:none!important}
  .motion-heading,.heading-line>span,.type-line>span,.project-media{clip-path:none!important;opacity:1!important;transform:none!important}
- .hero-figure,.featured-project,.concept-card,.package-card,.button,.discipline-body,.project-caption h3,.concept-card h3,.case-next strong{transform:none!important}
+ .hero-figure,.featured-project,.concept-card,.package-card,.button,.discipline-body,.project-caption h3,.concept-card h3,.case-next strong,.project-cover-frame,.project-cover-frame img{transform:none!important}
  .hero-reflection{display:none}
  .discipline-body{opacity:1!important}
  .main-nav.is-open{opacity:1;transform:none}
@@ -763,12 +775,12 @@ h1,h2,h3{text-wrap:balance}
 .carousel-arrow:hover,.carousel-arrow:focus-visible{opacity:1;background:rgba(191,214,219,.06)}
 .carousel-arrow:disabled{opacity:.6;cursor:default}
 .package-carousel.is-ready .carousel-viewport{overflow:hidden;touch-action:pan-y pinch-zoom;overscroll-behavior-inline:contain;cursor:grab;isolation:isolate;padding-block:8px 30px;-webkit-user-select:none;user-select:none}
-.package-carousel.is-ready .package-grid{display:flex;gap:20px;align-items:flex-start;overflow:visible;will-change:transform}
+.package-carousel.is-ready .package-grid{display:flex;gap:20px;align-items:stretch;overflow:visible;will-change:transform}
 .package-carousel.is-ready .package-card{flex:0 0 calc((100% - 20px)/2);min-width:0;padding:34px 36px;user-select:none}
 .package-carousel.is-ready .package-card h3{min-height:0;margin-bottom:12px;font-size:1.2rem}
 .package-carousel.is-ready .package-price strong{font-size:3.25rem}
 .package-carousel.is-ready .package-position{min-height:0;max-width:380px;font-size:.92rem}
-.package-carousel.is-ready .package-inclusions{min-height:0;margin-block:26px}
+.package-carousel.is-ready .package-inclusions{display:flex;flex:1 1 auto;flex-direction:column;justify-content:space-between;min-height:0;margin-block:26px}
 .package-carousel.is-ready .package-inclusions li{font-size:.85rem}
 .package-carousel.is-ready .package-scope summary{font-size:.84rem}
 .package-carousel.is-ready .scope-body p{font-size:.8rem}

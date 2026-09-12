@@ -89,6 +89,7 @@
         <div class="builder-summary" data-builder-summary>
           <div class="builder-summary-head"><div><p class="builder-kicker">PAKETİNİZ</p><h3>Özel Paketiniz</h3></div><span class="builder-summary-mark" aria-hidden="true">08</span></div>
           <div class="builder-summary-tools"><p data-builder-count>0 hizmet seçildi</p><button type="button" class="builder-text-button" data-builder-reset disabled>Seçimleri Temizle</button></div>
+          <p class="builder-feedback" data-builder-feedback aria-live="polite" aria-hidden="true"></p>
           <p class="builder-empty" data-builder-empty>Henüz bir hizmet seçmediniz.</p>
           <ul class="builder-items" data-builder-items aria-label="Seçilen hizmetler"></ul>
           <div class="builder-totals" data-builder-totals>
@@ -119,7 +120,9 @@
   const businessInput = root.querySelector('#builder-business');
   const bar = root.querySelector('[data-builder-bar]');
   const openSummary = root.querySelector('[data-open-summary]');
+  const mobileMonthly = root.querySelector('[data-mobile-monthly]');
   const announcement = root.querySelector('[data-builder-announcement]');
+  const builderFeedback = root.querySelector('[data-builder-feedback]');
   const mobile = matchMedia('(max-width: 800px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const sheet = document.createElement('dialog');
@@ -153,6 +156,59 @@
   };
   const animate = (element, frames, duration = 220) => {
     if (!reduced.matches && element.animate) element.animate(frames, { duration, easing: 'cubic-bezier(.2,.7,.2,1)' });
+  };
+  const replayClass = (element, className) => {
+    if (!element) return;
+    element.classList.remove('is-added', 'is-removed', 'is-updated');
+    void element.offsetWidth;
+    element.classList.add(className);
+  };
+  const flyToSummary = card => {
+    if (reduced.matches || !card) return;
+    const target = mobile.matches && !sheet.open ? openSummary : summary;
+    const sourceRect = card.getBoundingClientRect();
+    const targetRect = target.getBoundingClientRect();
+    if (!sourceRect.width || !sourceRect.height || !targetRect.width || !targetRect.height) return;
+    const ghost = document.createElement('span');
+    ghost.className = 'builder-fly-chip';
+    ghost.textContent = '+';
+    ghost.style.left = `${sourceRect.left + sourceRect.width * .72}px`;
+    ghost.style.top = `${sourceRect.top + 26}px`;
+    document.body.append(ghost);
+    const dx = targetRect.left + targetRect.width * .5 - (sourceRect.left + sourceRect.width * .72);
+    const dy = targetRect.top + targetRect.height * .2 - (sourceRect.top + 26);
+    const remove = () => ghost.remove();
+    if (ghost.animate) {
+      const motion = ghost.animate([
+        { opacity: 0, transform: 'translate3d(0,0,0) scale(.72)' },
+        { opacity: .82, transform: 'translate3d(0,0,0) scale(1)' },
+        { opacity: 0, transform: `translate3d(${dx}px,${dy}px,0) scale(.42)` }
+      ], { duration: 520, easing: 'cubic-bezier(.2,.7,.2,1)', fill: 'forwards' });
+      motion.finished?.then(remove, remove);
+    }
+    setTimeout(remove, 760);
+  };
+  let feedbackTimer;
+  const showBuilderFeedback = change => {
+    const cardId = change.cardId || change.id;
+    const card = root.querySelector(`[data-service="${cardId}"]`);
+    replayClass(card, change.added ? 'is-added' : 'is-removed');
+    replayClass(summary, 'is-updated');
+    replayClass(summary.querySelector('[data-builder-totals]'), 'is-updated');
+    replayClass(bar, 'is-updated');
+    replayClass(mobileMonthly, 'is-updated');
+    if (change.added) flyToSummary(card);
+    if (!builderFeedback) return;
+    clearTimeout(feedbackTimer);
+    builderFeedback.textContent = `${change.label} ${change.added ? 'eklendi' : 'çıkarıldı'}`;
+    builderFeedback.setAttribute('aria-hidden', 'false');
+    builderFeedback.classList.remove('is-visible');
+    void builderFeedback.offsetWidth;
+    builderFeedback.classList.add('is-visible');
+    feedbackTimer = setTimeout(() => {
+      builderFeedback.classList.remove('is-visible');
+      builderFeedback.setAttribute('aria-hidden', 'true');
+    }, 1700);
   };
   const render = (feedback = false) => {
     const items = selectedItems();
@@ -223,9 +279,10 @@
       announceTimer = setTimeout(() => { announcement.textContent = `${items.length} hizmet seçildi. Aylık ${money(totals.monthly)} TL. Tek seferlik ${money(totals.once)} TL.`; }, 150);
     }
   };
-  const saveAndRender = () => {
+  const saveAndRender = change => {
     try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(state)); } catch { /* Selection still works without storage. */ }
     render(true);
+    if (change) showBuilderFeedback(change);
   };
   const closeInfoPopovers = except => {
     root.querySelectorAll('[data-info]').forEach(button => {
@@ -259,15 +316,36 @@
       setInfoOpen(button, button.getAttribute('aria-expanded') !== 'true');
       return;
     }
-    if (button.hasAttribute('data-select')) state.selected[button.dataset.select] = !state.selected[button.dataset.select];
-    else if (button.hasAttribute('data-variant')) { state.variants[button.dataset.group] = button.dataset.variant; state.selected[button.dataset.group] = true; }
-    else if (button.hasAttribute('data-setup')) state.setup = !state.setup;
+    let change;
+    if (button.hasAttribute('data-select')) {
+      const id = button.dataset.select;
+      const service = CONFIG.services.find(item => item.id === id);
+      const added = !state.selected[id];
+      state.selected[id] = added;
+      change = { id, label: service?.title || 'Hizmet', added };
+    } else if (button.hasAttribute('data-variant')) {
+      const id = button.dataset.group;
+      const service = CONFIG.services.find(item => item.id === id);
+      const added = !state.selected[id];
+      state.variants[id] = button.dataset.variant;
+      state.selected[id] = true;
+      if (added) change = { id, label: service?.title || 'Hizmet', added: true };
+    } else if (button.hasAttribute('data-setup')) {
+      const added = !state.setup;
+      state.setup = added;
+      change = { id: 'ads-audit', cardId: 'ads', label: 'Gelişmiş Meta Ads Audit', added };
+    }
     else if (button.hasAttribute('data-remove')) {
-      if (button.dataset.remove === 'ads-audit') state.setup = false;
-      else delete state.selected[button.dataset.remove];
+      const id = button.dataset.remove;
+      const service = CONFIG.services.find(item => item.id === id);
+      const extra = id === 'ads-audit' ? CONFIG.services.find(item => item.extra?.id === id)?.extra : null;
+      const selectedService = service || CONFIG.services.find(item => item.options.some(option => option.id === id));
+      if (id === 'ads-audit') state.setup = false;
+      else delete state.selected[id];
+      change = { id, cardId: id === 'ads-audit' ? 'ads' : id, label: extra?.name || selectedService?.title || 'Hizmet', added: false };
     } else if (button.hasAttribute('data-builder-reset')) state = blankState();
     else return;
-    saveAndRender();
+    saveAndRender(change);
   };
   root.addEventListener('click', handleAction);
   sheet.addEventListener('click', handleAction);
