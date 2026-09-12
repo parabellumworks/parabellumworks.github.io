@@ -6,32 +6,37 @@
     storageKey: 'eightfold.custom-package.v1',
     whatsapp: '905369471196',
     services: [
-      { id: 'brand', number: '01', title: 'Marka Kimliği', description: 'Markanız için ortak bir görsel dil.', billing: 'once', info: { what: 'Markanın logo, renk, tipografi ve temel görsel sistemini oluşturur veya mevcut kimliği profesyonelleştiririz.', fit: 'Yeni başlayan, yenilenen veya dağınık görünen markalar için.', scope: 'Logo yönü, renk ve tipografi sistemi dahil; kapsamlı uygulamalar ayrıca netleştirilir.' }, options: [
+      { id: 'social', number: '01', title: 'Sosyal Medya Yönetimi', description: 'Profilleriniz için düzenli yayın yönetimi.', billing: 'monthly', info: { what: 'Hesabınızın içerik akışını, paylaşım düzenini ve genel dijital görünümünü yönetiriz.', fit: 'Düzenli görünmek isteyen, içerik operasyonuna zamanı kalmayan işletmeler için.', scope: 'Yayın yönetimi dahil; içerik üretim adetleri seçilen kapsama göre belirlenir.' }, options: [
+        { id: 'standard', name: 'Sosyal Medya Yönetimi', price: 9900 }
+      ] },
+      { id: 'content', number: '02', title: 'İçerik Stratejisi', description: 'Ne söyleyeceğiniz ve nasıl söyleyeceğiniz.', billing: 'monthly', info: { what: 'Ne paylaşılacağını, hangi formatların kullanılacağını ve içeriklerin hangi hedefe hizmet edeceğini planlarız.', fit: 'İçerik üreten ama yönünü ve önceliğini netleştirmek isteyen işletmeler için.', scope: 'Konu, format ve yayın yönü dahil; çekim ve tasarım üretimi ayrıca kapsamlandırılır.' }, options: [
+        { id: 'standard', name: 'İçerik Stratejisi', price: 4900 }
+      ] },
+      { id: 'design', number: '03', title: 'Grafik Tasarım', description: '8 adet sosyal medya kreatifi / ay.', billing: 'monthly', info: { what: 'Sosyal medya postları, story kreatifleri, carousel ve kampanya görselleri üretiriz.', fit: 'Görsel standardını yükseltmek ve marka dilini her paylaşımda korumak isteyenler için.', scope: 'Test fiyatı aylık 8 kreatif içerir; ilave üretimler ayrıca planlanır.' }, options: [
+        { id: 'standard', name: 'Grafik Tasarım', price: 6000 }
+      ] },
+      { id: 'ads', number: '04', title: 'Meta Ads Yönetimi', description: 'Kampanya yönetimi; standart hesap kurulumu dahil.', billing: 'monthly', cardNote: 'Meta reklam bütçesi hizmet bedeline dahil değildir ve doğrudan Meta’ya ödenir.', info: { what: 'Facebook ve Instagram reklam kampanyalarınızı kurar, hedefler, optimize eder ve takip ederiz.', fit: 'Reklamla düzenli talep oluşturmak ve bütçesini kontrollü yönetmek isteyen işletmeler için.', scope: 'Standart hesap kurulumu aylık yönetime dahildir. Meta reklam bütçesi hizmet bedeline dahil değildir ve doğrudan Meta’ya ödenir.' }, options: [
+        { id: 'standard', name: 'Meta Ads Yönetimi', price: 7500 }
+      ] },
+      { id: 'growth', number: '05', title: 'Growth & Dijital Sistemler', description: 'Dijital süreçlerinize gelişim desteği.', billing: 'monthly', info: { what: 'Dijital kanalların birlikte çalışmasını, dönüşüm noktalarını ve büyüme fırsatlarını düzenli olarak analiz ederiz.', fit: 'Mevcut dijital düzenini ölçmek ve bir sonraki büyüme alanını görmek isteyen işletmeler için.', scope: 'Analiz ve gelişim öncelikleri dahil; yeni yazılım ve reklam bütçeleri hariçtir.' }, options: [
+        { id: 'standard', name: 'Growth & Dijital Sistemler', price: 7500 }
+      ] },
+      { id: 'brand', number: '06', title: 'Marka Kimliği', description: 'Markanız için ortak bir görsel dil.', billing: 'once', info: { what: 'Markanın logo, renk, tipografi ve temel görsel sistemini oluşturur veya mevcut kimliği profesyonelleştiririz.', fit: 'Yeni başlayan, yenilenen veya dağınık görünen markalar için.', scope: 'Logo yönü, renk ve tipografi sistemi dahil; kapsamlı uygulamalar ayrıca netleştirilir.' }, options: [
         { id: 'mini', label: 'Mini', name: 'Mini Marka Kimliği', price: 14900 },
         { id: 'full', label: 'Tam', name: 'Tam Marka Kimliği', price: 24900 }
       ] },
-      { id: 'social', number: '02', title: 'Sosyal Medya Yönetimi', description: 'Profilleriniz için düzenli yayın yönetimi.', billing: 'monthly', info: { what: 'Hesabınızın içerik akışını, paylaşım düzenini ve genel dijital görünümünü yönetiriz.', fit: 'Düzenli görünmek isteyen, içerik operasyonuna zamanı kalmayan işletmeler için.', scope: 'Yayın yönetimi dahil; içerik üretim adetleri seçilen kapsama göre belirlenir.' }, options: [
-        { id: 'standard', name: 'Sosyal Medya Yönetimi', price: 9900 }
-      ] },
-      { id: 'content', number: '03', title: 'İçerik Stratejisi', description: 'Ne söyleyeceğiniz ve nasıl söyleyeceğiniz.', billing: 'monthly', info: { what: 'Ne paylaşılacağını, hangi formatların kullanılacağını ve içeriklerin hangi hedefe hizmet edeceğini planlarız.', fit: 'İçerik üreten ama yönünü ve önceliğini netleştirmek isteyen işletmeler için.', scope: 'Konu, format ve yayın yönü dahil; çekim ve tasarım üretimi ayrıca kapsamlandırılır.' }, options: [
-        { id: 'standard', name: 'İçerik Stratejisi', price: 4900 }
-      ] },
-      { id: 'design', number: '04', title: 'Grafik Tasarım', description: '8 adet sosyal medya kreatifi / ay.', billing: 'monthly', info: { what: 'Sosyal medya postları, story kreatifleri, carousel ve kampanya görselleri üretiriz.', fit: 'Görsel standardını yükseltmek ve marka dilini her paylaşımda korumak isteyenler için.', scope: 'Test fiyatı aylık 8 kreatif içerir; ilave üretimler ayrıca planlanır.' }, options: [
-        { id: 'standard', name: 'Grafik Tasarım', price: 6000 }
-      ] },
-      { id: 'production', number: '05', title: 'Fotoğraf & Video', description: 'İşletmenize özel içerik çekimi.', billing: 'once', unit: 'çekim', info: { what: 'Sosyal medya kullanımına yönelik fotoğraf ve video üretimi yaparız.', fit: 'Mekânını, ürününü veya hizmetini güçlü görsellerle göstermek isteyen işletmeler için.', scope: 'Çekim süresi seçilen seçeneğe göre belirlenir; özel prodüksiyon ihtiyaçları ayrıca fiyatlandırılır.' }, options: [
+      { id: 'production', number: '07', title: 'Fotoğraf & Video', description: 'İşletmenize özel içerik çekimi.', billing: 'once', unit: 'çekim', info: { what: 'Sosyal medya kullanımına yönelik fotoğraf ve video üretimi yaparız.', fit: 'Mekânını, ürününü veya hizmetini güçlü görsellerle göstermek isteyen işletmeler için.', scope: 'Çekim süresi seçilen seçeneğe göre belirlenir; özel prodüksiyon ihtiyaçları ayrıca fiyatlandırılır.' }, options: [
         { id: 'two-hours', label: '2 Saat', name: '2 Saat İçerik Çekimi', price: 7500 },
         { id: 'half-day', label: 'Yarım Gün', name: 'Yarım Gün İçerik Çekimi', price: 11500 }
       ] },
-      { id: 'ads', number: '06', title: 'Reklam & Performance', description: 'Meta Ads yönetimi; temel hesap kurulumu dahildir.', billing: 'monthly', info: { what: 'Facebook ve Instagram reklam kampanyalarınızı kurar, hedefler, optimize eder ve takip ederiz. Temel reklam hesabı kurulumu dahildir.', fit: 'Reklamla düzenli talep oluşturmak ve bütçesini kontrollü yönetmek isteyen işletmeler için.', scope: 'Aylık yönetim ve temel kurulum dahil; gelişmiş audit / yeniden yapılandırma opsiyonel, reklam bütçesi hariçtir.' }, options: [
-        { id: 'standard', name: 'Meta Ads Yönetimi', price: 7500 }
-      ], extra: { id: 'ads-audit', name: 'Gelişmiş Meta Ads Audit / Yeniden Yapılandırma', description: 'Mevcut hesaplarda derin analiz, eski kampanya temizliği, ileri takip incelemesi veya kapsamlı yeniden yapılandırma gerektiğinde.', price: 5000, billing: 'once' } },
-      { id: 'web', number: '07', title: 'Web & Dijital Deneyim', description: 'İşletmenizin dijital adresi.', billing: 'once', info: { what: 'Landing page veya kurumsal web sitesi tasarlar ve geliştiririz.', fit: 'Dijitalde güven veren, net ve dönüşüm odaklı bir adres isteyen işletmeler için.', scope: 'Kapsam seçilen web çözümüne göre belirlenir; ilave entegrasyonlar ayrıca planlanır.' }, options: [
-        { id: 'landing', label: 'Landing Page', name: 'Landing Page', price: 12500 },
-        { id: 'corporate', label: 'Kurumsal Site', name: 'Kurumsal Web Sitesi', price: 22500 }
+      { id: 'landing', number: '08', title: 'Landing Page', description: 'Tek hedefe odaklanan dijital sayfa.', billing: 'once', info: { what: 'Kampanya, hizmet veya ürün için dönüşüm odaklı bir landing page tasarlar ve geliştiririz.', fit: 'Tek bir teklifi net biçimde anlatmak ve başvuru ya da talep toplamak isteyen işletmeler için.', scope: 'Domain ve hosting ücretleri hizmet bedeline dahil değildir. Yıllık yenileme bedeli seçilen uzantı, altyapı ve sağlayıcıya göre değişir.', note: 'Alan adı ve hosting, müşteri adına veya müşteri hesabı üzerinden yönetilebilir.' }, options: [
+        { id: 'standard', name: 'Landing Page', price: 12500 }
       ] },
-      { id: 'growth', number: '08', title: 'Growth & Dijital Sistemler', description: 'Dijital süreçlerinize gelişim desteği.', billing: 'monthly', info: { what: 'Dijital kanalların birlikte çalışmasını, dönüşüm noktalarını ve büyüme fırsatlarını düzenli olarak analiz ederiz.', fit: 'Mevcut dijital düzenini ölçmek ve bir sonraki büyüme alanını görmek isteyen işletmeler için.', scope: 'Analiz ve gelişim öncelikleri dahil; yeni yazılım ve reklam bütçeleri hariçtir.' }, options: [
-        { id: 'standard', name: 'Growth & Dijital Sistemler', price: 7500 }
+      { id: 'corporate', number: '09', title: 'Kurumsal Web Sitesi', description: 'Markanız için kapsamlı dijital merkez.', billing: 'once', info: { what: 'Kurumsal yapınızı, hizmetlerinizi ve güven unsurlarınızı anlatan bir web sitesi tasarlar ve geliştiririz.', fit: 'Dijitalde kalıcı, güven veren ve kapsamlı bir adres isteyen işletmeler için.', scope: 'Domain ve hosting ücretleri hizmet bedeline dahil değildir. Yıllık yenileme bedeli seçilen uzantı, altyapı ve sağlayıcıya göre değişir.', note: 'Alan adı ve hosting, müşteri adına veya müşteri hesabı üzerinden yönetilebilir.' }, options: [
+        { id: 'standard', name: 'Kurumsal Web Sitesi', price: 22500 }
+      ] },
+      { id: 'ads-audit', number: '10', title: 'Gelişmiş Meta Ads Audit / Yeniden Yapılandırma', description: 'Gerektiğinde uygulanan ileri hesap çalışması.', billing: 'once', info: { what: 'Mevcut reklam hesabını derinlemesine inceler; eski kampanyaları temizler, yapıyı ve takip düzenini gerektiğinde yeniden kurarız.', fit: 'Geçmişten kalan karmaşık yapısı veya ciddi yeniden organizasyon ihtiyacı bulunan hesaplar için.', scope: 'Opsiyonel bir ileri hizmettir. Standart hesap kurulumu aylık Meta Ads Yönetimi hizmetine dahildir; Meta reklam bütçesi dahil değildir.' }, options: [
+        { id: 'standard', name: 'Gelişmiş Meta Ads Audit / Yeniden Yapılandırma', price: 5000 }
       ] }
     ]
   };
@@ -43,7 +48,7 @@
     const paths = { 'up-right': '<path d="M5 15 15 5M7 5h8v8"/>', right: '<path d="M3 10h14M11 4l6 6-6 6"/>', left: '<path d="M17 10H3m6-6-6 6 6 6"/>', down: '<path d="M10 3v14m0 0 6-6m-6 6-6-6"/>' };
     return `<svg class="ui-icon ui-icon-${kind}" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">${paths[kind]}</svg>`;
   };
-  const blankState = () => ({ selected: {}, variants: Object.fromEntries(CONFIG.services.map(s => [s.id, s.options[0].id])), setup: false });
+  const blankState = () => ({ selected: {}, variants: Object.fromEntries(CONFIG.services.map(s => [s.id, s.options[0].id])) });
   const sanitize = raw => {
     const next = blankState();
     if (!raw || typeof raw !== 'object') return next;
@@ -52,38 +57,48 @@
       if (service.options.some(option => option.id === variant)) next.variants[service.id] = variant;
       if (raw.selected?.[service.id] === true) next.selected[service.id] = true;
     });
-    next.setup = raw.setup === true;
+    // Preserve selections saved by the previous combined Web / Ads card model.
+    if (raw.selected?.web === true) next.selected[raw.variants?.web === 'corporate' ? 'corporate' : 'landing'] = true;
+    if (raw.setup === true) next.selected['ads-audit'] = true;
     return next;
   };
   let state = blankState();
   try { state = sanitize(JSON.parse(localStorage.getItem(CONFIG.storageKey))); } catch { /* Storage is optional. */ }
-  const selectedItems = () => CONFIG.services.flatMap(service => {
-    const items = [];
-    if (state.selected[service.id]) items.push({ ...service.options.find(o => o.id === state.variants[service.id]), key: service.id, billing: service.billing, unit: service.unit });
-    if (service.extra && state.setup) items.push({ ...service.extra, key: service.extra.id });
-    return items;
-  });
+  const selectedItems = () => CONFIG.services.flatMap(service => state.selected[service.id]
+    ? [{ ...service.options.find(o => o.id === state.variants[service.id]), key: service.id, billing: service.billing, unit: service.unit }]
+    : []);
   const totalsFor = items => items.reduce((totals, item) => {
     totals[item.billing === 'monthly' ? 'monthly' : 'once'] += item.price;
     return totals;
   }, { monthly: 0, once: 0 });
 
+  const renderServiceCard = service => `
+    <article class="builder-card" data-service="${service.id}" data-billing="${service.billing}">
+      <button class="builder-select" type="button" data-select="${service.id}" aria-pressed="false" aria-labelledby="builder-title-${service.id}" aria-describedby="builder-price-${service.id}">
+        <span class="builder-card-top"><span class="builder-card-meta"><span class="builder-number">${service.number}</span>${service.billing === 'once' ? '<span class="builder-billing-label">Tek Seferlik</span>' : ''}</span><span class="builder-selection"><span data-selection-text>Pakete ekle</span><span class="builder-check" aria-hidden="true">+</span></span></span>
+        <span class="builder-card-title" id="builder-title-${service.id}">${service.title}</span>
+        <span class="builder-description">${service.description}</span>
+        <span class="builder-card-price" id="builder-price-${service.id}"></span>
+      </button>
+      <button class="builder-info" type="button" data-info="${service.id}" aria-expanded="false" aria-controls="builder-info-${service.id}" aria-label="${service.title} hakkında bilgi"><svg class="ui-icon ui-icon-info" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><circle cx="10" cy="10" r="7.2"></circle><path d="M10 9v5"></path><path d="M10 6.1h.01"></path></svg></button>
+      <div class="builder-popover" id="builder-info-${service.id}" role="tooltip" aria-hidden="true"><p><strong>Ne yapıyoruz?</strong>${service.info.what}</p><p><strong>Kim için uygun?</strong>${service.info.fit}</p><p><strong>Neler dahil / hariç?</strong>${service.info.scope}</p>${service.info.note ? `<p class="builder-info-note">${service.info.note}</p>` : ''}<p class="builder-payment"><strong>Ödeme tipi</strong>${service.billing === 'monthly' ? 'Aylık hizmet' : 'Tek seferlik / proje bedeli'}</p></div>
+      ${service.options.length > 1 ? `<div class="builder-variants" role="group" aria-label="${service.title} seçenekleri">${service.options.map(option => `<button type="button" data-variant="${option.id}" data-group="${service.id}" aria-pressed="false">${option.label}</button>`).join('')}</div>` : ''}
+      ${service.cardNote ? `<p class="builder-card-note">${service.cardNote}</p>` : ''}
+    </article>`;
+  const monthlyServices = CONFIG.services.filter(service => service.billing === 'monthly');
+  const projectServices = CONFIG.services.filter(service => service.billing === 'once');
+
   root.querySelector('[data-builder-mount]').innerHTML = `
     <div class="builder-layout">
-      <div class="builder-services" aria-label="Seçilebilir hizmetler">
-        ${CONFIG.services.map(service => `
-          <article class="builder-card" data-service="${service.id}">
-            <button class="builder-select" type="button" data-select="${service.id}" aria-pressed="false" aria-labelledby="builder-title-${service.id}" aria-describedby="builder-price-${service.id}">
-              <span class="builder-card-top"><span class="builder-number">${service.number}</span><span class="builder-selection"><span data-selection-text>Pakete ekle</span><span class="builder-check" aria-hidden="true">+</span></span></span>
-              <span class="builder-card-title" id="builder-title-${service.id}">${service.title}</span>
-              <span class="builder-description">${service.description}</span>
-              <span class="builder-card-price" id="builder-price-${service.id}"></span>
-            </button>
-            <button class="builder-info" type="button" data-info="${service.id}" aria-expanded="false" aria-controls="builder-info-${service.id}" aria-label="${service.title} hakkında bilgi"><svg class="ui-icon ui-icon-info" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><circle cx="10" cy="10" r="7.2"></circle><path d="M10 9v5"></path><path d="M10 6.1h.01"></path></svg></button>
-            <div class="builder-popover" id="builder-info-${service.id}" role="tooltip" aria-hidden="true"><p><strong>Ne yapıyoruz?</strong>${service.info.what}</p><p><strong>Kim için uygun?</strong>${service.info.fit}</p><p><strong>Neler dahil / hariç?</strong>${service.info.scope}</p></div>
-            ${service.options.length > 1 ? `<div class="builder-variants" role="group" aria-label="${service.title} seçenekleri">${service.options.map(option => `<button type="button" data-variant="${option.id}" data-group="${service.id}" aria-pressed="false">${option.label}</button>`).join('')}</div>` : ''}
-            ${service.extra ? `<button type="button" class="builder-extra" data-setup aria-pressed="false"><span><span class="builder-extra-label">İsteğe bağlı gelişmiş hizmet</span>${service.extra.name}<small>${rate(service.extra)} · Tek seferlik</small><span class="builder-extra-description">${service.extra.description}</span></span><span class="builder-check" aria-hidden="true">+</span></button><p class="builder-card-note"><strong>Temel Meta Ads kurulumu aylık yönetime dahildir.</strong> Reklam bütçesi bu fiyata dahil değildir ve doğrudan Meta’ya ödenir.</p>` : ''}
-          </article>`).join('')}
+      <div class="builder-service-groups">
+        <section class="builder-service-group builder-group-monthly" aria-labelledby="builder-monthly-title">
+          <div class="builder-group-head"><div><p class="builder-group-kicker">Aylık Hizmetler</p><h3 id="builder-monthly-title">Düzenli dijital çalışma</h3></div><p>Süreklilik isteyen hizmetler. Aylık kapsamınıza ekleyin.</p></div>
+          <div class="builder-services" aria-label="Aylık hizmetler">${monthlyServices.map(renderServiceCard).join('')}</div>
+        </section>
+        <section class="builder-service-group builder-group-project" aria-labelledby="builder-project-title">
+          <div class="builder-group-head"><div><p class="builder-group-kicker">Tek Seferlik / Proje Hizmetleri</p><h3 id="builder-project-title">İhtiyaca göre proje desteği</h3></div><p>Ayrı kapsamlanan üretim, kimlik ve kurulum işleri.</p></div>
+          <div class="builder-services" aria-label="Tek seferlik ve proje hizmetleri">${projectServices.map(renderServiceCard).join('')}</div>
+        </section>
       </div>
       <aside class="builder-summary-home" aria-label="Özel paket özeti">
         <div class="builder-summary" data-builder-summary>
@@ -93,10 +108,10 @@
           <p class="builder-empty" data-builder-empty>Henüz bir hizmet seçmediniz.</p>
           <ul class="builder-items" data-builder-items aria-label="Seçilen hizmetler"></ul>
           <div class="builder-totals" data-builder-totals>
-            <div><span>Aylık Hizmet Bedeli</span><p><strong data-monthly-total>0</strong> <small>TL / ay</small></p></div>
-            <div><span>Tek Seferlik / Proje Bedeli</span><p><strong data-once-total>0</strong> <small>TL</small></p></div>
+            <div class="builder-total-monthly"><span>Aylık Hizmet Bedeli</span><p><strong data-monthly-total data-value="0">0</strong> <small>TL / ay</small></p></div>
+            <div class="builder-total-once"><span>Tek Seferlik / Proje Bedeli</span><p><strong data-once-total data-value="0">0</strong> <small>TL</small></p></div>
           </div>
-          <p class="builder-meta-note" data-builder-meta hidden>Meta reklam bütçesi bu fiyata dahil değildir ve doğrudan Meta’ya ödenir.</p>
+          <p class="builder-meta-note" data-builder-meta hidden>Meta reklam bütçesi hizmet bedeline dahil değildir ve doğrudan Meta’ya ödenir.</p>
           <div class="builder-contact"><label for="builder-name">Ad Soyad <span>(isteğe bağlı)</span></label><input id="builder-name" name="builder-name" type="text" autocomplete="name" maxlength="80"><label for="builder-business">İşletme Adı <span>(isteğe bağlı)</span></label><input id="builder-business" name="builder-business" type="text" autocomplete="organization" maxlength="100"></div>
           <a class="button button-light builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">WhatsApp’tan Teklif İste ${icon('up-right')}</a>
           <p class="builder-send-note">Mesaj WhatsApp’ta açılır. Göndermek sizin kontrolünüzde.</p>
@@ -105,7 +120,7 @@
       </aside>
     </div>
     <p class="builder-sr-only" role="status" aria-live="polite" aria-atomic="true" data-builder-announcement></p>
-    <div class="builder-mobile-bar" data-builder-bar hidden><button type="button" aria-haspopup="dialog" aria-controls="builder-sheet" aria-expanded="false" data-open-summary><span><strong data-mobile-monthly>0 TL / ay</strong><span data-mobile-once>Tek seferlik: 0 TL</span></span><span class="builder-bar-action"><span data-mobile-count>0 hizmet</span><strong>Paketi Gör ${icon('up-right')}</strong></span></button></div>`;
+    <div class="builder-mobile-bar" data-builder-bar hidden><button type="button" aria-haspopup="dialog" aria-controls="builder-sheet" aria-expanded="false" data-open-summary><span class="builder-mobile-values"><strong data-mobile-monthly><span data-mobile-monthly-value data-value="0">0</span> TL / ay</strong><span data-mobile-once>Tek seferlik: <b data-mobile-once-value data-value="0">0</b> TL</span></span><span class="builder-bar-action"><span data-mobile-count>0 hizmet</span><strong>Paketi Gör ${icon('up-right')}</strong></span></button></div>`;
   const summary = root.querySelector('[data-builder-summary]');
   const summaryHome = root.querySelector('.builder-summary-home');
   const itemList = root.querySelector('[data-builder-items]');
@@ -120,7 +135,8 @@
   const businessInput = root.querySelector('#builder-business');
   const bar = root.querySelector('[data-builder-bar]');
   const openSummary = root.querySelector('[data-open-summary]');
-  const mobileMonthly = root.querySelector('[data-mobile-monthly]');
+  const mobileMonthlyValue = root.querySelector('[data-mobile-monthly-value]');
+  const mobileOnceValue = root.querySelector('[data-mobile-once-value]');
   const announcement = root.querySelector('[data-builder-announcement]');
   const builderFeedback = root.querySelector('[data-builder-feedback]');
   const mobile = matchMedia('(max-width: 800px)');
@@ -159,9 +175,40 @@
   };
   const replayClass = (element, className) => {
     if (!element) return;
-    element.classList.remove('is-added', 'is-removed', 'is-updated');
+    element.classList.remove('is-added', 'is-removed', 'is-updated', 'is-updated-soft', 'is-money-updating', 'is-money-pulsing');
     void element.offsetWidth;
     element.classList.add(className);
+  };
+  const amountAnimations = new WeakMap();
+  const animateAmount = (element, target, tone, enabled) => {
+    if (!element) return;
+    const previous = amountAnimations.get(element);
+    if (previous?.frame) cancelAnimationFrame(previous.frame);
+    const from = Number.isFinite(previous?.value) ? previous.value : Number(element.dataset.value || 0);
+    element.dataset.value = String(target);
+    if (!enabled || reduced.matches || from === target) {
+      element.textContent = money(target);
+      amountAnimations.set(element, { value: target, frame: 0 });
+      return;
+    }
+    replayClass(element.closest('[class*="builder-total-"]') || element, tone === 'monthly' ? 'is-money-updating' : 'is-money-pulsing');
+    const animation = { value: from, frame: 0 };
+    const started = performance.now();
+    const duration = 560;
+    const tick = now => {
+      const progress = Math.min(1, (now - started) / duration);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      animation.value = Math.round(from + (target - from) * eased);
+      element.textContent = money(animation.value);
+      if (progress < 1) animation.frame = requestAnimationFrame(tick);
+      else {
+        animation.value = target;
+        animation.frame = 0;
+        element.textContent = money(target);
+      }
+    };
+    amountAnimations.set(element, animation);
+    animation.frame = requestAnimationFrame(tick);
   };
   const flyToSummary = card => {
     if (reduced.matches || !card) return;
@@ -193,10 +240,8 @@
     const cardId = change.cardId || change.id;
     const card = root.querySelector(`[data-service="${cardId}"]`);
     replayClass(card, change.added ? 'is-added' : 'is-removed');
-    replayClass(summary, 'is-updated');
-    replayClass(summary.querySelector('[data-builder-totals]'), 'is-updated');
-    replayClass(bar, 'is-updated');
-    replayClass(mobileMonthly, 'is-updated');
+    replayClass(summary, change.added ? 'is-updated' : 'is-updated-soft');
+    replayClass(bar, change.added ? 'is-updated' : 'is-updated-soft');
     if (change.added) flyToSummary(card);
     if (!builderFeedback) return;
     clearTimeout(feedbackTimer);
@@ -216,17 +261,13 @@
     CONFIG.services.forEach(service => {
       const card = root.querySelector(`[data-service="${service.id}"]`);
       const selected = !!state.selected[service.id];
-      card.classList.toggle('is-selected', selected || (service.id === 'ads' && state.setup));
+      card.classList.toggle('is-selected', selected);
       card.querySelector('[data-select]').setAttribute('aria-pressed', String(selected));
       card.querySelector('[data-selection-text]').textContent = selected ? 'Seçildi' : 'Pakete ekle';
       card.querySelector('.builder-select .builder-check').textContent = selected ? '✓' : '+';
       const option = service.options.find(o => o.id === state.variants[service.id]);
       card.querySelector('.builder-card-price').innerHTML = `<strong>${money(option.price)}</strong><span>TL${service.billing === 'monthly' ? ' / ay' : service.unit ? ' / çekim' : ''}</span>${service.billing === 'once' ? '<small>Tek seferlik / proje</small>' : ''}`;
       card.querySelectorAll('[data-variant]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.variant === option.id)));
-      if (service.extra) {
-        card.querySelector('[data-setup]').setAttribute('aria-pressed', String(state.setup));
-        card.querySelector('[data-setup] .builder-check').textContent = state.setup ? '✓' : '+';
-      }
     });
     // Keep existing rows (and keyboard focus) when another item changes.
     itemList.querySelectorAll('[data-item]').forEach(row => {
@@ -266,15 +307,14 @@
     if (reset.disabled && document.activeElement === reset) {
       (sheet.open ? sheet.querySelector('.builder-close') : root.querySelector('[data-select]')).focus({ preventScroll: true });
     }
-    monthly.textContent = money(totals.monthly);
-    once.textContent = money(totals.once);
+    animateAmount(monthly, totals.monthly, 'monthly', feedback);
+    animateAmount(once, totals.once, 'once', feedback);
     metaNote.hidden = !items.some(item => item.key === 'ads' || item.key === 'ads-audit');
-    root.querySelector('[data-mobile-monthly]').textContent = `${money(totals.monthly)} TL / ay`;
-    root.querySelector('[data-mobile-once]').textContent = `Tek seferlik: ${money(totals.once)} TL`;
+    animateAmount(mobileMonthlyValue, totals.monthly, 'monthly', feedback);
+    animateAmount(mobileOnceValue, totals.once, 'once', feedback);
     root.querySelector('[data-mobile-count]').textContent = `${items.length} hizmet`;
     updateLink();
     if (feedback) {
-      animate(summary.querySelector('[data-builder-totals]'), [{ opacity: .55 }, { opacity: 1 }]);
       clearTimeout(announceTimer);
       announceTimer = setTimeout(() => { announcement.textContent = `${items.length} hizmet seçildi. Aylık ${money(totals.monthly)} TL. Tek seferlik ${money(totals.once)} TL.`; }, 150);
     }
@@ -330,19 +370,11 @@
       state.variants[id] = button.dataset.variant;
       state.selected[id] = true;
       if (added) change = { id, label: service?.title || 'Hizmet', added: true };
-    } else if (button.hasAttribute('data-setup')) {
-      const added = !state.setup;
-      state.setup = added;
-      change = { id: 'ads-audit', cardId: 'ads', label: 'Gelişmiş Meta Ads Audit', added };
-    }
-    else if (button.hasAttribute('data-remove')) {
+    } else if (button.hasAttribute('data-remove')) {
       const id = button.dataset.remove;
       const service = CONFIG.services.find(item => item.id === id);
-      const extra = id === 'ads-audit' ? CONFIG.services.find(item => item.extra?.id === id)?.extra : null;
-      const selectedService = service || CONFIG.services.find(item => item.options.some(option => option.id === id));
-      if (id === 'ads-audit') state.setup = false;
-      else delete state.selected[id];
-      change = { id, cardId: id === 'ads-audit' ? 'ads' : id, label: extra?.name || selectedService?.title || 'Hizmet', added: false };
+      delete state.selected[id];
+      change = { id, label: service?.title || 'Hizmet', added: false };
     } else if (button.hasAttribute('data-builder-reset')) state = blankState();
     else return;
     saveAndRender(change);
