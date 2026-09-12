@@ -7,14 +7,17 @@
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "Menüyü aç");
     nav.classList.remove("is-open");
+    nav.inert = mobileNav.matches;
   };
 
   if (toggle && nav) {
+    nav.inert = mobileNav.matches;
     toggle.addEventListener("click", () => {
       const open = toggle.getAttribute("aria-expanded") !== "true";
       toggle.setAttribute("aria-expanded", String(open));
       toggle.setAttribute("aria-label", open ? "Menüyü kapat" : "Menüyü aç");
       nav.classList.toggle("is-open", open);
+      nav.inert = !open && mobileNav.matches;
     });
     nav.addEventListener("click", (event) => { if (event.target.closest("a")) closeNav(); });
     document.addEventListener("keydown", (event) => {
@@ -49,6 +52,11 @@
   if (requestedService && serviceNames[requestedService]) {
     document.querySelectorAll('select[name="service"]').forEach((select) => { select.value = serviceNames[requestedService]; });
   }
+  const packageNames = { essential: "ESSENTIAL — 14.900 TL / ay", studio: "STUDIO — 19.900 TL / ay", growth: "GROWTH — 29.900 TL / ay", full: "EIGHTFOLD FULL — 44.900 TL / ay" };
+  const requestedPackage = new URLSearchParams(window.location.search).get("package");
+  if (Object.hasOwn(packageNames, requestedPackage)) {
+    document.querySelectorAll('select[name="package"]').forEach(select => { select.value = requestedPackage; });
+  }
   document.querySelectorAll("[data-copy-email]").forEach((button) => {
     button.addEventListener("click", async () => {
       const email = button.getAttribute("data-copy-email");
@@ -65,10 +73,11 @@
       const recipient = form.getAttribute("data-recipient") || "hello@parabellum.works";
       const name = String(data.get("name") || "").trim();
       const company = String(data.get("company") || "").trim();
-      const labels = { name: "Ad soyad", company: "Marka / şirket", email: "E-posta", phone: "Telefon", website: "Web sitesi / sosyal hesap", service: "Öncelikli ihtiyaç", budget: "Aylık medya bütçesi", timeline: "Başlangıç zamanı", goal: "Hedef / mevcut sorun" };
+      const labels = { name: "Ad soyad", company: "Marka / şirket", email: "E-posta", phone: "Telefon", website: "Web sitesi / sosyal hesap", service: "Öncelikli ihtiyaç", budget: "Aylık medya bütçesi", timeline: "Başlangıç zamanı", package: "İlgilenilen paket", goal: "Hedef / mevcut sorun" };
       const lines = ["Merhaba EIGHTFOLD,", "", "Yeni bir proje için görüşmek istiyorum.", ""];
       Object.entries(labels).forEach(([key, label]) => {
-        const value = String(data.get(key) || "").trim();
+        const raw = String(data.get(key) || "").trim();
+        const value = key === "package" ? (packageNames[raw] || "") : raw;
         if (value) lines.push(`${label}: ${value}`);
       });
       lines.push("", "Bu talep EIGHTFOLD proje formundan oluşturuldu.");
@@ -80,71 +89,243 @@
 })();
 
 (() => {
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 961px)');
-  const disciplines = [...document.querySelectorAll('.discipline')];
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const desktop = matchMedia('(min-width: 961px) and (hover: hover) and (pointer: fine)');
+  const ease = 'cubic-bezier(.22,1,.36,1)';
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+  const section = document.querySelector('.discipline-section');
+  const items = [...document.querySelectorAll('.discipline')];
   const counter = document.querySelector('[data-discipline-count]');
-  disciplines.forEach((item, index) => {
+  let active = Math.max(0, items.findIndex(item => item.open));
+  let sequencing = false;
+  const disclosures = new Map();
+
+  // Native details remain the no-JS and reduced-motion fallback.
+  document.querySelectorAll('.discipline, [data-disclosure]').forEach(item => {
+    const summary = item.querySelector('summary');
+    const body = summary.nextElementSibling;
+    const state = { animation: null, fade: null, target: item.open };
+    const finish = () => {
+      state.animation?.cancel();
+      state.fade?.cancel();
+      state.animation = state.fade = null;
+      item.open = state.target;
+      item.style.height = '';
+      item.style.overflow = '';
+      body.inert = false;
+    };
+    const setOpen = (open, animate = true) => {
+      const from = item.getBoundingClientRect().height;
+      state.animation?.cancel();
+      state.fade?.cancel();
+      state.animation = state.fade = null;
+      state.target = open;
+      if (!animate || reduced.matches || typeof item.animate !== 'function') { finish(); return; }
+      item.style.height = '';
+      item.open = true;
+      const to = open ? item.getBoundingClientRect().height : summary.getBoundingClientRect().height + 2;
+      item.style.overflow = 'hidden';
+      body.inert = !open;
+      if (!open && body.contains(document.activeElement)) summary.focus({ preventScroll: true });
+      state.animation = item.animate([{ height: `${from}px` }, { height: `${to}px` }], { duration: 380, easing: ease });
+      state.fade = body.animate([{ opacity: open ? 0 : 1, transform: open ? 'translateY(5px)' : 'none' }, { opacity: open ? 1 : 0, transform: 'none' }], { duration: open ? 320 : 180, easing: ease });
+      state.animation.onfinish = finish;
+    };
+    disclosures.set(item, { setOpen, finish, state });
+    summary.addEventListener('click', event => {
+      event.preventDefault();
+      if (item.classList.contains('discipline')) {
+        const index = items.indexOf(item);
+        if (sequencing) { select(index); return; }
+        const open = !state.target;
+        items.forEach(other => { if (other !== item && other.open) disclosures.get(other).setOpen(false); });
+        setOpen(open);
+        if (open) select(index);
+      } else setOpen(!state.target);
+    });
     item.addEventListener('toggle', () => {
-      if (!item.open) return;
-      disciplines.forEach(other => { if (other !== item) other.open = false; });
-      if (counter) {
-        counter.textContent = String(index + 1).padStart(2, '0');
-        const wrapper = counter.parentElement;
-        wrapper.classList.remove('is-changing');
-        requestAnimationFrame(() => wrapper.classList.add('is-changing'));
-      }
+      if (!state.animation) state.target = item.open;
     });
   });
-  const openHashDiscipline = () => {
-    const target = disciplines.find(item => '#' + item.id === window.location.hash);
-    if (target) target.open = true;
-  };
-  openHashDiscipline();
-  window.addEventListener('hashchange', openHashDiscipline);
 
+  let progress;
+  if (section) {
+    progress = document.createElement('div');
+    progress.className = 'discipline-progress';
+    progress.setAttribute('aria-hidden', 'true');
+    items.forEach(() => progress.append(document.createElement('span')));
+    section.querySelector('.discipline-intro').append(progress);
+  }
+  function select(index) {
+    active = index;
+    items.forEach((item, i) => item.classList.toggle('is-active', i === index));
+    if (counter) counter.textContent = String(index + 1).padStart(2, '0');
+    if (progress) [...progress.children].forEach((bar, i) => {
+      bar.classList.toggle('is-past', i < index);
+      bar.classList.toggle('is-current', i === index);
+    });
+  }
+  const syncSequence = () => {
+    sequencing = desktop.matches && !reduced.matches;
+    section?.classList.toggle('is-sequenced', sequencing);
+    items.forEach((item, i) => disclosures.get(item).setOpen(sequencing || i === active, false));
+    select(active);
+  };
+  const openHash = () => {
+    const index = items.findIndex(item => '#' + item.id === location.hash);
+    if (index < 0) return;
+    select(index);
+    if (!sequencing) items.forEach((item, i) => disclosures.get(item).setOpen(i === index, false));
+  };
+  syncSequence();
+  openHash();
+  addEventListener('hashchange', openHash);
+  items.forEach((item, index) => item.addEventListener('focusin', () => select(index)));
+
+  // Mask only deliberate line breaks. Natural wrapping and accessible text survive.
+  const headings = [...document.querySelectorAll('.section-heading h2, .problem-section h2, .discipline-intro h2, .role-section h2, .home-cta h2, .page-hero h1, .case-heading h1, .statement-band h2, .project-caption h3')];
+  headings.forEach(heading => {
+    heading.classList.add('motion-heading');
+    if (![...heading.childNodes].some(node => node.nodeName === 'BR')) return;
+    const nodes = [...heading.childNodes];
+    let line = document.createElement('span');
+    line.className = 'heading-line';
+    let index = 0;
+    heading.replaceChildren();
+    const appendLine = () => {
+      const inner = document.createElement('span');
+      inner.append(...line.childNodes);
+      line.append(inner);
+      line.style.setProperty('--line', index++);
+      heading.append(line);
+    };
+    nodes.forEach(node => {
+      if (node.nodeName === 'BR') { appendLine(); line = document.createElement('span'); line.className = 'heading-line'; }
+      else line.append(node);
+    });
+    if (line.childNodes.length) appendLine();
+  });
+  const reveals = [...document.querySelectorAll('.reveal:not(.is-visible), .project-media, .motion-heading')]
+    .filter(el => el.classList.contains('motion-heading') || !el.querySelector('.motion-heading'));
+  document.querySelectorAll('.package-grid, .concept-grid, .three-stages').forEach(grid => {
+    [...grid.children].forEach((child, index) => child.style.setProperty('--stagger', `${Math.min(index, 3) * 65}ms`));
+  });
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-        if (!reducedMotion.matches) entry.target.classList.add('is-entering');
+        if (!reduced.matches) entry.target.classList.add('is-entering');
         observer.unobserve(entry.target);
       });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal:not(.is-visible)').forEach(el => observer.observe(el));
+    }, { threshold: .12 });
+    [...new Set(reveals)].forEach(el => observer.observe(el));
   }
 
   const hero = document.querySelector('.eightfold-hero');
   const mark = document.querySelector('[data-hero-mark]');
-  const buttons = [...document.querySelectorAll('[data-magnetic]')];
-  let frame = 0;
-  const resetMotion = () => {
-    cancelAnimationFrame(frame);
-    if (mark) { mark.style.removeProperty('--rx'); mark.style.removeProperty('--ry'); }
-    buttons.forEach(button => { button.style.removeProperty('--mx'); button.style.removeProperty('--my'); });
+  let figure;
+  if (mark) {
+    figure = document.createElement('div');
+    figure.className = 'hero-figure';
+    mark.before(figure);
+    figure.append(mark);
+    const reflection = document.createElement('span');
+    reflection.className = 'hero-reflection';
+    reflection.setAttribute('aria-hidden', 'true');
+    figure.append(reflection);
+  }
+  let heroVisible = false, sectionVisible = false, frame = 0;
+  let pointer = null;
+  const schedule = () => {
+    if (frame || reduced.matches || (!heroVisible && !sectionVisible)) return;
+    frame = requestAnimationFrame(updateScroll);
   };
-  if (hero && mark) {
-    hero.addEventListener('pointermove', event => {
-      if (reducedMotion.matches || !finePointer.matches) return;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const rect = hero.getBoundingClientRect();
-        mark.style.setProperty('--ry', `${(event.clientX - rect.left - rect.width / 2) / rect.width * 9}deg`);
-        mark.style.setProperty('--rx', `${-(event.clientY - rect.top - rect.height / 2) / rect.height * 6}deg`);
+  function updateScroll() {
+    frame = 0;
+    if (reduced.matches) return;
+    // All layout reads precede style writes; no perpetual animation loop.
+    const heroRect = heroVisible && desktop.matches && hero ? hero.getBoundingClientRect() : null;
+    let next = active;
+    if (sectionVisible && sequencing && !section.contains(document.activeElement)) {
+      const aim = innerHeight * .46;
+      let nearest = Infinity;
+      items.forEach((item, index) => {
+        const rect = item.getBoundingClientRect();
+        const distance = Math.abs(rect.top + rect.height * .45 - aim);
+        if (distance < nearest) { nearest = distance; next = index; }
+      });
+    }
+    if (heroRect && figure) {
+      const distance = clamp(-heroRect.top / heroRect.height, 0, 1);
+      figure.style.setProperty('--sy', `${distance * 16}px`);
+      figure.style.setProperty('--scale', String(1 - distance * .025));
+      if (pointer) {
+        const x = clamp((pointer.x - heroRect.left) / heroRect.width - .5, -.5, .5);
+        const y = clamp((pointer.y - heroRect.top) / heroRect.height - .5, -.5, .5);
+        figure.style.setProperty('--rx', `${-y * 4}deg`);
+        figure.style.setProperty('--ry', `${x * 6}deg`);
+        figure.style.setProperty('--light', `${x * 35}%`);
+      }
+    }
+    if (next !== active) select(next);
+  }
+  if ('IntersectionObserver' in window) {
+    const visibility = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.target === hero) heroVisible = entry.isIntersecting;
+        if (entry.target === section) sectionVisible = entry.isIntersecting;
+      });
+      schedule();
+    }, { rootMargin: '100px 0px' });
+    if (hero) visibility.observe(hero);
+    if (section) visibility.observe(section);
+    if (hero || section) addEventListener('scroll', schedule, { passive: true });
+  }
+  hero?.addEventListener('pointermove', event => {
+    if (!desktop.matches || reduced.matches) return;
+    pointer = { x: event.clientX, y: event.clientY };
+    schedule();
+  }, { passive: true });
+  hero?.addEventListener('pointerleave', () => {
+    pointer = null;
+    if (figure) ['--rx','--ry','--light'].forEach(key => figure.style.removeProperty(key));
+  });
+
+  const tactile = [...document.querySelectorAll('[data-magnetic], .package-cta, .concept-card, .featured-project, .package-card')];
+  const resets = [];
+  tactile.forEach(element => {
+    let raf = 0;
+    const button = element.classList.contains('button');
+    const reset = () => {
+      cancelAnimationFrame(raf); raf = 0;
+      ['--mx','--my','--card-x','--card-y'].forEach(key => element.style.removeProperty(key));
+    };
+    resets.push(reset);
+    element.addEventListener('pointermove', event => {
+      if (!desktop.matches || reduced.matches) return;
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const rect = element.getBoundingClientRect();
+        const x = clamp((event.clientX - rect.left) / rect.width - .5, -.5, .5);
+        const y = clamp((event.clientY - rect.top) / rect.height - .5, -.5, .5);
+        element.style.setProperty(button ? '--mx' : '--card-y', button ? `${x * 4}px` : `${x * 1.4}deg`);
+        element.style.setProperty(button ? '--my' : '--card-x', button ? `${y * 3}px` : `${-y * 1.4}deg`);
       });
     }, { passive: true });
-    hero.addEventListener('pointerleave', resetMotion);
-  }
-  buttons.forEach(button => {
-    button.addEventListener('pointermove', event => {
-      if (reducedMotion.matches || !finePointer.matches) return;
-      const rect = button.getBoundingClientRect();
-      button.style.setProperty('--mx', `${(event.clientX - rect.left - rect.width / 2) * .055}px`);
-      button.style.setProperty('--my', `${(event.clientY - rect.top - rect.height / 2) * .075}px`);
-    }, { passive: true });
-    button.addEventListener('pointerleave', () => { button.style.removeProperty('--mx'); button.style.removeProperty('--my'); });
-    button.addEventListener('blur', resetMotion);
+    element.addEventListener('pointerleave', reset);
+    element.addEventListener('blur', reset);
   });
-  reducedMotion.addEventListener('change', resetMotion);
-  finePointer.addEventListener('change', resetMotion);
+  const reset = () => {
+    cancelAnimationFrame(frame); frame = 0; pointer = null;
+    figure?.removeAttribute('style');
+    resets.forEach(fn => fn());
+    disclosures.forEach(control => control.finish());
+    syncSequence();
+    schedule();
+  };
+  reduced.addEventListener('change', reset);
+  desktop.addEventListener('change', reset);
+  addEventListener('resize', schedule, { passive: true });
+  addEventListener('pagehide', () => { cancelAnimationFrame(frame); resets.forEach(fn => fn()); });
 })();
