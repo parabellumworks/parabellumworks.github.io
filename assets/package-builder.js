@@ -6,31 +6,31 @@
     storageKey: 'eightfold.custom-package.v1',
     whatsapp: '905369471196',
     services: [
-      { id: 'brand', number: '01', title: 'Marka Kimliği', description: 'Markanız için ortak bir görsel dil.', billing: 'once', options: [
+      { id: 'brand', number: '01', title: 'Marka Kimliği', description: 'Markanız için ortak bir görsel dil.', billing: 'once', info: { what: 'Markanın logo, renk, tipografi ve temel görsel sistemini oluşturur veya mevcut kimliği profesyonelleştiririz.', fit: 'Yeni başlayan, yenilenen veya dağınık görünen markalar için.', scope: 'Logo yönü, renk ve tipografi sistemi dahil; kapsamlı uygulamalar ayrıca netleştirilir.' }, options: [
         { id: 'mini', label: 'Mini', name: 'Mini Marka Kimliği', price: 14900 },
         { id: 'full', label: 'Tam', name: 'Tam Marka Kimliği', price: 24900 }
       ] },
-      { id: 'social', number: '02', title: 'Sosyal Medya Yönetimi', description: 'Profilleriniz için düzenli yayın yönetimi.', billing: 'monthly', options: [
+      { id: 'social', number: '02', title: 'Sosyal Medya Yönetimi', description: 'Profilleriniz için düzenli yayın yönetimi.', billing: 'monthly', info: { what: 'Hesabınızın içerik akışını, paylaşım düzenini ve genel dijital görünümünü yönetiriz.', fit: 'Düzenli görünmek isteyen, içerik operasyonuna zamanı kalmayan işletmeler için.', scope: 'Yayın yönetimi dahil; içerik üretim adetleri seçilen kapsama göre belirlenir.' }, options: [
         { id: 'standard', name: 'Sosyal Medya Yönetimi', price: 9900 }
       ] },
-      { id: 'content', number: '03', title: 'İçerik Stratejisi', description: 'Ne söyleyeceğiniz ve nasıl söyleyeceğiniz.', billing: 'monthly', options: [
+      { id: 'content', number: '03', title: 'İçerik Stratejisi', description: 'Ne söyleyeceğiniz ve nasıl söyleyeceğiniz.', billing: 'monthly', info: { what: 'Ne paylaşılacağını, hangi formatların kullanılacağını ve içeriklerin hangi hedefe hizmet edeceğini planlarız.', fit: 'İçerik üreten ama yönünü ve önceliğini netleştirmek isteyen işletmeler için.', scope: 'Konu, format ve yayın yönü dahil; çekim ve tasarım üretimi ayrıca kapsamlandırılır.' }, options: [
         { id: 'standard', name: 'İçerik Stratejisi', price: 4900 }
       ] },
-      { id: 'design', number: '04', title: 'Grafik Tasarım', description: '8 adet sosyal medya kreatifi / ay.', billing: 'monthly', options: [
+      { id: 'design', number: '04', title: 'Grafik Tasarım', description: '8 adet sosyal medya kreatifi / ay.', billing: 'monthly', info: { what: 'Sosyal medya postları, story kreatifleri, carousel ve kampanya görselleri üretiriz.', fit: 'Görsel standardını yükseltmek ve marka dilini her paylaşımda korumak isteyenler için.', scope: 'Test fiyatı aylık 8 kreatif içerir; ilave üretimler ayrıca planlanır.' }, options: [
         { id: 'standard', name: 'Grafik Tasarım', price: 6000 }
       ] },
-      { id: 'production', number: '05', title: 'Fotoğraf & Video', description: 'İşletmenize özel içerik çekimi.', billing: 'once', unit: 'çekim', options: [
+      { id: 'production', number: '05', title: 'Fotoğraf & Video', description: 'İşletmenize özel içerik çekimi.', billing: 'once', unit: 'çekim', info: { what: 'Sosyal medya kullanımına yönelik fotoğraf ve video üretimi yaparız.', fit: 'Mekânını, ürününü veya hizmetini güçlü görsellerle göstermek isteyen işletmeler için.', scope: 'Çekim süresi seçilen seçeneğe göre belirlenir; özel prodüksiyon ihtiyaçları ayrıca fiyatlandırılır.' }, options: [
         { id: 'two-hours', label: '2 Saat', name: '2 Saat İçerik Çekimi', price: 7500 },
         { id: 'half-day', label: 'Yarım Gün', name: 'Yarım Gün İçerik Çekimi', price: 11500 }
       ] },
-      { id: 'ads', number: '06', title: 'Reklam & Performance', description: 'Meta Ads kampanya yönetimi.', billing: 'monthly', options: [
+      { id: 'ads', number: '06', title: 'Reklam & Performance', description: 'Meta Ads yönetimi; temel hesap kurulumu dahildir.', billing: 'monthly', info: { what: 'Facebook ve Instagram reklam kampanyalarınızı kurar, hedefler, optimize eder ve takip ederiz. Temel reklam hesabı kurulumu dahildir.', fit: 'Reklamla düzenli talep oluşturmak ve bütçesini kontrollü yönetmek isteyen işletmeler için.', scope: 'Aylık yönetim ve temel kurulum dahil; gelişmiş audit / yeniden yapılandırma opsiyonel, reklam bütçesi hariçtir.' }, options: [
         { id: 'standard', name: 'Meta Ads Yönetimi', price: 7500 }
-      ], extra: { id: 'ads-setup', name: 'Meta Ads Kurulum / Audit', price: 5000, billing: 'once' } },
-      { id: 'web', number: '07', title: 'Web & Dijital Deneyim', description: 'İşletmenizin dijital adresi.', billing: 'once', options: [
+      ], extra: { id: 'ads-audit', name: 'Gelişmiş Meta Ads Audit / Yeniden Yapılandırma', description: 'Mevcut hesaplarda derin analiz, eski kampanya temizliği, ileri takip incelemesi veya kapsamlı yeniden yapılandırma gerektiğinde.', price: 5000, billing: 'once' } },
+      { id: 'web', number: '07', title: 'Web & Dijital Deneyim', description: 'İşletmenizin dijital adresi.', billing: 'once', info: { what: 'Landing page veya kurumsal web sitesi tasarlar ve geliştiririz.', fit: 'Dijitalde güven veren, net ve dönüşüm odaklı bir adres isteyen işletmeler için.', scope: 'Kapsam seçilen web çözümüne göre belirlenir; ilave entegrasyonlar ayrıca planlanır.' }, options: [
         { id: 'landing', label: 'Landing Page', name: 'Landing Page', price: 12500 },
         { id: 'corporate', label: 'Kurumsal Site', name: 'Kurumsal Web Sitesi', price: 22500 }
       ] },
-      { id: 'growth', number: '08', title: 'Growth & Dijital Sistemler', description: 'Dijital süreçlerinize gelişim desteği.', billing: 'monthly', options: [
+      { id: 'growth', number: '08', title: 'Growth & Dijital Sistemler', description: 'Dijital süreçlerinize gelişim desteği.', billing: 'monthly', info: { what: 'Dijital kanalların birlikte çalışmasını, dönüşüm noktalarını ve büyüme fırsatlarını düzenli olarak analiz ederiz.', fit: 'Mevcut dijital düzenini ölçmek ve bir sonraki büyüme alanını görmek isteyen işletmeler için.', scope: 'Analiz ve gelişim öncelikleri dahil; yeni yazılım ve reklam bütçeleri hariçtir.' }, options: [
         { id: 'standard', name: 'Growth & Dijital Sistemler', price: 7500 }
       ] }
     ]
@@ -39,6 +39,10 @@
   if (!root) return;
   const money = value => new Intl.NumberFormat('tr-TR').format(value);
   const rate = item => `${money(item.price)} TL${item.billing === 'monthly' ? ' / ay' : item.unit ? ' / çekim' : ''}`;
+  const icon = kind => {
+    const paths = { 'up-right': '<path d="M5 15 15 5M7 5h8v8"/>', right: '<path d="M3 10h14M11 4l6 6-6 6"/>', left: '<path d="M17 10H3m6-6-6 6 6 6"/>', down: '<path d="M10 3v14m0 0 6-6m-6 6-6-6"/>' };
+    return `<svg class="ui-icon ui-icon-${kind}" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true">${paths[kind]}</svg>`;
+  };
   const blankState = () => ({ selected: {}, variants: Object.fromEntries(CONFIG.services.map(s => [s.id, s.options[0].id])), setup: false });
   const sanitize = raw => {
     const next = blankState();
@@ -75,8 +79,10 @@
               <span class="builder-description">${service.description}</span>
               <span class="builder-card-price" id="builder-price-${service.id}"></span>
             </button>
+            <button class="builder-info" type="button" data-info="${service.id}" aria-expanded="false" aria-controls="builder-info-${service.id}" aria-label="${service.title} hakkında bilgi"><svg class="ui-icon ui-icon-info" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><circle cx="10" cy="10" r="7.2"></circle><path d="M10 9v5"></path><path d="M10 6.1h.01"></path></svg></button>
+            <div class="builder-popover" id="builder-info-${service.id}" role="tooltip" aria-hidden="true"><p><strong>Ne yapıyoruz?</strong>${service.info.what}</p><p><strong>Kim için uygun?</strong>${service.info.fit}</p><p><strong>Neler dahil / hariç?</strong>${service.info.scope}</p></div>
             ${service.options.length > 1 ? `<div class="builder-variants" role="group" aria-label="${service.title} seçenekleri">${service.options.map(option => `<button type="button" data-variant="${option.id}" data-group="${service.id}" aria-pressed="false">${option.label}</button>`).join('')}</div>` : ''}
-            ${service.extra ? `<button type="button" class="builder-extra" data-setup aria-pressed="false"><span><span class="builder-extra-label">İsteğe bağlı kurulum</span>${service.extra.name}<small>${rate(service.extra)} · Tek seferlik</small></span><span class="builder-check" aria-hidden="true">+</span></button><p class="builder-card-note">Meta reklam bütçesi bu fiyata dahil değildir ve doğrudan Meta’ya ödenir.</p>` : ''}
+            ${service.extra ? `<button type="button" class="builder-extra" data-setup aria-pressed="false"><span><span class="builder-extra-label">İsteğe bağlı gelişmiş hizmet</span>${service.extra.name}<small>${rate(service.extra)} · Tek seferlik</small><span class="builder-extra-description">${service.extra.description}</span></span><span class="builder-check" aria-hidden="true">+</span></button><p class="builder-card-note"><strong>Temel Meta Ads kurulumu aylık yönetime dahildir.</strong> Reklam bütçesi bu fiyata dahil değildir ve doğrudan Meta’ya ödenir.</p>` : ''}
           </article>`).join('')}
       </div>
       <aside class="builder-summary-home" aria-label="Özel paket özeti">
@@ -91,14 +97,14 @@
           </div>
           <p class="builder-meta-note" data-builder-meta hidden>Meta reklam bütçesi bu fiyata dahil değildir ve doğrudan Meta’ya ödenir.</p>
           <div class="builder-contact"><label for="builder-name">Ad Soyad <span>(isteğe bağlı)</span></label><input id="builder-name" name="builder-name" type="text" autocomplete="name" maxlength="80"><label for="builder-business">İşletme Adı <span>(isteğe bağlı)</span></label><input id="builder-business" name="builder-business" type="text" autocomplete="organization" maxlength="100"></div>
-          <a class="button button-light builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">WhatsApp’tan Teklif İste <span aria-hidden="true">↗</span></a>
+          <a class="button button-light builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">WhatsApp’tan Teklif İste ${icon('up-right')}</a>
           <p class="builder-send-note">Mesaj WhatsApp’ta açılır. Göndermek sizin kontrolünüzde.</p>
           <p class="builder-test-note">Test fiyatlarıdır. Nihai kapsam ve ücret görüşmede netleştirilir.</p>
         </div>
       </aside>
     </div>
     <p class="builder-sr-only" role="status" aria-live="polite" aria-atomic="true" data-builder-announcement></p>
-    <div class="builder-mobile-bar" data-builder-bar hidden><button type="button" aria-haspopup="dialog" aria-controls="builder-sheet" aria-expanded="false" data-open-summary><span><strong data-mobile-monthly>0 TL / ay</strong><span data-mobile-once>Tek seferlik: 0 TL</span></span><span class="builder-bar-action"><span data-mobile-count>0 hizmet</span><strong>Paketi Gör <span aria-hidden="true">↗</span></strong></span></button></div>`;
+    <div class="builder-mobile-bar" data-builder-bar hidden><button type="button" aria-haspopup="dialog" aria-controls="builder-sheet" aria-expanded="false" data-open-summary><span><strong data-mobile-monthly>0 TL / ay</strong><span data-mobile-once>Tek seferlik: 0 TL</span></span><span class="builder-bar-action"><span data-mobile-count>0 hizmet</span><strong>Paketi Gör ${icon('up-right')}</strong></span></button></div>`;
   const summary = root.querySelector('[data-builder-summary]');
   const summaryHome = root.querySelector('.builder-summary-home');
   const itemList = root.querySelector('[data-builder-items]');
@@ -128,7 +134,7 @@
 
   const messageFor = (items, totals) => {
     const lines = ['Merhaba EIGHTFOLD,', '', 'Web siteniz üzerinden kendi paketimi oluşturdum.', '', 'Seçtiğim hizmetler:', '', ...items.map(item => `• ${item.name} — ${rate(item)}`), '', 'Aylık Hizmet Bedeli:', `${money(totals.monthly)} TL / ay`, '', 'Tek Seferlik / Proje Bedeli:', `${money(totals.once)} TL`, '', 'Bu paket hakkında görüşmek istiyorum.'];
-    if (items.some(item => item.key === 'ads' || item.key === 'ads-setup')) lines.push('', 'Not: Meta reklam bütçesinin hizmet bedeline dahil olmadığını biliyorum.');
+    if (items.some(item => item.key === 'ads' || item.key === 'ads-audit')) lines.push('', 'Not: Meta reklam bütçesinin hizmet bedeline dahil olmadığını biliyorum.');
     if (nameInput.value.trim()) lines.push('', `Ad Soyad: ${nameInput.value.trim()}`);
     if (businessInput.value.trim()) lines.push(`İşletme: ${businessInput.value.trim()}`);
     return lines.join('\n');
@@ -206,7 +212,7 @@
     }
     monthly.textContent = money(totals.monthly);
     once.textContent = money(totals.once);
-    metaNote.hidden = !items.some(item => item.key === 'ads' || item.key === 'ads-setup');
+    metaNote.hidden = !items.some(item => item.key === 'ads' || item.key === 'ads-audit');
     root.querySelector('[data-mobile-monthly]').textContent = `${money(totals.monthly)} TL / ay`;
     root.querySelector('[data-mobile-once]').textContent = `Tek seferlik: ${money(totals.once)} TL`;
     root.querySelector('[data-mobile-count]').textContent = `${items.length} hizmet`;
@@ -221,14 +227,35 @@
     try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(state)); } catch { /* Selection still works without storage. */ }
     render(true);
   };
+  const closeInfoPopovers = except => {
+    root.querySelectorAll('[data-info]').forEach(button => {
+      if (button !== except) {
+        button.setAttribute('aria-expanded', 'false');
+        const popover = root.querySelector(`#${button.getAttribute('aria-controls')}`);
+        popover?.classList.remove('is-open');
+        popover?.setAttribute('aria-hidden', 'true');
+        button.closest('.builder-card')?.classList.remove('is-info-open');
+      }
+    });
+  };
+  const setInfoOpen = (button, open) => {
+    const popover = root.querySelector(`#${button.getAttribute('aria-controls')}`);
+    if (!popover) return;
+    if (open) closeInfoPopovers(button);
+    button.setAttribute('aria-expanded', String(open));
+    popover.classList.toggle('is-open', open);
+    popover.setAttribute('aria-hidden', String(!open));
+    button.closest('.builder-card')?.classList.toggle('is-info-open', open);
+  };
   const handleAction = event => {
     const button = event.target.closest('button');
     if (!button) return;
+    if (button.hasAttribute('data-info')) { event.stopPropagation(); setInfoOpen(button, button.getAttribute('aria-expanded') !== 'true'); return; }
     if (button.hasAttribute('data-select')) state.selected[button.dataset.select] = !state.selected[button.dataset.select];
     else if (button.hasAttribute('data-variant')) { state.variants[button.dataset.group] = button.dataset.variant; state.selected[button.dataset.group] = true; }
     else if (button.hasAttribute('data-setup')) state.setup = !state.setup;
     else if (button.hasAttribute('data-remove')) {
-      if (button.dataset.remove === 'ads-setup') state.setup = false;
+      if (button.dataset.remove === 'ads-audit') state.setup = false;
       else delete state.selected[button.dataset.remove];
     } else if (button.hasAttribute('data-builder-reset')) state = blankState();
     else return;
@@ -236,6 +263,20 @@
   };
   root.addEventListener('click', handleAction);
   sheet.addEventListener('click', handleAction);
+  root.addEventListener('focusin', event => {
+    const button = event.target.closest('[data-info]');
+    if (button) setInfoOpen(button, true);
+  });
+  root.addEventListener('pointerenter', event => {
+    const button = event.target.closest('[data-info]');
+    if (button && matchMedia('(hover: hover)').matches) setInfoOpen(button, true);
+  }, true);
+  document.addEventListener('click', event => {
+    if (!event.target.closest('[data-info], .builder-popover')) closeInfoPopovers();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeInfoPopovers();
+  });
   [nameInput, businessInput].forEach(input => input.addEventListener('input', updateLink));
   whatsapp.addEventListener('click', event => {
     updateLink();
