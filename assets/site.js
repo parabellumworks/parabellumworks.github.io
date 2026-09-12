@@ -458,24 +458,35 @@
 
   const dialog = document.querySelector('.case-lightbox');
   if (dialog && typeof dialog.showModal === 'function') {
-    const views = [
-      { key: 'overview', title: 'Genel menü görünümü', style: 'view-overview' },
-      { key: 'product', title: 'Ürün kartı detayı', style: 'view-product' },
-      { key: 'selection', title: 'Ürün seçenekleri', style: 'view-selection' }
-    ];
+    const triggers = [...document.querySelectorAll('[data-case-view]')];
+    const views = triggers.map((button, index) => {
+      const image = button.querySelector('img');
+      return {
+        key: button.dataset.caseView || `view-${index + 1}`,
+        title: button.dataset.caseTitle || `Görsel ${index + 1}`,
+        src: image?.currentSrc || image?.getAttribute('src') || '',
+        alt: image?.alt || `İtalyan Chef Pizza görseli ${index + 1}`,
+        style: 'view-editorial'
+      };
+    });
     let current = 0, opener;
     const frame = dialog.querySelector('[data-lightbox-frame]');
+    if (!views.length || !frame) return;
     const show = index => {
       current = (index + views.length) % views.length;
       const view = views[current];
       frame.className = 'lightbox-image ' + view.style;
-      frame.querySelector('img').alt = 'İtalyan Chef Pizza — ' + view.title;
+      const image = frame.querySelector('img');
+      image.src = view.src;
+      image.alt = view.alt;
       dialog.querySelector('#case-lightbox-title').textContent = view.title;
-      dialog.querySelector('[data-case-position]').textContent = `0${current + 1} / 03`;
+      dialog.querySelector('[data-case-position]').textContent = `${String(current + 1).padStart(2, '0')} / ${String(views.length).padStart(2, '0')}`;
     };
-    document.querySelectorAll('[data-case-view]').forEach(button => button.addEventListener('click', () => {
+    triggers.forEach(button => button.addEventListener('click', () => {
       opener = button;
-      show(views.findIndex(view => view.key === button.dataset.caseView));
+      const index = views.findIndex(view => view.key === button.dataset.caseView);
+      if (index < 0) return;
+      show(index);
       dialog.showModal();
       document.documentElement.classList.add('has-media-dialog');
     }));
