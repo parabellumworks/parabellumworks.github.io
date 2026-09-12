@@ -257,14 +257,14 @@
     }
     if (heroRect && figure) {
       const distance = clamp(-heroRect.top / heroRect.height, 0, 1);
-      figure.style.setProperty('--sy', `${distance * 16}px`);
-      figure.style.setProperty('--scale', String(1 - distance * .025));
+      figure.style.setProperty('--sy', `${distance * 8}px`);
+      figure.style.setProperty('--scale', String(1 - distance * .012));
       if (pointer) {
         const x = clamp((pointer.x - heroRect.left) / heroRect.width - .5, -.5, .5);
         const y = clamp((pointer.y - heroRect.top) / heroRect.height - .5, -.5, .5);
-        figure.style.setProperty('--rx', `${-y * 4}deg`);
-        figure.style.setProperty('--ry', `${x * 6}deg`);
-        figure.style.setProperty('--light', `${x * 35}%`);
+        figure.style.setProperty('--rx', `${-y * 1.5}deg`);
+        figure.style.setProperty('--ry', `${x * 2}deg`);
+        figure.style.setProperty('--light', `${x * 18}%`);
       }
     }
     if (next !== active) select(next);
@@ -291,7 +291,7 @@
     if (figure) ['--rx','--ry','--light'].forEach(key => figure.style.removeProperty(key));
   });
 
-  const tactile = [...document.querySelectorAll('[data-magnetic], .package-cta, .concept-card, .featured-project, .package-card')];
+  const tactile = [...document.querySelectorAll('[data-magnetic], .package-cta')];
   const resets = [];
   tactile.forEach(element => {
     let raf = 0;
@@ -309,8 +309,8 @@
         const rect = element.getBoundingClientRect();
         const x = clamp((event.clientX - rect.left) / rect.width - .5, -.5, .5);
         const y = clamp((event.clientY - rect.top) / rect.height - .5, -.5, .5);
-        element.style.setProperty(button ? '--mx' : '--card-y', button ? `${x * 4}px` : `${x * 1.4}deg`);
-        element.style.setProperty(button ? '--my' : '--card-x', button ? `${y * 3}px` : `${-y * 1.4}deg`);
+        element.style.setProperty(button ? '--mx' : '--card-y', button ? `${x * 2}px` : '0deg');
+        element.style.setProperty(button ? '--my' : '--card-x', button ? `${y * 1.5}px` : '0deg');
       });
     }, { passive: true });
     element.addEventListener('pointerleave', reset);
