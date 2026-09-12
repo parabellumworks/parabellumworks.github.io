@@ -183,7 +183,7 @@
   items.forEach((item, index) => item.addEventListener('focusin', () => select(index)));
 
   // Mask only deliberate line breaks. Natural wrapping and accessible text survive.
-  const headings = [...document.querySelectorAll('.section-heading h2, .problem-section h2, .discipline-intro h2, .role-section h2, .home-cta h2, .page-hero h1, .case-heading h1, .statement-band h2, .project-caption h3')];
+  const headings = [...document.querySelectorAll('.section-heading h2, .problem-section h2, .discipline-intro h2, .role-section h2, .home-cta h2, .page-hero h1, .case-heading h1, .film-copy h2, .statement-band h2, .project-caption h3')];
   headings.forEach(heading => {
     heading.classList.add('motion-heading');
     if (![...heading.childNodes].some(node => node.nodeName === 'BR')) return;
@@ -328,4 +328,209 @@
   desktop.addEventListener('change', reset);
   addEventListener('resize', schedule, { passive: true });
   addEventListener('pagehide', () => { cancelAnimationFrame(frame); resets.forEach(fn => fn()); });
+})();
+
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const ease = 'cubic-bezier(.22,1,.36,1)';
+  document.querySelectorAll('[data-package-carousel]').forEach(gallery => {
+    const viewport = gallery.querySelector('.carousel-viewport');
+    const track = gallery.querySelector('.package-grid');
+    const originals = [...track.children];
+    if (originals.length !== 4 || typeof track.animate !== 'function') return;
+    const previous = gallery.querySelector('[data-package-prev]');
+    const next = gallery.querySelector('[data-package-next]');
+    const controls = gallery.querySelector('.carousel-controls');
+    let step = 0, visible = 1, animation = null, pending = 0, drag = null, dragFrame = 0;
+    let suppressClick = false, width = 0;
+    const base = () => `translate3d(${-step}px,0,0)`;
+    originals.forEach(card => {
+      card.classList.remove('reveal', 'is-entering');
+      card.setAttribute('aria-roledescription', 'slayt');
+    });
+    track.prepend(originals[3]);
+    gallery.classList.add('is-ready');
+    controls.hidden = false;
+    const describe = () => {
+      const ordered = [...track.children];
+      const current = ordered[1];
+      const index = originals.indexOf(current);
+      gallery.querySelector('[data-package-current]').textContent = String(index + 1).padStart(2, '0');
+      gallery.querySelector('[data-package-name]').textContent = current.querySelector('h3').textContent;
+      ordered.forEach((card, i) => {
+        const hidden = i < 1 || i > visible;
+        if (hidden && card.contains(document.activeElement)) viewport.focus({ preventScroll: true });
+        card.inert = hidden;
+        if (hidden) card.setAttribute('aria-hidden', 'true'); else card.removeAttribute('aria-hidden');
+      });
+    };
+    const settle = () => {
+      const direction = pending;
+      pending = 0;
+      if (animation) { animation.onfinish = null; animation.cancel(); animation = null; }
+      if (direction > 0) track.append(track.firstElementChild);
+      else if (direction < 0) track.prepend(track.lastElementChild);
+      track.style.transform = base();
+      gallery.classList.remove('is-dragging');
+      previous.disabled = next.disabled = false;
+      describe();
+    };
+    const move = (direction, offset = 0) => {
+      if (animation || !step) return;
+      pending = direction;
+      if (reduced.matches) { settle(); return; }
+      previous.disabled = next.disabled = true;
+      animation = track.animate([
+        { transform: `translate3d(${-step + offset}px,0,0)` },
+        { transform: `translate3d(${-step - direction * step}px,0,0)` }
+      ], { duration: direction ? 520 : 300, easing: ease, fill: 'forwards' });
+      animation.onfinish = settle;
+    };
+    const measure = () => {
+      const newWidth = viewport.clientWidth;
+      if (Math.abs(newWidth - width) < 1 && step) return;
+      width = newWidth;
+      settle();
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      step = parseFloat(getComputedStyle(track.firstElementChild).width) + gap;
+      visible = Math.max(1, Math.min(2, Math.floor((width + gap + 1) / step)));
+      track.style.transform = base();
+      describe();
+    };
+    previous.addEventListener('click', () => move(-1));
+    next.addEventListener('click', () => move(1));
+    viewport.addEventListener('keydown', event => {
+      if (event.target !== viewport || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault(); move(event.key === 'ArrowRight' ? 1 : -1);
+    });
+    viewport.addEventListener('pointerdown', event => {
+      if (animation || event.button !== 0 || event.target.closest('a,button,summary,input,select,textarea')) return;
+      suppressClick = false;
+      drag = { id: event.pointerId, x: event.clientX, y: event.clientY, dx: 0, started: false };
+    });
+    viewport.addEventListener('pointermove', event => {
+      if (!drag || drag.id !== event.pointerId) return;
+      const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
+      if (!drag.started) {
+        if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { drag = null; return; }
+        if (Math.abs(dx) < 8 || Math.abs(dx) < Math.abs(dy) * 1.15) return;
+        drag.started = true;
+        viewport.setPointerCapture(event.pointerId);
+        gallery.classList.add('is-dragging');
+      }
+      event.preventDefault();
+      drag.dx = Math.max(-step * .95, Math.min(step * .95, dx));
+      if (!dragFrame) dragFrame = requestAnimationFrame(() => {
+        dragFrame = 0;
+        if (drag) track.style.transform = `translate3d(${-step + drag.dx}px,0,0)`;
+      });
+    });
+    const endDrag = event => {
+      if (!drag || drag.id !== event.pointerId) return;
+      const last = drag; drag = null;
+      cancelAnimationFrame(dragFrame); dragFrame = 0;
+      if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
+      if (!last.started) return;
+      suppressClick = true;
+      const direction = event.type === 'pointercancel' ? 0 : Math.abs(last.dx) > Math.min(70, step * .16) ? (last.dx < 0 ? 1 : -1) : 0;
+      move(direction, last.dx);
+    };
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+    viewport.addEventListener('lostpointercapture', event => { if (drag) endDrag(event); });
+    viewport.addEventListener('click', event => {
+      if (suppressClick) { event.preventDefault(); event.stopPropagation(); suppressClick = false; }
+    }, true);
+    const revealHash = () => {
+      const target = originals.find(card => '#' + card.id === location.hash);
+      if (!target) return;
+      settle();
+      while (track.children[1] !== target) track.append(track.firstElementChild);
+      track.style.transform = base(); describe();
+    };
+    measure(); revealHash();
+    addEventListener('hashchange', revealHash);
+    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(viewport);
+    else addEventListener('resize', measure, { passive: true });
+    reduced.addEventListener('change', settle);
+    addEventListener('pagehide', () => { cancelAnimationFrame(dragFrame); settle(); });
+  });
+
+  const dialog = document.querySelector('.case-lightbox');
+  if (dialog && typeof dialog.showModal === 'function') {
+    const views = [
+      { key: 'overview', title: 'Genel menü görünümü', style: 'view-overview' },
+      { key: 'product', title: 'Ürün kartı detayı', style: 'view-product' },
+      { key: 'selection', title: 'Ürün seçenekleri', style: 'view-selection' }
+    ];
+    let current = 0, opener;
+    const frame = dialog.querySelector('[data-lightbox-frame]');
+    const show = index => {
+      current = (index + views.length) % views.length;
+      const view = views[current];
+      frame.className = 'lightbox-image ' + view.style;
+      frame.querySelector('img').alt = 'İtalyan Chef Pizza — ' + view.title;
+      dialog.querySelector('#case-lightbox-title').textContent = view.title;
+      dialog.querySelector('[data-case-position]').textContent = `0${current + 1} / 03`;
+    };
+    document.querySelectorAll('[data-case-view]').forEach(button => button.addEventListener('click', () => {
+      opener = button;
+      show(views.findIndex(view => view.key === button.dataset.caseView));
+      dialog.showModal();
+      document.documentElement.classList.add('has-media-dialog');
+    }));
+    dialog.querySelector('[data-case-close]').addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-case-prev]').addEventListener('click', () => show(current - 1));
+    dialog.querySelector('[data-case-next]').addEventListener('click', () => show(current + 1));
+    dialog.addEventListener('keydown', event => {
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') { event.preventDefault(); show(current + (event.key === 'ArrowRight' ? 1 : -1)); }
+    });
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const rect = dialog.getBoundingClientRect();
+      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+    });
+    dialog.addEventListener('close', () => {
+      document.documentElement.classList.remove('has-media-dialog');
+      opener?.focus({ preventScroll: true });
+    });
+  }
+
+  const film = document.querySelector('[data-case-video]');
+  if (film) {
+    const video = film.querySelector('video');
+    const fallback = film.querySelector('.case-film-fallback');
+    const restore = () => { video.pause(); video.hidden = true; fallback.hidden = false; };
+    const mediaURL = value => {
+      if (typeof value !== 'string' || !value.trim()) return '';
+      try { const url = new URL(value, location.href); return ['https:', 'http:'].includes(url.protocol) ? url.href : ''; } catch { return ''; }
+    };
+    fetch(film.dataset.mediaConfig).then(response => {
+      if (!response.ok) throw new Error('Media configuration unavailable');
+      return response.json();
+    }).then(config => {
+      const src = mediaURL(config.videoSrc);
+      if (!src) return;
+      const source = document.createElement('source');
+      source.src = src;
+      if (['video/mp4','video/webm'].includes(config.videoType)) source.type = config.videoType;
+      source.addEventListener('error', restore);
+      video.append(source);
+      const poster = mediaURL(config.posterSrc);
+      if (poster) video.poster = poster;
+      const captions = mediaURL(config.captionsSrc);
+      if (captions) {
+        const track = document.createElement('track');
+        track.kind = 'captions'; track.label = 'Türkçe'; track.srclang = 'tr'; track.src = captions;
+        video.append(track);
+      }
+      video.hidden = false; fallback.hidden = true;
+      video.load();
+    }).catch(restore);
+    video.addEventListener('error', restore);
+    if ('IntersectionObserver' in window) new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) video.pause();
+    }).observe(video);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) video.pause(); });
+  }
 })();
