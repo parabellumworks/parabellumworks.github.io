@@ -339,7 +339,7 @@
     const originals = [...track.children];
     if (originals.length !== 4 || typeof track.animate !== 'function') return;
     let step = 0, visible = 1, animation = null, pending = 0, drag = null, dragFrame = 0;
-    let suppressClick = false, width = 0;
+    let suppressClick = false, suppressTimer = 0, width = 0;
     const base = () => `translate3d(${-step}px,0,0)`;
     originals.forEach(card => {
       card.classList.remove('reveal', 'is-entering');
@@ -347,6 +347,21 @@
     });
     track.prepend(originals[3]);
     gallery.classList.add('is-ready');
+    const heightFor = focus => {
+      const ordered = [...track.children];
+      const start = Math.max(0, ordered.indexOf(focus));
+      const cards = ordered.slice(start, start + visible);
+      const tallest = Math.max(0, ...cards.map(card => card.offsetHeight));
+      const style = getComputedStyle(viewport);
+      return Math.ceil(tallest + (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0));
+    };
+    const syncHeight = (focus = track.children[1], immediate = false) => {
+      const height = heightFor(focus);
+      if (!height) return;
+      if (immediate) viewport.style.transition = 'none';
+      viewport.style.height = `${height}px`;
+      if (immediate) requestAnimationFrame(() => viewport.style.removeProperty('transition'));
+    };
     const describe = () => {
       const ordered = [...track.children];
       const current = ordered[1];
@@ -359,7 +374,7 @@
         if (hidden) card.setAttribute('aria-hidden', 'true'); else card.removeAttribute('aria-hidden');
       });
     };
-    const settle = () => {
+    const settle = (updateHeight = true) => {
       const direction = pending;
       pending = 0;
       if (animation) { animation.onfinish = null; animation.cancel(); animation = null; }
@@ -368,10 +383,14 @@
       track.style.transform = base();
       gallery.classList.remove('is-dragging');
       describe();
+      if (updateHeight) syncHeight();
     };
     const move = (direction, offset = 0) => {
       if (animation || !step) return;
       pending = direction;
+      const ordered = [...track.children];
+      const target = ordered[direction > 0 ? 2 : direction < 0 ? 0 : 1];
+      syncHeight(target);
       if (reduced.matches) { settle(); return; }
       animation = track.animate([
         { transform: `translate3d(${-step + offset}px,0,0)` },
@@ -383,12 +402,13 @@
       const newWidth = viewport.clientWidth;
       if (Math.abs(newWidth - width) < 1 && step) return;
       width = newWidth;
-      settle();
+      settle(false);
       const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
       step = parseFloat(getComputedStyle(track.firstElementChild).width) + gap;
       visible = Math.max(1, Math.min(2, Math.floor((width + gap + 1) / step)));
       track.style.transform = base();
       describe();
+      syncHeight(track.children[1], true);
     };
     viewport.addEventListener('pointerdown', event => {
       if (animation || event.button !== 0 || event.target.closest('a,button,summary,input,select,textarea')) return;
@@ -419,27 +439,48 @@
       if (viewport.hasPointerCapture(event.pointerId)) viewport.releasePointerCapture(event.pointerId);
       if (!last.started) return;
       suppressClick = true;
+      clearTimeout(suppressTimer);
+      suppressTimer = setTimeout(() => { suppressClick = false; }, 350);
       const direction = event.type === 'pointercancel' ? 0 : Math.abs(last.dx) > Math.min(70, step * .16) ? (last.dx < 0 ? 1 : -1) : 0;
       move(direction, last.dx);
     };
     viewport.addEventListener('pointerup', endDrag);
     viewport.addEventListener('pointercancel', endDrag);
     viewport.addEventListener('click', event => {
-      if (suppressClick) { event.preventDefault(); event.stopPropagation(); suppressClick = false; }
+      if (suppressClick) {
+        event.preventDefault();
+        event.stopPropagation();
+        suppressClick = false;
+        clearTimeout(suppressTimer);
+      }
     }, true);
     const revealHash = () => {
       const target = originals.find(card => '#' + card.id === location.hash);
       if (!target) return;
       settle();
       while (track.children[1] !== target) track.append(track.firstElementChild);
-      track.style.transform = base(); describe();
+      track.style.transform = base(); describe(); syncHeight(track.children[1], true);
     };
     measure(); revealHash();
     addEventListener('hashchange', revealHash);
-    if ('ResizeObserver' in window) new ResizeObserver(measure).observe(viewport);
-    else addEventListener('resize', measure, { passive: true });
+    let viewportObserver = null, cardObserver = null;
+    if ('ResizeObserver' in window) {
+      viewportObserver = new ResizeObserver(measure);
+      viewportObserver.observe(viewport);
+      cardObserver = new ResizeObserver(entries => {
+        const visibleCards = [...track.children].slice(1, visible + 1);
+        if (entries.some(entry => visibleCards.includes(entry.target))) syncHeight();
+      });
+      originals.forEach(card => cardObserver.observe(card));
+    } else addEventListener('resize', measure, { passive: true });
     reduced.addEventListener('change', settle);
-    addEventListener('pagehide', () => { cancelAnimationFrame(dragFrame); settle(); });
+    addEventListener('pagehide', () => {
+      cancelAnimationFrame(dragFrame);
+      clearTimeout(suppressTimer);
+      viewportObserver?.disconnect();
+      cardObserver?.disconnect();
+      settle();
+    });
   });
 
   const dialog = document.querySelector('.case-lightbox');
