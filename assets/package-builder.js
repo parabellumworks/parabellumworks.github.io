@@ -102,7 +102,7 @@
       </div>
       <aside class="builder-summary-home" aria-label="Özel paket özeti">
         <div class="builder-summary" data-builder-summary>
-          <div class="builder-summary-head"><div><p class="builder-kicker">PAKETİNİZ</p><h3>Özel Paketiniz</h3></div><span class="builder-summary-mark" aria-hidden="true">08</span></div>
+          <div class="builder-summary-head"><div><p class="builder-kicker">PAKETİNİZ</p><h3 data-builder-summary-title>Özel Paketiniz</h3></div><span class="builder-summary-mark" aria-hidden="true">08</span></div>
           <div class="builder-summary-tools"><p data-builder-count>0 hizmet seçildi</p><button type="button" class="builder-text-button" data-builder-reset disabled>Seçimleri Temizle</button></div>
           <p class="builder-feedback" data-builder-feedback aria-live="polite" aria-hidden="true"></p>
           <p class="builder-empty" data-builder-empty>Henüz bir hizmet seçmediniz.</p>
@@ -113,7 +113,8 @@
           </div>
           <p class="builder-meta-note" data-builder-meta hidden>Meta reklam bütçesi hizmet bedeline dahil değildir ve doğrudan Meta’ya ödenir.</p>
           <div class="builder-contact"><label for="builder-name">Ad Soyad <span>(isteğe bağlı)</span></label><input id="builder-name" name="builder-name" type="text" autocomplete="name" maxlength="80"><label for="builder-business">İşletme Adı <span>(isteğe bağlı)</span></label><input id="builder-business" name="builder-business" type="text" autocomplete="organization" maxlength="100"></div>
-          <a class="button button-light builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">WhatsApp’tan Teklif İste ${icon('up-right')}</a>
+          <a class="button button-light builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">Bu kapsamı WhatsApp’ta konuşalım ${icon('up-right')}</a>
+          <button class="builder-text-button builder-edit" type="button" data-builder-edit>Seçimleri düzenle</button>
           <p class="builder-send-note">Mesaj WhatsApp’ta açılır. Göndermek sizin kontrolünüzde.</p>
           <p class="builder-test-note">Test fiyatlarıdır. Nihai kapsam ve ücret görüşmede netleştirilir.</p>
         </div>
@@ -122,6 +123,7 @@
     <p class="builder-sr-only" role="status" aria-live="polite" aria-atomic="true" data-builder-announcement></p>
     <div class="builder-mobile-bar" data-builder-bar hidden><button type="button" aria-haspopup="dialog" aria-controls="builder-sheet" aria-expanded="false" data-open-summary><span class="builder-mobile-values"><strong data-mobile-monthly><span data-mobile-monthly-value data-value="0">0</span><small> TL / ay</small></strong><span data-mobile-once>Tek seferlik: <b><span data-mobile-once-value data-value="0">0</span><small> TL</small></b></span></span><span class="builder-bar-action"><span data-mobile-count>0 hizmet</span><strong>Paketi Gör ${icon('up-right')}</strong></span></button></div>`;
   const summary = root.querySelector('[data-builder-summary]');
+  const summaryTitle = root.querySelector('[data-builder-summary-title]');
   const summaryHome = root.querySelector('.builder-summary-home');
   const itemList = root.querySelector('[data-builder-items]');
   const empty = root.querySelector('[data-builder-empty]');
@@ -303,6 +305,8 @@
       if (fresh && feedback) animate(row, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }]);
     });
     empty.hidden = items.length > 0;
+    summary.classList.toggle('is-ready', items.length > 0);
+    summaryTitle.textContent = items.length ? 'Paketiniz hazır.' : 'Özel Paketiniz';
     counter.textContent = `${items.length} hizmet seçildi`;
     reset.disabled = !items.length;
     if (reset.disabled && document.activeElement === reset) {
@@ -376,6 +380,11 @@
       const service = CONFIG.services.find(item => item.id === id);
       delete state.selected[id];
       change = { id, label: service?.title || 'Hizmet', added: false };
+    } else if (button.hasAttribute('data-builder-edit')) {
+      const focusServices = () => root.querySelector('.builder-service-groups')?.scrollIntoView({ behavior: reduced.matches ? 'auto' : 'smooth', block: 'start' });
+      if (sheet.open) { closeSheet(); setTimeout(focusServices, reduced.matches ? 0 : 190); }
+      else focusServices();
+      return;
     } else if (button.hasAttribute('data-builder-reset')) state = blankState();
     else return;
     saveAndRender(change);

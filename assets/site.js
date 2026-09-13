@@ -32,6 +32,65 @@
     });
   }
 
+  if (nav) {
+    nav.querySelectorAll('a').forEach(link => {
+      const href = new URL(link.href).pathname;
+      if (href === '/surec/') link.remove();
+      else if (href === '/calismalar/') link.textContent = 'Çalışmalar';
+      else if (href === '/fiyatlar/' || href === '/paketler/') { link.href = '/paketler/'; link.textContent = 'Paketler'; }
+    });
+    const packageLink = nav.querySelector('a[href="/paketler/"]');
+    const aboutLink = nav.querySelector('a[href="/hakkimizda/"]');
+    if (packageLink && aboutLink) nav.insertBefore(packageLink, aboutLink);
+  }
+  document.querySelectorAll('.footer-nav a[href="/fiyatlar/"]').forEach(link => { link.href = '/paketler/'; link.textContent = 'Paketler'; });
+
+  const headerActions = document.querySelector('.header-actions');
+  const startSource = headerActions?.querySelector('.header-contact');
+  if (headerActions && startSource) {
+    const startMenuId = 'start-menu';
+    const startButton = document.createElement('button');
+    startButton.type = 'button';
+    startButton.className = startSource.className + ' start-toggle';
+    startButton.dataset.startToggle = '';
+    startButton.setAttribute('aria-controls', startMenuId);
+    startButton.setAttribute('aria-expanded', 'false');
+    startButton.innerHTML = `Başlayalım <span aria-hidden="true"><svg class="ui-icon ui-icon-down" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 7l6 6 6-6"></path></svg></span>`;
+    startSource.replaceWith(startButton);
+    const startMenu = document.createElement('div');
+    startMenu.id = startMenuId;
+    startMenu.className = 'start-menu';
+    startMenu.hidden = true;
+    startMenu.innerHTML = `<p>Başlangıç seçin</p><a href="/paketler/"><span>Hazır paketler</span><svg class="ui-icon ui-icon-right" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><path d="M3 10h14M11 4l6 6-6 6"></path></svg></a><a href="/paket-olustur/"><span>Kendi paketimi oluştur</span><svg class="ui-icon ui-icon-right" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><path d="M3 10h14M11 4l6 6-6 6"></path></svg></a><a href="/check-up/"><span>Dijital Check-up</span><svg class="ui-icon ui-icon-right" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><path d="M3 10h14M11 4l6 6-6 6"></path></svg></a>`;
+    headerActions.append(startMenu);
+    const mobileStart = document.createElement('button');
+    mobileStart.type = 'button';
+    mobileStart.className = 'nav-start-mobile';
+    mobileStart.textContent = 'Başlayalım';
+    mobileStart.setAttribute('aria-controls', startMenuId);
+    mobileStart.setAttribute('aria-expanded', 'false');
+    nav?.append(mobileStart);
+    const controls = [startButton, mobileStart];
+    const setStartOpen = open => {
+      startMenu.hidden = !open;
+      controls.forEach(control => control.setAttribute('aria-expanded', String(open)));
+      document.querySelector('.site-header')?.classList.toggle('has-start-menu', open);
+    };
+    controls.forEach(control => control.addEventListener('click', event => {
+      event.stopPropagation();
+      const open = startMenu.hidden;
+      if (control === mobileStart) closeNav();
+      setStartOpen(open);
+    }));
+    startMenu.addEventListener('click', event => { if (event.target.closest('a')) setStartOpen(false); });
+    document.addEventListener('click', event => { if (!event.target.closest('.start-menu,[data-start-toggle],.nav-start-mobile')) setStartOpen(false); });
+    document.addEventListener('keydown', event => {
+      if (event.key !== 'Escape' || startMenu.hidden) return;
+      setStartOpen(false);
+      startButton.focus();
+    });
+  }
+
   const path = window.location.pathname.replace(/index\.html$/, "");
   document.querySelectorAll("[data-nav] a").forEach((link) => {
     const target = new URL(link.href).pathname.replace(/index\.html$/, "");
@@ -39,6 +98,45 @@
   });
 
   document.querySelectorAll("[data-year]").forEach((item) => { item.textContent = String(new Date().getFullYear()); });
+
+  document.querySelectorAll('[data-diagnostic]').forEach(section => {
+    const options = [...section.querySelectorAll('[data-diagnostic-option]')];
+    const areaList = section.querySelector('[data-diagnostic-areas]');
+    const result = section.querySelector('[data-diagnostic-result]');
+    const select = option => {
+      options.forEach(item => {
+        const active = item === option;
+        item.classList.toggle('is-active', active);
+        item.setAttribute('aria-pressed', String(active));
+      });
+      const areas = (option.dataset.areas || '').split('|').filter(Boolean);
+      areaList.replaceChildren(...areas.map(area => {
+        const item = document.createElement('li');
+        item.textContent = area;
+        return item;
+      }));
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && result?.animate) {
+        result.animate([{ opacity: .55, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'cubic-bezier(.22,1,.36,1)' });
+      }
+    };
+    options.forEach(option => option.addEventListener('click', () => select(option)));
+  });
+
+  document.querySelectorAll('[data-checkup-form]').forEach(form => {
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      const target = String(data.get('target') || '').trim();
+      const business = String(data.get('business') || '').trim();
+      const lines = ['Merhaba EIGHTFOLD,', '', 'Dijital Check-up talep ediyorum.', ''];
+      if (business) lines.push('İşletme:', business, '');
+      lines.push('Instagram / Website:', target, '', 'İlk değerlendirmeyi konuşabilir miyiz?');
+      const status = form.querySelector('[data-checkup-status]');
+      if (status) status.textContent = 'Talebiniz WhatsApp’ta açılıyor.';
+      window.location.href = `https://wa.me/905369471196?text=${encodeURIComponent(lines.join('\n'))}`;
+    });
+  });
 
   const requestedService = new URLSearchParams(window.location.search).get("service");
   const serviceNames = {
@@ -198,7 +296,7 @@
   items.forEach((item, index) => item.addEventListener('focusin', () => select(index)));
 
   // Mask only deliberate line breaks. Natural wrapping and accessible text survive.
-  const headings = [...document.querySelectorAll('.section-heading h2, .problem-section h2, .discipline-intro h2, .role-section h2, .home-cta h2, .page-hero h1, .case-heading h1, .film-copy h2, .statement-band h2, .project-caption h3')];
+  const headings = [...document.querySelectorAll('.section-heading h2, .diagnostic-heading h2, .problem-section h2, .discipline-intro h2, .role-section h2, .home-cta h2, .page-hero h1, .checkup-hero h1, .case-heading h1, .film-copy h2, .statement-band h2, .project-caption h3')];
   headings.forEach(heading => {
     heading.classList.add('motion-heading');
     if (![...heading.childNodes].some(node => node.nodeName === 'BR')) return;

@@ -100,6 +100,8 @@
 .builder-contact input:focus{outline:2px solid var(--builder-accent);outline-offset:2px;border-color:transparent;background:rgba(181,216,213,.035)}
 .builder-whatsapp{width:100%;min-height:52px;margin-top:12px;padding-inline:12px;font-size:.8rem;cursor:pointer}
 .builder-whatsapp[aria-disabled=true]{opacity:.35;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.builder-edit{display:block;margin:9px auto 0;text-decoration:none;text-underline-offset:4px}
+.builder-summary.is-ready .builder-summary-head h3{color:var(--builder-silver)}
 .builder-send-note,.builder-test-note{margin-top:10px;color:var(--faint);font-size:.64rem;line-height:1.65}
 .builder-test-note{padding-top:12px;border-top:1px solid var(--line)}
 .builder-mobile-bar,.builder-sheet{display:none}
