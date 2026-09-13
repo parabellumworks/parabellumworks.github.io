@@ -120,7 +120,7 @@
       </aside>
     </div>
     <p class="builder-sr-only" role="status" aria-live="polite" aria-atomic="true" data-builder-announcement></p>
-    <div class="builder-mobile-bar" data-builder-bar hidden><button type="button" aria-haspopup="dialog" aria-controls="builder-sheet" aria-expanded="false" data-open-summary><span class="builder-mobile-values"><strong data-mobile-monthly><span data-mobile-monthly-value data-value="0">0</span> TL / ay</strong><span data-mobile-once>Tek seferlik: <b data-mobile-once-value data-value="0">0</b> TL</span></span><span class="builder-bar-action"><span data-mobile-count>0 hizmet</span><strong>Paketi Gör ${icon('up-right')}</strong></span></button></div>`;
+    <div class="builder-mobile-bar" data-builder-bar hidden><button type="button" aria-haspopup="dialog" aria-controls="builder-sheet" aria-expanded="false" data-open-summary><span class="builder-mobile-values"><strong data-mobile-monthly><span data-mobile-monthly-value data-value="0">0</span><small> TL / ay</small></strong><span data-mobile-once>Tek seferlik: <b><span data-mobile-once-value data-value="0">0</span><small> TL</small></b></span></span><span class="builder-bar-action"><span data-mobile-count>0 hizmet</span><strong>Paketi Gör ${icon('up-right')}</strong></span></button></div>`;
   const summary = root.querySelector('[data-builder-summary]');
   const summaryHome = root.querySelector('.builder-summary-home');
   const itemList = root.querySelector('[data-builder-items]');
@@ -296,6 +296,7 @@
       }
       row.querySelector('strong').textContent = item.name;
       row.querySelector('span').textContent = `${rate(item)}${item.billing === 'once' ? ' · Tek seferlik' : ''}`;
+      row.dataset.billing = item.billing;
       row.querySelector('button').dataset.remove = item.key;
       row.querySelector('button').setAttribute('aria-label', `${item.name} hizmetini kaldır`);
       if (itemList.children[index] !== row) itemList.insertBefore(row, itemList.children[index] || null);
