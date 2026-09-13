@@ -32,6 +32,9 @@
 [aria-pressed=true] .builder-check{border-color:var(--builder-border);background:rgba(181,216,213,.12);color:var(--builder-accent)}
 .builder-card-title{font:600 clamp(1.05rem,1.6vw,1.3rem)/1.35 var(--sans);letter-spacing:-.025em}
 .builder-description{display:block;min-height:44px;margin-top:10px;color:var(--soft);font-size:.8rem;line-height:1.6}
+.builder-product-preview{display:grid;width:100%;max-height:0;margin:0;place-items:center;overflow:hidden;opacity:0;transform:translateY(7px);transition:max-height 420ms var(--builder-ease),margin 420ms var(--builder-ease),opacity 280ms ease,transform 420ms var(--builder-ease)}
+.builder-product-preview img{display:block;width:100%;height:190px;object-fit:contain;background:#050506}
+.builder-card.is-selected .builder-product-preview,.builder-card.is-info-open .builder-product-preview{max-height:190px;margin-top:18px;opacity:1;transform:none}
 .builder-card-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px;margin-top:24px}
 .builder-card-price strong{font-size:1.85rem;font-weight:500;line-height:1.2;letter-spacing:-.045em;font-variant-numeric:tabular-nums}
 .builder-card[data-billing=monthly] .builder-card-price strong{color:#e8e8e3;-webkit-text-fill-color:#e8e8e3}
