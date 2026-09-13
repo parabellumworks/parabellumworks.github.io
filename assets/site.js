@@ -53,6 +53,21 @@
     document.querySelectorAll('select[name="service"]').forEach((select) => { select.value = serviceNames[requestedService]; });
   }
   const packageNames = { essential: "ESSENTIAL — 14.900 TL / ay", studio: "STUDIO — 19.900 TL / ay", growth: "GROWTH — 29.900 TL / ay", full: "EIGHTFOLD FULL — 44.900 TL / ay" };
+  const readyPackageMessages = {
+    essential: "Merhaba EIGHTFOLD,\n\nEssential paketi hakkında görüşmek istiyorum.\n\nPaket bedeli:\n14.900 TL / ay\n\nDetayları konuşabilir miyiz?",
+    studio: "Merhaba EIGHTFOLD,\n\nStudio paketi hakkında görüşmek istiyorum.\n\nPaket bedeli:\n19.900 TL / ay\n\nDetayları konuşabilir miyiz?",
+    growth: "Merhaba EIGHTFOLD,\n\nGrowth paketi hakkında görüşmek istiyorum.\n\nPaket bedeli:\n29.900 TL / ay\n\nMeta reklam bütçesinin paket bedeline dahil olmadığını biliyorum.\n\nDetayları konuşabilir miyiz?",
+    full: "Merhaba EIGHTFOLD,\n\nEIGHTFOLD Full paketi hakkında görüşmek istiyorum.\n\nAjans bedeli:\n44.900 TL / ay\n\nÖnerilen Meta reklam bütçesi:\n20.000–30.000 TL / ay\n\nToplam önerilen aylık dijital yatırım:\n64.900–74.900 TL / ay\n\nMeta reklam bütçesinin doğrudan Meta’ya ödendiğini biliyorum.\n\nDetayları konuşabilir miyiz?"
+  };
+  document.querySelectorAll('.package-cta').forEach(link => {
+    const packageId = link.closest('.package-card')?.id.replace('paket-', '');
+    const message = readyPackageMessages[packageId];
+    if (!message) return;
+    link.href = `https://wa.me/905369471196?text=${encodeURIComponent(message)}`;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.dataset.whatsappSource = `ready-${packageId}`;
+  });
   const requestedPackage = new URLSearchParams(window.location.search).get("package");
   if (Object.hasOwn(packageNames, requestedPackage)) {
     document.querySelectorAll('select[name="package"]').forEach(select => { select.value = requestedPackage; });

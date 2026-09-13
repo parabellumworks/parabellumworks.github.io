@@ -631,8 +631,8 @@ h1,h2,h3{text-wrap:balance}
 .package-type{font-family:var(--sans);text-align:right}
 .package-card h3{min-height:2.6em;font-size:1.05rem;line-height:1.3;font-weight:600;letter-spacing:.08em;text-wrap:initial;overflow-wrap:normal}
 .package-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px;margin-top:14px;color:var(--ink)}
-.package-price strong{font-size:clamp(2rem,2.8vw,2.65rem);font-weight:500;line-height:1.1;letter-spacing:-.055em;font-variant-numeric:tabular-nums}
-.package-price>span{font-size:.72rem;color:var(--soft);white-space:nowrap}
+.package-price strong{color:#e8e8e3;-webkit-text-fill-color:#e8e8e3;font-size:clamp(2rem,2.8vw,2.65rem);font-weight:500;line-height:1.1;letter-spacing:-.055em;font-variant-numeric:tabular-nums}
+.package-price>span{font-size:.72rem;color:rgba(232,232,227,.62);-webkit-text-fill-color:rgba(232,232,227,.62);white-space:nowrap}
 .package-position{min-height:6em;margin-top:20px;font-size:.8rem;line-height:1.7}
 .package-inclusions{list-style:none;margin:26px 0;padding:0;min-height:215px}
 .package-inclusions li{position:relative;padding:11px 0 11px 14px;border-top:1px solid var(--line);font-size:.76rem;line-height:1.65;color:#c9c8c3}
@@ -649,7 +649,8 @@ h1,h2,h3{text-wrap:balance}
 .investment-breakdown>div{display:grid;gap:7px;padding:13px 0;border-top:1px solid var(--line)}
 .investment-breakdown span{font-size:.64rem;color:var(--soft)}
 .investment-breakdown strong{font-size:1.04rem;font-weight:500;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.investment-breakdown small{font-size:.64rem;font-weight:400;white-space:nowrap}
+.investment-breakdown strong{color:#e8e8e3;-webkit-text-fill-color:#e8e8e3}
+.investment-breakdown small{color:rgba(232,232,227,.62);-webkit-text-fill-color:rgba(232,232,227,.62);font-size:.64rem;font-weight:400;white-space:nowrap}
 .investment-total strong{color:#c8d8d2}
 .investment-breakdown>p,.package-ad-note{font-size:.64rem;line-height:1.7;color:var(--soft)}
 .investment-breakdown>p{margin-top:10px}
@@ -739,7 +740,7 @@ h1,h2,h3{text-wrap:balance}
 .brand-wordmark,.hero-signature>img{filter:invert(1)}
 
 /* Cool glass feedback; gold is reserved for the flagship package. */
-:root{--interaction:#a9cbd3;--interaction-line:rgba(169,203,211,.38);--gold:#d8bd85;--gold-line:rgba(216,189,133,.5)}
+:root{--interaction:#a9cbd3;--interaction-line:rgba(169,203,211,.38);--gold:#d8c7a1;--gold-line:rgba(216,199,161,.5)}
 [hidden]{display:none!important}
 :focus-visible{outline-color:var(--interaction)}
 .main-nav a,.text-link,.package-scope summary,.package-cta,.back-link{isolation:isolate;position:relative}
@@ -756,6 +757,7 @@ h1,h2,h3{text-wrap:balance}
 .package-full{border-color:rgba(216,189,133,.42);background:linear-gradient(145deg,#24221d,#171717 66%);box-shadow:0 16px 42px rgba(0,0,0,.16)}
 .package-full::after{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
 .package-full .package-index,.package-full .price-label,.package-full .investment-total strong{color:var(--gold)}
+.package-full .investment-total strong{color:#d8c7a1;-webkit-text-fill-color:#d8c7a1}
 .package-full .package-inclusions li::before{background:var(--gold)}
 .package-full:focus-within,.package-full:hover{border-color:rgba(216,189,133,.62);box-shadow:0 18px 48px rgba(0,0,0,.2)}
 .package-full .package-cta{background:#ddd0b3;border-color:#ddd0b3;color:#181714}
