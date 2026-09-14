@@ -1,0 +1,19 @@
+name: Inspect Zeyzey assets
+on:
+  push:
+    branches: [codex/inspect-zeyzey-assets]
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: OCR image labels
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y tesseract-ocr imagemagick >/dev/null
+          for f in assets/cases/zeyzey-beauty/*.png; do
+            echo "=== $(basename "$f") ==="
+            identify "$f" | head -1
+            tesseract "$f" stdout -l eng 2>/dev/null | tr '\n' ' ' | head -c 1200
+            echo
+          done
