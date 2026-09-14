@@ -1,0 +1,40 @@
+name: Build Zeyzey web assets
+on:
+  push:
+    branches: [codex/zeyzey-beauty-integration]
+permissions:
+  contents: write
+jobs:
+  build:
+    if: "!contains(github.event.head_commit.message, '[zeyzey-assets]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: codex/zeyzey-beauty-integration
+      - name: Optimize approved visuals
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y imagemagick >/dev/null
+          dir="assets/cases/zeyzey-beauty"
+          make_webp () {
+            src="$dir/$1"
+            name="$2"
+            convert "$src" -auto-orient -strip -resize 640x -quality 86 "$dir/$name-640.webp"
+            convert "$src" -auto-orient -strip -quality 88 "$dir/$name-1122.webp"
+          }
+          make_webp "file_00000000f01081f49e6a8a59976e71bc.png" "brand-system"
+          make_webp "file_000000007ef881f484b9409864949782.png" "digital-storefront"
+          make_webp "file_00000000c170824382a5321a1e7cd460.png" "service-menu"
+          make_webp "file_0000000088dc81f48950e29fc63940e9.png" "social-storefront"
+          make_webp "file_000000002de4820a825e30adfdb693cb.png" "business-card"
+          make_webp "file_00000000ab708210b62248c4afcc95a0.png" "loyalty-card"
+          make_webp "file_0000000058b0820ab510d393bf1bb9ce.png" "appointment-experience"
+          make_webp "file_00000000ee9c81f4838660d5e6de816a.png" "packaging-experience"
+      - name: Commit optimized assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/cases/zeyzey-beauty/*-640.webp assets/cases/zeyzey-beauty/*-1122.webp
+          git commit -m "Add optimized Zeyzey visuals [zeyzey-assets]"
+          git push origin HEAD:codex/zeyzey-beauty-integration
