@@ -10,10 +10,18 @@ jobs:
       - name: OCR image labels
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y tesseract-ocr imagemagick >/dev/null
+          sudo apt-get install -y tesseract-ocr imagemagick libzbar0 >/dev/null
+          python -m pip install --quiet opencv-python-headless pyzbar
           for f in assets/cases/zeyzey-beauty/*.png; do
             echo "=== $(basename "$f") ==="
-            identify "$f" | head -1
-            tesseract "$f" stdout -l eng 2>/dev/null | tr '\n' ' ' | head -c 1200
+            convert "$f" -resize 180% -colorspace Gray -contrast-stretch 0x12% "/tmp/$(basename "$f")"
+            tesseract "/tmp/$(basename "$f")" stdout -l eng --psm 11 2>/dev/null | tr '\n' ' ' | head -c 1800
             echo
           done
+          python - <<'PY'
+          import glob, cv2, os
+          from pyzbar.pyzbar import decode
+          for f in glob.glob('assets/cases/zeyzey-beauty/*.png'):
+              im=cv2.imread(f)
+              print('QR',os.path.basename(f),len(decode(im)))
+          PY
