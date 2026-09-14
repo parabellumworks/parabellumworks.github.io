@@ -1082,10 +1082,6 @@ h1,h2,h3{text-wrap:balance}
   .clarity-home .three-stages{gap:34px}
   .home-final-cta{padding-block:76px}
 }
-@media (max-width:390px){
-  .solution-grid{grid-template-columns:1fr}
-  .solution-card{max-width:320px;margin-inline:auto}
-}
 @media (prefers-reduced-motion:reduce){
   .solution-visual img,.solution-copy .ui-icon{transition:none}
 }
