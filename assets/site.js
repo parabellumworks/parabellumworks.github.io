@@ -81,13 +81,14 @@
       const open = startMenu.hidden;
       if (control === mobileStart) closeNav();
       setStartOpen(open);
+      if (open) startMenu.querySelector('a')?.focus();
     }));
     startMenu.addEventListener('click', event => { if (event.target.closest('a')) setStartOpen(false); });
     document.addEventListener('click', event => { if (!event.target.closest('.start-menu,[data-start-toggle],.nav-start-mobile')) setStartOpen(false); });
     document.addEventListener('keydown', event => {
       if (event.key !== 'Escape' || startMenu.hidden) return;
       setStartOpen(false);
-      startButton.focus();
+      (getComputedStyle(startButton).display === 'none' ? toggle : startButton)?.focus();
     });
   }
 
@@ -567,6 +568,13 @@
         clearTimeout(suppressTimer);
       }
     }, true);
+    viewport.tabIndex = 0;
+    viewport.setAttribute('aria-label', 'Paket galerisi; kaydırın veya sağ ve sol ok tuşlarını kullanın');
+    viewport.addEventListener('keydown', event => {
+      if (event.target !== viewport || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+      event.preventDefault();
+      move(event.key === 'ArrowRight' ? 1 : -1);
+    });
     const revealHash = () => {
       const target = originals.find(card => '#' + card.id === location.hash);
       if (!target) return;
