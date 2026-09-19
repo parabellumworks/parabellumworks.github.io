@@ -110,6 +110,8 @@
         item.classList.toggle('is-active', active);
         item.setAttribute('aria-pressed', String(active));
       });
+      const serviceLink = section.querySelector('.diagnostic-cta');
+      if (serviceLink && option.dataset.serviceHref) serviceLink.href = option.dataset.serviceHref;
       const areas = (option.dataset.areas || '').split('|').filter(Boolean);
       areaList.replaceChildren(...areas.map(area => {
         const item = document.createElement('li');

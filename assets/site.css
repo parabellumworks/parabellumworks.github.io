@@ -1154,3 +1154,27 @@ h1,h2,h3{text-wrap:balance}
  .project-media-zeyzey{min-height:520px;padding:20px}
 }
 @media(prefers-reduced-motion:reduce){.zb-media img,.home-case-secondary-media img{transition:none;transform:none!important}}
+
+/* Homepage-only composition refinements. */
+.clarity-home .section-space{padding-block:clamp(60px,7vw,96px)}
+.clarity-home .clarity-diagnostic .diagnostic-option{min-height:76px}
+.clarity-home .diagnostic-result li{border:0;padding-block:6px}
+.clarity-home .home-work .project-media-cover{min-height:0;padding:24px}
+.clarity-home .home-work .project-cover-frame{width:min(100%,420px)}
+.clarity-home .home-work .project-cover-frame img{object-fit:contain}
+.clarity-home .home-final-cta{padding-block:60px}
+@media(max-width:960px){
+ .clarity-home .clarity-hero .hero-grid{min-height:0;gap:24px}
+ .clarity-home .clarity-hero .hero-sculpture{height:180px;min-height:180px;max-width:180px;margin:0 auto}
+ .clarity-home .clarity-hero .hero-figure{width:180px;height:180px}
+ .clarity-home .clarity-hero .hero-sculpture img{width:180px;height:180px;object-fit:contain}
+ .clarity-home .diagnostic-result ul{display:flex;flex-wrap:wrap;gap:8px 18px;margin:16px 0}
+ .clarity-home .diagnostic-result li{padding:0}
+}
+@media(max-width:640px){
+ .clarity-home .section-space{padding-block:52px}
+ .clarity-home .clarity-diagnostic .diagnostic-option{padding-block:18px}
+ .clarity-home .diagnostic-layout{gap:24px}
+ .clarity-home .home-work .project-media-cover{padding:0}
+ .clarity-home .home-final-cta{padding-block:52px}
+}
