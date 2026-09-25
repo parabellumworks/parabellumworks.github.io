@@ -1178,3 +1178,48 @@ h1,h2,h3{text-wrap:balance}
  .clarity-home .home-work .project-media-cover{padding:0}
  .clarity-home .home-final-cta{padding-block:52px}
 }
+
+/* Navy editorial direction; monetary accents stay in the pricing components. */
+:root{--bg:#0d1b2a;--surface:#1b263b;--surface-raised:#25364b;--ink:#e0e1dd;--soft:#b4bec8;--faint:#98a8b9;--line:rgba(224,225,221,.14);--line-strong:rgba(224,225,221,.28);--signal:#e0e1dd;--signal-bright:#f3f3ef;--signal-soft:rgba(224,225,221,.045);--slate:#415a77;--accent:#e9742b;--interaction:#e9742b;--interaction-line:rgba(233,116,43,.55)}
+body::before{display:none}
+.site-header{background:rgba(13,27,42,.96);backdrop-filter:blur(10px)}
+.site-footer,.start-menu,.case-lightbox{background:var(--surface)}
+.button-outline{background:transparent}
+.button-outline:hover{background:rgba(224,225,221,.05);border-color:var(--soft)}
+.main-nav a::before,.text-link::before,.back-link::before{display:none}
+.main-nav a[aria-current=page]{border-color:var(--accent)}
+:focus-visible{outline-color:var(--accent)}
+.clarity-hero .button-light,.home-final-cta .button-light{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.clarity-hero .button-light:hover,.home-final-cta .button-light:hover{background:#f18a49;border-color:#f18a49}
+.header-contact{background:transparent;color:var(--ink);border-color:var(--line-strong)}
+.header-contact:hover{background:var(--surface);border-color:var(--soft)}
+.clarity-home .outcome{border-top:0;padding-top:0}
+.clarity-home .diagnostic-option.is-active .diagnostic-index{color:var(--accent)}
+.clarity-home .home-work .project-media-cover{border:0;border-radius:0;background:transparent;padding:0}
+.clarity-home .home-work .project-media-cover::before,.clarity-home .home-work .project-media-cover::after{display:none}
+.clarity-home .home-work .project-cover-frame{border:0;border-radius:0;box-shadow:none;width:min(100%,500px)}
+.clarity-home .home-case-secondary{grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:0;padding-block:0;gap:clamp(28px,6vw,88px)}
+.clarity-home .home-case-secondary-media{max-width:520px}
+.clarity-home .home-case-secondary-copy strong{font-size:clamp(2rem,4vw,3.7rem);line-height:1.1}
+.clarity-home .action-path-primary,.service-next .action-path-primary{border-color:rgba(233,116,43,.55)}
+.clarity-home .action-path-primary .ui-icon,.service-next .action-path-primary .ui-icon{color:var(--accent)}
+.service-outcome-nav a[aria-current=true]{border-color:var(--accent)}
+.service-product{background:#050506}
+.solution-visual::after{display:none}
+.solution-visual img{transform:none}
+.dark-section,.role-section,.process-section,.lead-form{background:var(--surface)}
+.package-card{background:var(--surface)}
+.package-full{background:var(--surface)}
+@media(min-width:961px){
+ .clarity-hero .hero-grid{min-height:520px}
+ .clarity-hero h1{letter-spacing:-.045em;line-height:1.1;font-size:clamp(2.8rem,4.15vw,4.4rem)}
+ .clarity-home .section-space{padding-block:clamp(80px,8vw,120px)}
+}
+@media(max-width:760px){
+ .site-header .main-nav{background:var(--bg)}
+ .clarity-home .home-case-secondary{grid-template-columns:1fr;gap:24px;margin-top:56px}
+ .clarity-home .home-case-secondary-media{width:100%;max-width:360px}
+ .clarity-home .home-case-secondary-copy{gap:12px}
+ .clarity-home .home-case-secondary-copy strong{font-size:2rem}
+ .clarity-hero h1{letter-spacing:-.045em;line-height:1.12}
+}

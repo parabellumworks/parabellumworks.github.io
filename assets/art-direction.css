@@ -24,7 +24,7 @@
 .zeyzey-case .zb-chapter-wide{border:0;padding-block:0}
 .zeyzey-case .zb-copy h2{font-size:clamp(1.8rem,3.4vw,3.2rem);line-height:1.12}
 .zeyzey-case .zb-copy p{max-width:38ch}
-.zeyzey-case .zb-final{background:#09090a}
+.zeyzey-case .zb-final{background:var(--surface)}
 .service-explainer{grid-template-columns:minmax(220px,360px) minmax(0,580px)}
 .service-product{max-width:360px;background:transparent}
 .service-product img{mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
