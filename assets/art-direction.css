@@ -55,3 +55,46 @@
  .service-explainer-copy{max-width:42ch}
 }
 @media(prefers-reduced-motion:reduce){.italian-case .case-visual-open>img{transition:none;transform:none!important}}
+/* Homepage product previews and real work presented as an editorial sequence. */
+.clarity-home .solution-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 clamp(40px,5vw,88px)}
+.clarity-home .solution-card{display:grid;grid-template-columns:minmax(140px,.9fr) minmax(0,1fr);align-items:center;gap:clamp(14px,2.4vw,38px);padding:24px 0;border-top:1px solid var(--line);min-height:0}
+.clarity-home .solution-visual{width:100%;max-width:250px;background:transparent;overflow:visible;mask-image:radial-gradient(ellipse 68% 68% at 50% 48%,#000 74%,transparent 100%)}
+.clarity-home .solution-visual img{width:100%;height:100%;object-fit:contain}
+.clarity-home .solution-copy{align-self:center;grid-template-rows:none;gap:12px;padding:0}
+.clarity-home .solution-copy strong{font-size:clamp(1.15rem,1.65vw,1.55rem);line-height:1.18}
+.clarity-home .solution-copy small{font-size:.8rem;min-height:0;max-width:30ch}
+.clarity-home .solution-copy>span{margin-top:16px;justify-content:start;gap:18px}
+.clarity-home .home-work .featured-project{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:clamp(36px,7vw,110px);align-items:center}
+.clarity-home .home-work .project-media-cover{min-height:0;display:block}
+.clarity-home .home-work .project-cover-frame{width:min(100%,560px);margin-inline:0}
+.clarity-home .home-work .project-caption{display:grid;justify-content:start;gap:18px;padding:0}
+.clarity-home .home-work .project-caption h3{font-size:clamp(2rem,4vw,3.5rem);line-height:1.13}
+.clarity-home .home-work .project-link{justify-self:start}
+.clarity-home .home-case-secondary-media{grid-column:2;grid-row:1}
+.clarity-home .home-case-secondary-copy{grid-column:1;grid-row:1;justify-self:start}
+.clarity-home .home-case-secondary{margin-top:clamp(72px,10vw,144px)}
+@media(max-width:960px){
+ .clarity-home .solution-grid{gap:0 30px}
+ .clarity-home .solution-card{grid-template-columns:minmax(90px,.85fr) minmax(0,1fr);gap:12px}
+ .clarity-home .solution-copy strong{font-size:1.1rem}
+ .clarity-home .solution-copy small{font-size:.72rem}
+}
+@media(max-width:640px){
+ .clarity-home .solution-grid{grid-template-columns:1fr}
+ .clarity-home .solution-card{grid-template-columns:112px minmax(0,1fr);gap:18px;padding:16px 0}
+ .clarity-home .solution-visual{max-width:112px}
+ .clarity-home .solution-copy strong{font-size:1.05rem}
+ .clarity-home .solution-copy small{font-size:.72rem;line-height:1.45}
+ .clarity-home .solution-copy>span{margin-top:2px}
+ .clarity-home .home-work .featured-project{grid-template-columns:1fr;gap:22px}
+ .clarity-home .home-work .project-cover-frame{width:100%}
+ .clarity-home .home-work .project-caption{gap:12px}
+ .clarity-home .home-work .project-caption h3{font-size:1.7rem}
+ .clarity-home .home-case-secondary{grid-template-columns:1fr;gap:22px;margin-top:64px}
+ .clarity-home .home-case-secondary-media,.clarity-home .home-case-secondary-copy{grid-column:1;grid-row:auto}
+ .clarity-home .home-case-secondary-media{max-width:none}
+}
+@media(max-width:760px){
+ .clarity-home .home-work .project-link{font-size:.8rem;gap:12px;min-height:44px;align-items:center}
+ .clarity-home .home-work .project-link span{font-size:1.1rem}
+}
