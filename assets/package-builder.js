@@ -81,7 +81,7 @@
         <span class="builder-card-price" id="builder-price-${service.id}"></span>
       </button>
       <button class="builder-info" type="button" data-info="${service.id}" aria-expanded="false" aria-controls="builder-info-${service.id}" aria-label="${service.title} hakkında bilgi"><svg class="ui-icon ui-icon-info" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><circle cx="10" cy="10" r="7.2"></circle><path d="M10 9v5"></path><path d="M10 6.1h.01"></path></svg></button>
-      <div class="builder-popover" id="builder-info-${service.id}" role="tooltip" aria-hidden="true"><p><strong>Ne yapıyoruz?</strong>${service.info.what}</p><p><strong>Kim için uygun?</strong>${service.info.fit}</p><p><strong>Neler dahil / hariç?</strong>${service.info.scope}</p>${service.info.note ? `<p class="builder-info-note">${service.info.note}</p>` : ''}<p class="builder-payment"><strong>Ödeme tipi</strong>${service.billing === 'monthly' ? 'Aylık hizmet' : 'Tek seferlik / proje bedeli'}</p></div>
+      <div class="builder-popover" id="builder-info-${service.id}" role="tooltip" aria-hidden="true"><p><strong>Neyi halleder?</strong>${service.info.what}</p><p><strong>Kim için?</strong>${service.info.fit}</p><p><strong>Kapsam ve notlar</strong>${service.info.scope}</p>${service.info.note ? `<p class="builder-info-note">${service.info.note}</p>` : ''}<p class="builder-payment"><strong>Ödeme tipi</strong>${service.billing === 'monthly' ? 'Aylık hizmet' : 'Tek seferlik / proje bedeli'}</p></div>
       ${service.options.length > 1 ? `<div class="builder-variants" role="group" aria-label="${service.title} seçenekleri">${service.options.map(option => `<button type="button" data-variant="${option.id}" data-group="${service.id}" aria-pressed="false">${option.label}</button>`).join('')}</div>` : ''}
       ${service.cardNote ? `<p class="builder-card-note">${service.cardNote}</p>` : ''}
     </article>`;
@@ -92,28 +92,28 @@
     <div class="builder-layout">
       <div class="builder-service-groups">
         <section class="builder-service-group builder-group-monthly" aria-labelledby="builder-monthly-title">
-          <div class="builder-group-head"><div><p class="builder-group-kicker">Aylık Hizmetler</p><h3 id="builder-monthly-title">Düzenli dijital çalışma</h3></div><p>Süreklilik isteyen hizmetler. Aylık kapsamınıza ekleyin.</p></div>
+          <div class="builder-group-head"><div><p class="builder-group-kicker">AYLIK</p><h3 id="builder-monthly-title">Her ay devam eden işler</h3></div></div>
           <div class="builder-services" aria-label="Aylık hizmetler">${monthlyServices.map(renderServiceCard).join('')}</div>
         </section>
         <section class="builder-service-group builder-group-project" aria-labelledby="builder-project-title">
-          <div class="builder-group-head"><div><p class="builder-group-kicker">Tek Seferlik / Proje Hizmetleri</p><h3 id="builder-project-title">İhtiyaca göre proje desteği</h3></div><p>Ayrı kapsamlanan üretim, kimlik ve kurulum işleri.</p></div>
+          <div class="builder-group-head"><div><p class="builder-group-kicker">TEK SEFERLİK</p><h3 id="builder-project-title">Bir kere yapılacaklar</h3></div></div>
           <div class="builder-services" aria-label="Tek seferlik ve proje hizmetleri">${projectServices.map(renderServiceCard).join('')}</div>
         </section>
       </div>
       <aside class="builder-summary-home" aria-label="Özel paket özeti">
         <div class="builder-summary" data-builder-summary>
-          <div class="builder-summary-head"><div><p class="builder-kicker">PAKETİNİZ</p><h3 data-builder-summary-title>Özel Paketiniz</h3></div><span class="builder-summary-mark" aria-hidden="true">08</span></div>
+          <div class="builder-summary-head"><div><p class="builder-kicker">YOUR PACKAGE</p><h3 data-builder-summary-title>Özel Paketiniz</h3></div></div>
           <div class="builder-summary-tools"><p data-builder-count>0 hizmet seçildi</p><button type="button" class="builder-text-button" data-builder-reset disabled>Seçimleri Temizle</button></div>
           <p class="builder-feedback" data-builder-feedback aria-live="polite" aria-hidden="true"></p>
           <p class="builder-empty" data-builder-empty>Henüz bir hizmet seçmediniz.</p>
           <ul class="builder-items" data-builder-items aria-label="Seçilen hizmetler"></ul>
           <div class="builder-totals" data-builder-totals>
-            <div class="builder-total-monthly"><span>Aylık Hizmet Bedeli</span><p><strong data-monthly-total data-value="0">0</strong> <small>TL / ay</small></p></div>
-            <div class="builder-total-once"><span>Tek Seferlik / Proje Bedeli</span><p><strong data-once-total data-value="0">0</strong> <small>TL</small></p></div>
+            <div class="builder-total-monthly"><span>AYLIK</span><p><strong data-monthly-total data-value="0">0</strong> <small>TL / ay</small></p></div>
+            <div class="builder-total-once"><span>TEK SEFERLİK</span><p><strong data-once-total data-value="0">0</strong> <small>TL</small></p></div>
           </div>
           <p class="builder-meta-note" data-builder-meta hidden>Meta reklam bütçesi hizmet bedeline dahil değildir ve doğrudan Meta’ya ödenir.</p>
           <div class="builder-contact"><label for="builder-name">Ad Soyad <span>(isteğe bağlı)</span></label><input id="builder-name" name="builder-name" type="text" autocomplete="name" maxlength="80"><label for="builder-business">İşletme Adı <span>(isteğe bağlı)</span></label><input id="builder-business" name="builder-business" type="text" autocomplete="organization" maxlength="100"></div>
-          <a class="button button-light builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">Bu kapsamı WhatsApp’ta konuşalım ${icon('up-right')}</a>
+          <a class="button button-light builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">Paketi WhatsApp’ta konuşalım ${icon('up-right')}</a>
           <button class="builder-text-button builder-edit" type="button" data-builder-edit>Seçimleri düzenle</button>
           <p class="builder-send-note">Mesaj WhatsApp’ta açılır. Göndermek sizin kontrolünüzde.</p>
           <p class="builder-test-note">Test fiyatlarıdır. Nihai kapsam ve ücret görüşmede netleştirilir.</p>
@@ -265,7 +265,7 @@
       const selected = !!state.selected[service.id];
       card.classList.toggle('is-selected', selected);
       card.querySelector('[data-select]').setAttribute('aria-pressed', String(selected));
-      card.querySelector('[data-selection-text]').textContent = selected ? 'Seçildi' : 'Pakete ekle';
+      card.querySelector('[data-selection-text]').textContent = selected ? 'Paketten çıkar' : 'Pakete ekle';
       card.querySelector('.builder-select .builder-check').textContent = selected ? '✓' : '+';
       const option = service.options.find(o => o.id === state.variants[service.id]);
       card.querySelector('.builder-card-price').innerHTML = `<strong>${money(option.price)}</strong><span>TL${service.billing === 'monthly' ? ' / ay' : service.unit ? ' / çekim' : ''}</span>${service.billing === 'once' ? '<small>Tek seferlik / proje</small>' : ''}`;
