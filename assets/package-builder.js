@@ -112,7 +112,7 @@
             <div class="builder-total-once"><span>TEK SEFERLİK</span><p><strong data-once-total data-value="0">0</strong> <small>TL</small></p></div>
           </div>
           <p class="builder-meta-note" data-builder-meta hidden>Meta reklam bütçesi hizmet bedeline dahil değildir ve doğrudan Meta’ya ödenir.</p>
-          <div class="builder-contact"><label for="builder-name">Ad Soyad <span>(isteğe bağlı)</span></label><input id="builder-name" name="builder-name" type="text" autocomplete="name" maxlength="80"><label for="builder-business">İşletme Adı <span>(isteğe bağlı)</span></label><input id="builder-business" name="builder-business" type="text" autocomplete="organization" maxlength="100"></div>
+          <details class="builder-contact"><summary>İsim ekle <span>(isteğe bağlı)</span></summary><label for="builder-name">Ad Soyad <span>(isteğe bağlı)</span></label><input id="builder-name" name="builder-name" type="text" autocomplete="name" maxlength="80"><label for="builder-business">İşletme Adı <span>(isteğe bağlı)</span></label><input id="builder-business" name="builder-business" type="text" autocomplete="organization" maxlength="100"></details>
           <a class="button button-light builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">Paketi WhatsApp’ta konuşalım ${icon('up-right')}</a>
           <button class="builder-text-button builder-edit" type="button" data-builder-edit>Seçimleri düzenle</button>
           <p class="builder-send-note">Mesaj WhatsApp’ta açılır. Göndermek sizin kontrolünüzde.</p>
