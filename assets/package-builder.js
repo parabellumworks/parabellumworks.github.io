@@ -81,7 +81,7 @@
         <span class="builder-card-price" id="builder-price-${service.id}"></span>
       </button>
       <button class="builder-info" type="button" data-info="${service.id}" aria-expanded="false" aria-controls="builder-info-${service.id}" aria-label="${service.title} hakkında bilgi"><svg class="ui-icon ui-icon-info" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" focusable="false" aria-hidden="true"><circle cx="10" cy="10" r="7.2"></circle><path d="M10 9v5"></path><path d="M10 6.1h.01"></path></svg></button>
-      <div class="builder-popover" id="builder-info-${service.id}" role="tooltip" aria-hidden="true"><p><strong>Neyi halleder?</strong>${service.info.what}</p><p><strong>Kim için?</strong>${service.info.fit}</p><p><strong>Kapsam ve notlar</strong>${service.info.scope}</p>${service.info.note ? `<p class="builder-info-note">${service.info.note}</p>` : ''}<p class="builder-payment"><strong>Ödeme tipi</strong>${service.billing === 'monthly' ? 'Aylık hizmet' : 'Tek seferlik / proje bedeli'}</p></div>
+      <div class="builder-popover" id="builder-info-${service.id}" role="region" aria-label="${service.title} kapsamı" aria-hidden="true"><p><strong>Neyi halleder?</strong>${service.info.what}</p><p><strong>Kim için?</strong>${service.info.fit}</p><p><strong>Kapsam ve notlar</strong>${service.info.scope}</p>${service.info.note ? `<p class="builder-info-note">${service.info.note}</p>` : ''}<p class="builder-payment"><strong>Ödeme tipi</strong>${service.billing === 'monthly' ? 'Aylık hizmet' : 'Tek seferlik / proje bedeli'}</p></div>
       ${service.options.length > 1 ? `<div class="builder-variants" role="group" aria-label="${service.title} seçenekleri">${service.options.map(option => `<button type="button" data-variant="${option.id}" data-group="${service.id}" aria-pressed="false">${option.label}</button>`).join('')}</div>` : ''}
       ${service.cardNote ? `<p class="builder-card-note">${service.cardNote}</p>` : ''}
     </article>`;
@@ -349,14 +349,10 @@
     popover.setAttribute('aria-hidden', String(!open));
     button.closest('.builder-card')?.classList.toggle('is-info-open', open);
   };
-  let pointerInfoTarget = null;
-  let pointerInfoAt = 0;
-  const pointerRecentlyFocused = button => pointerInfoTarget === button && (performance.now() - pointerInfoAt) < 900;
   const handleAction = event => {
     const button = event.target.closest('button');
     if (!button) return;
     if (button.hasAttribute('data-info')) {
-      pointerInfoTarget = null;
       event.stopPropagation();
       setInfoOpen(button, button.getAttribute('aria-expanded') !== 'true');
       return;
@@ -391,20 +387,6 @@
   };
   root.addEventListener('click', handleAction);
   sheet.addEventListener('click', handleAction);
-  root.addEventListener('pointerdown', event => {
-    const button = event.target.closest('[data-info]');
-    if (!button) return;
-    pointerInfoTarget = button;
-    pointerInfoAt = performance.now();
-  }, true);
-  root.addEventListener('focusin', event => {
-    const button = event.target.closest('[data-info]');
-    if (button && !pointerRecentlyFocused(button)) setInfoOpen(button, true);
-  });
-  root.addEventListener('pointerenter', event => {
-    const button = event.target.closest('[data-info]');
-    if (button && matchMedia('(hover: hover)').matches) setInfoOpen(button, true);
-  }, true);
   document.addEventListener('click', event => {
     if (!event.target.closest('[data-info], .builder-popover')) closeInfoPopovers();
   });
