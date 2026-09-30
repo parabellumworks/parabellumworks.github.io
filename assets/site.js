@@ -132,7 +132,7 @@
       const data = new FormData(form);
       const target = String(data.get('target') || '').trim();
       const business = String(data.get('business') || '').trim();
-      const lines = ['Merhaba EIGHTFOLD,', '', 'Dijital Check-up talep ediyorum.', ''];
+      const lines = [`Merhaba ${window.publicBrand.name},`, '', 'Dijital Check-up talep ediyorum.', ''];
       if (business) lines.push('İşletme:', business, '');
       lines.push('Instagram / Website:', target, '', 'İlk değerlendirmeyi konuşabilir miyiz?');
       const status = form.querySelector('[data-checkup-status]');
@@ -153,12 +153,12 @@
   if (requestedService && serviceNames[requestedService]) {
     document.querySelectorAll('select[name="service"]').forEach((select) => { select.value = serviceNames[requestedService]; });
   }
-  const packageNames = { essential: "ESSENTIAL — 14.900 TL / ay", studio: "STUDIO — 19.900 TL / ay", growth: "GROWTH — 29.900 TL / ay", full: "EIGHTFOLD FULL — 44.900 TL / ay" };
+  const packageNames = { essential: "ESSENTIAL — 14.900 TL / ay", studio: "STUDIO — 19.900 TL / ay", growth: "GROWTH — 29.900 TL / ay", full: "FULL — 44.900 TL / ay" };
   const readyPackageMessages = {
-    essential: "Merhaba EIGHTFOLD,\n\nEssential paketi hakkında görüşmek istiyorum.\n\nPaket bedeli:\n14.900 TL / ay\n\nDetayları konuşabilir miyiz?",
-    studio: "Merhaba EIGHTFOLD,\n\nStudio paketi hakkında görüşmek istiyorum.\n\nPaket bedeli:\n19.900 TL / ay\n\nDetayları konuşabilir miyiz?",
-    growth: "Merhaba EIGHTFOLD,\n\nGrowth paketi hakkında görüşmek istiyorum.\n\nPaket bedeli:\n29.900 TL / ay\n\nMeta reklam bütçesinin paket bedeline dahil olmadığını biliyorum.\n\nDetayları konuşabilir miyiz?",
-    full: "Merhaba EIGHTFOLD,\n\nEIGHTFOLD Full paketi hakkında görüşmek istiyorum.\n\nAjans bedeli:\n44.900 TL / ay\n\nÖnerilen Meta reklam bütçesi:\n20.000–30.000 TL / ay\n\nToplam önerilen aylık dijital yatırım:\n64.900–74.900 TL / ay\n\nMeta reklam bütçesinin doğrudan Meta’ya ödendiğini biliyorum.\n\nDetayları konuşabilir miyiz?"
+    essential: `Merhaba ${window.publicBrand.name},\n\nEssential paketi hakkında görüşmek istiyorum.\n\nPaket bedeli:\n14.900 TL / ay\n\nDetayları konuşabilir miyiz?`,
+    studio: `Merhaba ${window.publicBrand.name},\n\nStudio paketi hakkında görüşmek istiyorum.\n\nPaket bedeli:\n19.900 TL / ay\n\nDetayları konuşabilir miyiz?`,
+    growth: `Merhaba ${window.publicBrand.name},\n\nGrowth paketi hakkında görüşmek istiyorum.\n\nPaket bedeli:\n29.900 TL / ay\n\nMeta reklam bütçesinin paket bedeline dahil olmadığını biliyorum.\n\nDetayları konuşabilir miyiz?`,
+    full: `Merhaba ${window.publicBrand.name},\n\nFull paketi hakkında görüşmek istiyorum.\n\nAjans bedeli:\n44.900 TL / ay\n\nÖnerilen Meta reklam bütçesi:\n20.000–30.000 TL / ay\n\nToplam önerilen aylık dijital yatırım:\n64.900–74.900 TL / ay\n\nMeta reklam bütçesinin doğrudan Meta’ya ödendiğini biliyorum.\n\nDetayları konuşabilir miyiz?`
   };
   document.querySelectorAll('.package-cta').forEach(link => {
     const packageId = link.closest('.package-card')?.id.replace('paket-', '');
@@ -190,13 +190,13 @@
       const name = String(data.get("name") || "").trim();
       const company = String(data.get("company") || "").trim();
       const labels = { name: "Ad soyad", company: "Marka / şirket", email: "E-posta", phone: "Telefon", website: "Web sitesi / sosyal hesap", service: "Öncelikli ihtiyaç", budget: "Aylık medya bütçesi", timeline: "Başlangıç zamanı", package: "İlgilenilen paket", goal: "Hedef / mevcut sorun" };
-      const lines = ["Merhaba EIGHTFOLD,", "", "Yeni bir proje için görüşmek istiyorum.", ""];
+      const lines = [`Merhaba ${window.publicBrand.name},`, "", "Yeni bir proje için görüşmek istiyorum.", ""];
       Object.entries(labels).forEach(([key, label]) => {
         const raw = String(data.get(key) || "").trim();
         const value = key === "package" ? (packageNames[raw] || "") : raw;
         if (value) lines.push(`${label}: ${value}`);
       });
-      lines.push("", "Bu talep EIGHTFOLD proje formundan oluşturuldu.");
+      lines.push("", "Bu talep proje formundan oluşturuldu.");
       const status = form.querySelector("[data-form-status]");
       if (status) status.textContent = "Proje özetiniz hazır. Gönderimi açılan e-posta uygulamasından tamamlayın. Uygulama açılmazsa hello@parabellum.works adresine doğrudan yazabilirsiniz. Bu form bilgilerinizi sunucuya kaydetmez.";
       window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(`Yeni proje talebi — ${company || name}`)}&body=${encodeURIComponent(lines.join("\n"))}`;

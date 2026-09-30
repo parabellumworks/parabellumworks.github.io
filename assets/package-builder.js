@@ -154,7 +154,7 @@
   let announceTimer;
 
   const messageFor = (items, totals) => {
-    const lines = ['Merhaba EIGHTFOLD,', '', 'Web siteniz üzerinden kendi paketimi oluşturdum.', '', 'Seçtiğim hizmetler:', '', ...items.map(item => `• ${item.name} — ${rate(item)}`), '', 'Aylık Hizmet Bedeli:', `${money(totals.monthly)} TL / ay`, '', 'Tek Seferlik / Proje Bedeli:', `${money(totals.once)} TL`, '', 'Bu paket hakkında görüşmek istiyorum.'];
+    const lines = [`Merhaba ${window.publicBrand.name},`, '', 'Web siteniz üzerinden kendi paketimi oluşturdum.', '', 'Seçtiğim hizmetler:', '', ...items.map(item => `• ${item.name} — ${rate(item)}`), '', 'Aylık Hizmet Bedeli:', `${money(totals.monthly)} TL / ay`, '', 'Tek Seferlik / Proje Bedeli:', `${money(totals.once)} TL`, '', 'Bu paket hakkında görüşmek istiyorum.'];
     if (items.some(item => item.key === 'ads' || item.key === 'ads-audit')) lines.push('', 'Not: Meta reklam bütçesinin hizmet bedeline dahil olmadığını biliyorum.');
     if (nameInput.value.trim()) lines.push('', `Ad Soyad: ${nameInput.value.trim()}`);
     if (businessInput.value.trim()) lines.push(`İşletme: ${businessInput.value.trim()}`);
