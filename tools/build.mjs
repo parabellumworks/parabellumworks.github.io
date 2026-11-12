@@ -112,6 +112,7 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ''}<link rel="canonical
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap">
 <link rel="stylesheet" href="/assets/css/kromakopia.css?v=${CSS_V}">
 ${css.map(h => `<link rel="stylesheet" href="${h}">`).join('\n')}
+<script type="importmap">{"imports":{"/assets/js/templates.mjs":"/assets/js/templates.mjs?v=${JS_V}"}}</script>
 <script type="module" src="/assets/js/kromakopia.js?v=${JS_V}"></script>
 ${page === 'home' ? `<link rel="modulepreload" href="/assets/js/hero-gl.js?v=${JS_V}">\n` : ''}${scripts.map(s => (s.endsWith('.js') && !s.includes('package-builder') ? `<script type="module" src="${s}"></script>` : `<script defer src="${s}"></script>`)).join('\n')}
 ${lds}
