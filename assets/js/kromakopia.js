@@ -2,8 +2,9 @@
 import { worksList, workFilters, servicesList, svcIndex, heroMedia, projectPage, published, sig, esc } from './templates.mjs';
 
 const root = document.documentElement;
-// `?motion` previews the full motion design even when the OS asks for reduced motion.
-const forceMotion = new URLSearchParams(location.search).has('motion');
+// Full motion is the default, even when the OS asks for reduced motion (the
+// studio's choice). `?still` restores the reduced-motion behaviour.
+const forceMotion = !new URLSearchParams(location.search).has('still');
 if (forceMotion) document.documentElement.dataset.motion = 'force';
 const osReduced = matchMedia('(prefers-reduced-motion: reduce)');
 const reduced = { get matches() { return osReduced.matches && !forceMotion; }, addEventListener: (...a) => osReduced.addEventListener(...a) };
@@ -426,6 +427,33 @@ function initMarkGlow() {
   });
   mark.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { aim(e); requestTick(); } }, { passive: true });
   mark.addEventListener('pointerleave', () => mark.classList.remove('is-lit'));
+}
+
+// Hero wordmark glitch: every few seconds two colour copies (orange, grey) flash
+// as shifted horizontal slices for ~0.3s. The real letters never move.
+function initGlitch() {
+  const mark = $('.hero-mark');
+  const inner = mark && $('.fit-inner', mark);
+  if (!inner || mark.dataset.glitch !== undefined) return;
+  mark.dataset.glitch = '';
+  const lines = [...inner.children].filter(n => n.classList.contains('hm-line'));
+  ['hm-g1', 'hm-g2'].forEach(c => {
+    const el = document.createElement('span');
+    el.className = `hm-glitch ${c}`;
+    el.setAttribute('aria-hidden', 'true');
+    lines.forEach(n => el.append(n.cloneNode(true)));
+    inner.append(el);
+  });
+  mark.addEventListener('animationend', e => { if (e.target.classList.contains('hm-g2')) mark.classList.remove('is-glitch'); });
+  const fire = () => {
+    if (!document.hidden && !reduced.matches && scrollY < innerHeight * 0.8) {
+      mark.classList.remove('is-glitch');
+      void mark.offsetWidth; // restart the animation
+      mark.classList.add('is-glitch');
+    }
+    setTimeout(fire, 3200 + Math.random() * 4300);
+  };
+  setTimeout(fire, 2800);
 }
 
 function updateMarkGlow() {
@@ -877,6 +905,7 @@ function boot() {
   $$('.hero .ch').forEach((c, i) => c.style.setProperty('--i', i));
   $$('.hero .word').forEach((w, i) => w.style.setProperty('--i', i));
   initMarkGlow();
+  initGlitch();
   initStarlight();
   initFit();
   initMarquees();

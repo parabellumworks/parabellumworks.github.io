@@ -1048,3 +1048,26 @@ fieldset.field { border: 0; padding: 0; margin: 0; }
   .btn-glass:not(.btn-cta):hover { box-shadow: 0 12px 34px rgba(0, 0, 0, .32), inset 0 1px 0 rgba(255, 255, 255, .12), 0 0 0 1px rgba(242, 107, 56, .45), 0 0 26px -6px rgba(242, 107, 56, .5); }
   .light .btn-solid:not(.btn-cta):hover { box-shadow: 0 0 0 1px rgba(242, 107, 56, .55), 0 0 26px -6px rgba(242, 107, 56, .55); }
 }
+
+/* ---------- Hero wordmark glitch: brief sliced colour copies, letters stay put ---------- */
+.hm-glitch { position: absolute; inset: 0; pointer-events: none; opacity: 0; text-shadow: none; }
+.hm-glitch * { text-shadow: none; }
+.hm-g1 { color: var(--orange); }
+.hm-g2 { color: var(--fg-2); }
+.hero-mark.is-glitch .hm-g1 { animation: hm-glitch-a .3s steps(1, end) both; }
+.hero-mark.is-glitch .hm-g2 { animation: hm-glitch-b .3s steps(1, end) both; }
+@keyframes hm-glitch-a {
+  0% { opacity: .9; clip-path: inset(14% 0 68% 0); transform: translateX(-.028em); }
+  20% { clip-path: inset(58% 0 26% 0); transform: translateX(.022em); }
+  40% { clip-path: inset(33% 0 54% 0); transform: translateX(-.014em); }
+  60% { clip-path: inset(80% 0 5% 0); transform: translateX(.03em); }
+  80% { clip-path: inset(4% 0 88% 0); transform: translateX(-.02em); }
+  100% { opacity: 0; clip-path: inset(0 0 100% 0); transform: none; }
+}
+@keyframes hm-glitch-b {
+  0% { opacity: .7; clip-path: inset(62% 0 22% 0); transform: translateX(.024em); }
+  25% { clip-path: inset(20% 0 66% 0); transform: translateX(-.03em); }
+  50% { clip-path: inset(45% 0 40% 0); transform: translateX(.016em); }
+  75% { clip-path: inset(8% 0 80% 0); transform: translateX(-.012em); }
+  100% { opacity: 0; clip-path: inset(0 0 100% 0); transform: none; }
+}

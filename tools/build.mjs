@@ -106,7 +106,7 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ''}<link rel="canonical
 <meta name="twitter:title" content="${esc(fullTitle)}">
 <meta name="twitter:description" content="${esc(description)}">
 <meta name="twitter:image" content="${OG}">
-<script>document.documentElement.classList.add('js','is-loading');setTimeout(function(){document.documentElement.classList.remove('is-loading')},2600)</script>
+<script>document.documentElement.classList.add('js','is-loading');if(!/[?&]still(=|&|$)/.test(location.search))document.documentElement.dataset.motion='force';setTimeout(function(){document.documentElement.classList.remove('is-loading')},2600)</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap">
