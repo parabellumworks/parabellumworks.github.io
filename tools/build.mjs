@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { esc, pad, img, stockTag, chromaArt, worksList, workFilters, servicesList, heroMedia, projectPage, published, sig } from '../assets/js/templates.mjs';
+import { esc, pad, img, chromaArt, worksList, workFilters, servicesList, heroMedia, projectPage, published, sig } from '../assets/js/templates.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = p => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
@@ -155,10 +155,10 @@ const BAND_ITEMS = ['Sosyal medya içeriği', 'Reels ve kısa video', 'Ürün ve
 const band = (items = BAND_ITEMS, reverse = false) => `<div class="band${reverse ? ' marquee-reverse' : ''}" aria-hidden="true"><div class="band-strip" data-marquee data-speed="55"><div class="marquee"><div class="marquee-group">${items.map(i => `<span>${i}</span>`).join('')}</div></div></div></div>`;
 
 const STAGES = [
-  { title: 'Keşif', text: 'Markayı, hedefleri ve ihtiyaçları anlıyoruz.', out: ['Brief görüşmesi', 'Hedef ve kapsam', 'Takvim ve bütçe'], image: stock.discovery, caption: 'Temsili görsel' },
-  { title: 'Kreatif Konsept', text: 'Fikri, içerik planını ve görsel yönü belirliyoruz.', out: ['Kreatif fikir', 'İçerik takvimi', 'Çekim planı'], image: stock.concept, caption: 'Temsili görsel' },
-  { title: 'Çekim ve Üretim', text: 'Çekimi kendi ekibimiz ve içerik üreticilerimizle yapıyor; kurguyu ve motion’ı aynı masada bitiriyoruz.', out: ['Fotoğraf ve video', 'Kurgu ve motion', 'Formatlara uyarlama'], image: stock.crew, caption: 'Temsili görsel' },
-  { title: 'Yayın ve Gelişim', text: 'İçerikleri yayına alıyor, sonuçlara bakıp bir sonraki üretimi buna göre planlıyoruz.', out: ['Yayın planı', 'Reklam ve ölçüm', 'Gelişim önerileri'], image: stock.publish, caption: 'Temsili görsel' }
+  { title: 'Keşif', text: 'Markayı, hedefleri ve ihtiyaçları anlıyoruz.', out: ['Brief görüşmesi', 'Hedef ve kapsam', 'Takvim ve bütçe'], image: stock.discovery },
+  { title: 'Kreatif Konsept', text: 'Fikri, içerik planını ve görsel yönü belirliyoruz.', out: ['Kreatif fikir', 'İçerik takvimi', 'Çekim planı'], image: stock.concept },
+  { title: 'Çekim ve Üretim', text: 'Çekimi kendi ekibimiz ve içerik üreticilerimizle yapıyor; kurguyu ve motion’ı aynı masada bitiriyoruz.', out: ['Fotoğraf ve video', 'Kurgu ve motion', 'Formatlara uyarlama'], image: stock.crew },
+  { title: 'Yayın ve Gelişim', text: 'İçerikleri yayına alıyor, sonuçlara bakıp bir sonraki üretimi buna göre planlıyoruz.', out: ['Yayın planı', 'Reklam ve ölçüm', 'Gelişim önerileri'], image: stock.publish }
 ];
 
 // Home content blocks: what we produce, shown with licensed stock (never as client work).
@@ -172,7 +172,7 @@ const CONTENT_BLOCKS = [
 const FLOW = ['Fikir', 'Çekim', 'Kurgu', 'Motion', 'Yayın'];
 const contentBlocks = () => CONTENT_BLOCKS.map((b, i) => `<article class="work" data-scale-in>
   <a class="work-link" href="/proje-baslat/?hizmet=${b.service}">
-    <div class="work-media">${img(b.image, { sizes: '(max-width: 760px) 92vw, 60vw' })}${stockTag(b.image)}</div>
+    <div class="work-media">${img(b.image, { sizes: '(max-width: 760px) 92vw, 60vw' })}</div>
     <div class="work-meta">
       <span class="work-index">${pad(i + 1)}</span>
       <h3 class="work-title">${b.title}</h3>
@@ -189,7 +189,7 @@ const stack = () => `<div class="stack" data-stack>${STAGES.map((s, i) => `
       <div><h3><span class="sr-only">Adım ${i + 1}: </span>${s.title}</h3><p>${s.text}</p></div>
       <ul aria-label="Bu adımın çıktıları">${s.out.map(o => `<li>${o}</li>`).join('')}</ul>
     </div>
-    <figure class="step-media">${s.image ? img(s.image, { sizes: '(max-width: 900px) 92vw, 46vw' }) + `<figcaption>${s.caption}</figcaption>` : chromaArt(i + 3)}</figure>
+    <figure class="step-media">${s.image ? img(s.image, { sizes: '(max-width: 900px) 92vw, 46vw' }) : chromaArt(i + 3)}</figure>
   </article>`).join('')}
 </div>`;
 
@@ -275,9 +275,9 @@ ${band()}
       </dl>
     </div>
     <div class="approach-media">
-      <figure data-speed-y="-0.06">${img(stock.filmmakers, { sizes: '(max-width: 900px) 62vw, 30vw' })}<figcaption>Temsili görsel</figcaption></figure>
-      <figure data-speed-y="0.1">${img(stock.postDesk, { sizes: '(max-width: 900px) 62vw, 30vw' })}<figcaption>Temsili görsel</figcaption></figure>
-      <figure data-speed-y="-0.14">${img(stock.gimbal, { sizes: '(max-width: 900px) 46vw, 22vw' })}<figcaption>Temsili görsel</figcaption></figure>
+      <figure data-speed-y="-0.06">${img(stock.filmmakers, { sizes: '(max-width: 900px) 62vw, 30vw' })}</figure>
+      <figure data-speed-y="0.1">${img(stock.postDesk, { sizes: '(max-width: 900px) 62vw, 30vw' })}</figure>
+      <figure data-speed-y="-0.14">${img(stock.gimbal, { sizes: '(max-width: 900px) 46vw, 22vw' })}</figure>
     </div>
   </div>
 </section>
@@ -369,7 +369,7 @@ function serviceDetail(s, i) {
 </section>
 <section class="shell section-tight" style="padding-top:0">
   <div class="detail-grid">
-    <figure class="detail-media">${s.image?.src ? img(s.image, { sizes: "(max-width: 900px) 92vw, 46vw", eager: true }) + stockTag(s.image) : chromaArt(i + 1, pad(i + 1))}</figure>
+    <figure class="detail-media">${s.image?.src ? img(s.image, { sizes: "(max-width: 900px) 92vw, 46vw", eager: true }) : chromaArt(i + 1, pad(i + 1))}</figure>
     <div>
       <div class="detail-block"><h2>Neler dahil?</h2><ul class="check-list">${s.includes.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
       <div class="detail-block"><h2>Kimler için?</h2><p class="body-copy">${esc(s.fit)}</p></div>
@@ -745,7 +745,7 @@ function kvkkPage() {
   <h2>Hukuki sebep ve toplama yöntemi</h2>
   <p>Verileriniz, web sitemizdeki formlar aracılığıyla elektronik ortamda; KVKK m.5/2-c (bir sözleşmenin kurulmasıyla doğrudan ilgili olması) ve m.5/2-f (meşru menfaat) hukuki sebeplerine dayanılarak toplanır.</p>
   <h2>Aktarım</h2>
-  <p>Form gönderimleri, iletinin e-posta kutumuza ulaştırılması için form iletim hizmeti sağlayıcısı FormSubmit (formsubmit.co) üzerinden iletilir; bu hizmetin sunucuları yurt dışında bulunabilir. WhatsApp bağlantılarını kullanmayı tercih ederseniz mesajınız WhatsApp (Meta) altyapısı üzerinden iletilir. Sitede yazı tipleri Google Fonts, bazı görseller Unsplash üzerinden yüklenir. “Temsili görsel” etiketli fotoğraflar Unsplash lisansıyla kullanılan geçici görsellerdir ve müşteri işi değildir.</p>
+  <p>Form gönderimleri, iletinin e-posta kutumuza ulaştırılması için form iletim hizmeti sağlayıcısı FormSubmit (formsubmit.co) üzerinden iletilir; bu hizmetin sunucuları yurt dışında bulunabilir. WhatsApp bağlantılarını kullanmayı tercih ederseniz mesajınız WhatsApp (Meta) altyapısı üzerinden iletilir. Sitede yazı tipleri Google Fonts, bazı görseller Unsplash üzerinden yüklenir. Hizmet ve süreç bölümlerindeki bazı fotoğraflar Unsplash lisansıyla kullanılan stok görsellerdir.</p>
   <h2>Saklama süresi</h2>
   <p>Talep verileri, iş ilişkisi kurulmadığı durumda en fazla 2 yıl süreyle saklanır ve ardından silinir.</p>
   <h2>Haklarınız</h2>

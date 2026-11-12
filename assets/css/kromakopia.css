@@ -878,7 +878,6 @@ fieldset.field { border: 0; padding: 0; margin: 0; }
 }
 
 /* Labels licensed stock photos so they never read as client work. */
-.stock-tag { position: absolute; right: 10px; bottom: 10px; z-index: 2; padding: 4px 10px; border-radius: 999px; background: rgba(21, 21, 21, .6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); color: #f5f3ee; font: 600 .72rem/1.2 var(--sans); pointer-events: none; }
 .svc-media, .detail-media { position: relative; }
 .services-head .actions { display: flex; flex-wrap: wrap; gap: 10px; }
 

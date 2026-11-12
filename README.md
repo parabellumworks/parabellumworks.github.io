@@ -36,7 +36,7 @@ Yerelde önizleme: `python -m http.server 8765` ve `http://localhost:8765`. İş
 Her kayıt `main` dalına bir commit gönderir. Sayfaların otomatik yeniden üretimi için `tools/rebuild-workflow.yml` dosyasını GitHub'da `.github/workflows/rebuild.yml` olarak ekleyin (iş akışı dosyaları `workflow` yetkisi gerektirir). Bu yapılana kadar proje detay ve hizmet sayfalarındaki değişiklikler için `node tools/build.mjs` çalıştırılmalıdır. Ana sayfa ve işler listesi, yeni içeriği yeniden üretimi beklemeden tarayıcıda da günceller.
 
 - **Hero videosu:** `site.json → hero.video` (masaüstü), `hero.videoMobile` (dikey) ve `hero.poster`. Video boşken tam ekran hero'da hafif WebGL ışık animasyonu (`assets/js/hero-gl.js`) gösterilir.
-- **Temsili görseller:** Unsplash lisanslı geçici fotoğraflar `stock: true` ile işaretlidir ve sitede "Temsili görsel" etiketiyle görünür. Kendi çekimleriniz geldiğinde aynı alanlara yükleyip `stock` işaretini kaldırın.
+- **Temsili görseller:** Unsplash lisanslı geçici fotoğraflar `stock: true` ile işaretlidir (sitede etiket gösterilmez; müşteri işi olarak sunulmazlar). Kendi çekimleriniz geldiğinde aynı alanlara yükleyip `stock` işaretini kaldırın.
 - **Yeni proje:** `projects.json` listesine yeni bir nesne ekleyin. `slug` sayfa adresidir (`/calismalar/<slug>/`). `published: false` projeyi gizler. Filtreler yalnızca projesi olan kategorileri gösterir.
 - **Bütçe aralıkları:** `site.json → forms.budgets` ve `forms.shootBudgets`.
 

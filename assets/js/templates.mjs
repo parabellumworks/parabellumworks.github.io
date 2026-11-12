@@ -23,9 +23,6 @@ export const sig = str => {
 
 export const published = projects => (projects || []).filter(p => p && p.published !== false && p.slug && p.title);
 
-// Licensed stock photos are labelled so they never read as client work.
-export const stockTag = image => (image?.stock ? '<span class="stock-tag">Temsili görsel</span>' : '');
-
 export function img(image, { sizes = '100vw', eager = false, className = '' } = {}) {
   if (!image || !image.src) return '';
   const attrs = [
@@ -88,7 +85,7 @@ export function workFilters(projects) {
 
 export function serviceCard(service, index) {
   const media = service.image?.src
-    ? img(service.image, { sizes: '(max-width: 760px) 80vw, 420px' }) + stockTag(service.image)
+    ? img(service.image, { sizes: '(max-width: 760px) 80vw, 420px' })
     : chromaArt(index + 1);
   return `<a class="svc" href="/hizmetler/${esc(service.slug)}/" data-svc>
   <div class="svc-media">${media}</div>
