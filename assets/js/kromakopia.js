@@ -299,13 +299,15 @@ function frame(now) {
   });
 
   updateServices();
+  updateMarkGlow();
+  drawStarlight(now || performance.now());
 
   // Pointer easing.
   pointer.x = lerp(pointer.x, pointer.tx, 0.08);
   pointer.y = lerp(pointer.y, pointer.ty, 0.08);
   const moving = Math.abs(pointer.x - pointer.tx) > 0.001 || Math.abs(pointer.y - pointer.ty) > 0.001 || Math.abs(velocity) > 0.05;
   const flowVisible = state.flow.some(f => { const r = f.el.getBoundingClientRect(); return r.bottom > 0 && r.top < vh; });
-  if (moving || flowVisible || svc.moving) settleFrames = 20;
+  if (moving || flowVisible || svc.moving || glow.moving || star.alive) settleFrames = 20;
   if (settleFrames-- > 0) requestTick();
 }
 
@@ -333,12 +335,18 @@ function initServices() {
   svc.cards = $$('.svc', svc.section);
   svc.links = $$('.svc-index a', svc.section);
   sizeServices();
-  svc3d.addEventListener?.('change', () => { sizeServices(); requestTick(); });
+  if (!svc.bound) {
+    svc.bound = true;
+    svc3d.addEventListener?.('change', () => { sizeServices(); requestTick(); });
+    reduced.addEventListener?.('change', () => { sizeServices(); requestTick(); });
+  }
 }
 
+// The ring is a scroll-linked layout, so it stays on with reduced motion; it
+// then tracks the scroll position 1:1 instead of easing towards it.
 function sizeServices() {
   if (!svc.section) return;
-  svc.enabled = svc3d.matches && !reduced.matches && svc.cards.length > 1;
+  svc.enabled = svc3d.matches && svc.cards.length > 1;
   svc.section.classList.toggle('is-3d', svc.enabled);
   svc.section.style.height = svc.enabled ? `${100 + (svc.cards.length - 1) * 42}vh` : '';
   if (!svc.enabled) svc.cards.forEach(c => { c.style.transform = ''; c.style.opacity = ''; c.style.zIndex = ''; c.style.pointerEvents = ''; c.removeAttribute('tabindex'); });
@@ -350,7 +358,7 @@ function updateServices() {
   const total = r.height - vh;
   const p = clamp(-r.top / total);
   const target = p * (svc.cards.length - 1);
-  svc.current = lerp(svc.current, target, 0.12);
+  svc.current = reduced.matches ? target : lerp(svc.current, target, 0.12);
   svc.moving = Math.abs(svc.current - target) > 0.002;
   const step = 52; // degrees between cards on the ring
   const radius = Math.min(vw * 0.26, 420);
@@ -370,6 +378,165 @@ function updateServices() {
   });
   const active = Math.round(svc.current);
   svc.links.forEach((l, i) => l.classList.toggle('is-active', i === active));
+}
+
+/* ---------------- Mouse effects (fine pointers with hover only) ---------------- */
+const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+
+// Hero wordmark: an orange copy of the letters sits exactly on top and is
+// revealed through a radial mask that follows the pointer.
+const glow = { el: null, x: 0, y: 0, tx: 0, ty: 0, moving: false };
+
+function initMarkGlow() {
+  const mark = $('.hero-mark');
+  const inner = mark && $('.fit-inner', mark);
+  if (!inner || glow.el || !finePointer.matches) return;
+  const el = document.createElement('span');
+  el.className = 'hm-glow';
+  el.setAttribute('aria-hidden', 'true');
+  [...inner.children].forEach(n => el.append(n.cloneNode(true)));
+  inner.append(el);
+  glow.el = el;
+  const aim = e => {
+    const r = inner.getBoundingClientRect();
+    glow.tx = e.clientX - r.left;
+    glow.ty = e.clientY - r.top;
+  };
+  mark.addEventListener('pointerenter', e => {
+    if (e.pointerType !== 'mouse') return;
+    aim(e);
+    if (!mark.classList.contains('is-lit')) { glow.x = glow.tx; glow.y = glow.ty; }
+    mark.classList.add('is-lit');
+    requestTick();
+  });
+  mark.addEventListener('pointermove', e => { if (e.pointerType === 'mouse') { aim(e); requestTick(); } }, { passive: true });
+  mark.addEventListener('pointerleave', () => mark.classList.remove('is-lit'));
+}
+
+function updateMarkGlow() {
+  if (!glow.el) return;
+  const k = reduced.matches ? 1 : 0.2;
+  glow.x = lerp(glow.x, glow.tx, k);
+  glow.y = lerp(glow.y, glow.ty, k);
+  glow.moving = Math.abs(glow.x - glow.tx) > 0.3 || Math.abs(glow.y - glow.ty) > 0.3;
+  glow.el.style.setProperty('--mx', `${glow.x.toFixed(1)}px`);
+  glow.el.style.setProperty('--my', `${glow.y.toFixed(1)}px`);
+}
+
+// Starlight cursor: a tiny star beside the native cursor and a short trail
+// of sparks that fade out. One small canvas, pooled particles, capped count.
+const star = { ctx: null, canvas: null, dpr: 1, parts: [], hx: 0, hy: 0, x: 0, y: 0, lastMove: 0, lastX: null, lastY: null, alive: false, last: 0, sprites: null, drawn: false };
+const STAR_MAX = 34;
+
+function starSprite(rgb) {
+  const c = document.createElement('canvas');
+  c.width = c.height = 32;
+  const g = c.getContext('2d');
+  const grad = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+  grad.addColorStop(0, `rgba(${rgb}, 1)`);
+  grad.addColorStop(0.18, `rgba(${rgb}, .85)`);
+  grad.addColorStop(0.45, `rgba(${rgb}, .22)`);
+  grad.addColorStop(1, `rgba(${rgb}, 0)`);
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 32, 32);
+  return c;
+}
+
+function initStarlight() {
+  const enabled = () => finePointer.matches && !reduced.matches;
+  const setup = () => {
+    if (!enabled() || star.canvas) return;
+    const c = document.createElement('canvas');
+    c.className = 'starlight';
+    c.setAttribute('aria-hidden', 'true');
+    document.body.append(c);
+    star.canvas = c;
+    star.ctx = c.getContext('2d');
+    star.sprites = { white: starSprite('255, 246, 232'), orange: starSprite('242, 107, 56') };
+    const size = () => {
+      star.dpr = Math.min(devicePixelRatio || 1, 2);
+      c.width = Math.round(innerWidth * star.dpr);
+      c.height = Math.round(innerHeight * star.dpr);
+    };
+    size();
+    addEventListener('resize', size, { passive: true });
+  };
+  const teardown = () => { star.canvas?.remove(); star.canvas = star.ctx = null; star.parts.length = 0; star.alive = false; };
+  setup();
+  const onChange = () => (enabled() ? setup() : teardown());
+  finePointer.addEventListener?.('change', onChange);
+  reduced.addEventListener?.('change', onChange);
+
+  addEventListener('pointermove', e => {
+    if (!star.canvas || e.pointerType !== 'mouse') return;
+    const now = performance.now();
+    if (star.lastX === null || now - star.lastMove > 300) { star.hx = star.x = e.clientX; star.hy = star.y = e.clientY; }
+    star.x = e.clientX; star.y = e.clientY; star.lastMove = now;
+    const dist = star.lastX === null ? 0 : Math.hypot(e.clientX - star.lastX, e.clientY - star.lastY);
+    // One spark roughly every 22px travelled, never more than two per event.
+    let n = Math.min(2, Math.floor(dist / 22));
+    if (n > 0 || star.lastX === null) { star.lastX = e.clientX; star.lastY = e.clientY; }
+    while (n-- > 0) {
+      const p = star.parts.length >= STAR_MAX ? star.parts.shift() : {};
+      p.x = e.clientX + (Math.random() - 0.5) * 6;
+      p.y = e.clientY + (Math.random() - 0.5) * 6;
+      p.vx = (Math.random() - 0.5) * 0.018;
+      p.vy = 0.006 + Math.random() * 0.016;
+      p.size = 0.7 + Math.random() * 1.1;
+      p.life = 520 + Math.random() * 380;
+      p.born = now;
+      p.orange = Math.random() < 0.38;
+      p.twinkle = Math.random() < 0.25;
+      star.parts.push(p);
+    }
+    star.alive = true;
+    requestTick();
+  }, { passive: true });
+  document.addEventListener('pointerleave', () => { star.lastMove = 0; requestTick(); });
+}
+
+function drawStarlight(now) {
+  const { ctx, canvas } = star;
+  if (!ctx) return;
+  const dt = Math.min(48, now - (star.last || now));
+  star.last = now;
+  // The head star trails the pointer slightly and fades once it rests.
+  star.hx = lerp(star.hx, star.x, 0.35);
+  star.hy = lerp(star.hy, star.y, 0.35);
+  const idle = now - star.lastMove;
+  const headA = clamp(1 - (idle - 500) / 500);
+  star.parts = star.parts.filter(p => now - p.born < p.life);
+  star.alive = star.parts.length > 0 || headA > 0;
+  if (!star.alive) {
+    if (star.drawn) { ctx.clearRect(0, 0, canvas.width, canvas.height); star.drawn = false; }
+    return;
+  }
+  const d = star.dpr;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.setTransform(d, 0, 0, d, 0, 0);
+  star.drawn = true;
+  for (const p of star.parts) {
+    const t = (now - p.born) / p.life;
+    p.x += p.vx * dt; p.y += p.vy * dt;
+    const a = (1 - t) * (1 - t) * (p.twinkle ? 0.75 + 0.25 * Math.sin(now * 0.03 + p.born) : 1);
+    const s = p.size * (1 - t * 0.5);
+    ctx.globalAlpha = a;
+    const r = s * 4;
+    ctx.drawImage(p.orange ? star.sprites.orange : star.sprites.white, p.x - r, p.y - r, r * 2, r * 2);
+  }
+  if (headA > 0) {
+    // Sits just below-right of the arrow tip so it never covers the cursor.
+    const x = star.hx + 13, y = star.hy + 17;
+    ctx.globalAlpha = headA;
+    ctx.drawImage(star.sprites.orange, x - 9, y - 9, 18, 18);
+    ctx.drawImage(star.sprites.white, x - 4, y - 4, 8, 8);
+    ctx.globalAlpha = headA * 0.7;
+    ctx.fillStyle = '#fff6e8';
+    ctx.fillRect(x - 5, y - 0.4, 10, 0.8);
+    ctx.fillRect(x - 0.4, y - 5, 0.8, 10);
+  }
+  ctx.globalAlpha = 1;
 }
 
 /* ---------------- Works filters ---------------- */
@@ -451,6 +618,8 @@ function boot() {
   $$('[data-char-reveal]').forEach(splitChars);
   $$('.hero .ch').forEach((c, i) => c.style.setProperty('--i', i));
   $$('.hero .word').forEach((w, i) => w.style.setProperty('--i', i));
+  initMarkGlow();
+  initStarlight();
   initFit();
   initMarquees();
   initServices();

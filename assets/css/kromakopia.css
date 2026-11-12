@@ -374,6 +374,21 @@ main { position: relative; z-index: 1; }
 .word { display: inline-block; }
 .is-loading .hero-mark sup { opacity: 0; }
 .hero-mark sup { transition: opacity 1s 1.1s; }
+/* Pointer-following colour: an exact orange copy revealed through a radial mask. */
+.hero-mark .fit-inner { position: relative; }
+.hm-glow {
+  --mx: -999px; --my: -999px;
+  position: absolute; inset: 0;
+  color: #F26B38;
+  text-shadow: 0 0 .06em rgba(242, 107, 56, .45);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .7s var(--ease-expo);
+  -webkit-mask-image: radial-gradient(circle 1.5em at var(--mx) var(--my), #000 0, rgba(0, 0, 0, .7) 38%, transparent 100%);
+  mask-image: radial-gradient(circle 1.5em at var(--mx) var(--my), #000 0, rgba(0, 0, 0, .7) 38%, transparent 100%);
+}
+.hero-mark.is-lit .hm-glow { opacity: 1; transition-duration: .35s; }
+.starlight { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 9999; pointer-events: none; }
 .hero-scroll { position: absolute; right: var(--gutter); top: 50%; writing-mode: vertical-rl; font-size: var(--t-xs); color: var(--fg-2); letter-spacing: .02em; }
 
 /* Print-registration split: driven by --split (px) from pointer/scroll velocity. */
