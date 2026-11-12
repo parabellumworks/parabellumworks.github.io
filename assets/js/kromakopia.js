@@ -1,14 +1,14 @@
 // KROMAKOPIA — interaction & motion engine (vanilla, no dependencies).
 import { worksList, workFilters, servicesList, heroMedia, projectPage, published, sig, esc } from './templates.mjs';
 
+const root = document.documentElement;
 // `?motion` previews the full motion design even when the OS asks for reduced motion.
 const forceMotion = new URLSearchParams(location.search).has('motion');
 if (forceMotion) document.documentElement.dataset.motion = 'force';
 const osReduced = matchMedia('(prefers-reduced-motion: reduce)');
-const reduced = { get matches() { return osReduced.matches && !forceMotion; } };
-
-const root = document.documentElement;
+const reduced = { get matches() { return osReduced.matches && !forceMotion; }, addEventListener: (...a) => osReduced.addEventListener(...a) };
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+const lerp = (a, b, t) => a + (b - a) * t;
 const easeOut = t => 1 - Math.pow(1 - t, 3);
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
@@ -35,7 +35,7 @@ async function hydrate() {
   const needs = new Set(regions.map(el => el.dataset.render));
   const [projects, services, site] = await Promise.all([
     needs.has('works') || needs.has('filters') ? loadContent('projects') : null,
-    needs.has('services') ? loadContent('services') : null,
+    needs.has('services') || needs.has('svc-index') ? loadContent('services') : null,
     needs.has('hero-media') ? loadContent('site') : null
   ]);
   let changed = false;
@@ -44,15 +44,16 @@ async function hydrate() {
     if (el.dataset.render === 'works' && projects) changed = swap(el, worksList(published(projects.projects).slice(0, limit))) || changed;
     if (el.dataset.render === 'filters' && projects) changed = swap(el, workFilters(projects.projects)) || changed;
     if (el.dataset.render === 'services' && services) changed = swap(el, servicesList(services.services)) || changed;
+    if (el.dataset.render === 'svc-index' && services) changed = swap(el, services.services.map((s, i) => `<a href="/hizmetler/${esc(s.slug)}/"><span>${String(i + 1).padStart(2, '0')}</span>${esc(s.title)}</a>`).join('')) || changed;
     if (el.dataset.render === 'hero-media' && site) changed = swap(el, heroMedia(site)) || changed;
   }
-  if (changed) { initRoll(); initFilters(); initHeroMedia(); collect(); requestTick(); }
+  if (changed) { initRoll(); initFilters(); initHeroMedia(); initServices(); collect(); requestTick(); }
 }
 
 /* ---------------- Small UI ---------------- */
 function initRoll() {
-  $$('.btn:not([data-rolled])').forEach(el => {
-    if (el.children.length) return;
+  $$('.btn:not([data-rolled]), [data-roll]:not([data-rolled])').forEach(el => {
+    if (el.children.length && !el.matches('[data-roll]')) return;
     const text = el.textContent.trim();
     if (!text) return;
     el.dataset.rolled = '';
@@ -60,10 +61,9 @@ function initRoll() {
   });
 }
 
-// The primary button's bloom follows the pointer.
-function initGlow() {
+function initGlass() {
   document.addEventListener('pointermove', e => {
-    const b = e.target.closest?.('.btn-primary');
+    const b = e.target.closest?.('.btn-glass');
     if (!b) return;
     const r = b.getBoundingClientRect();
     b.style.setProperty('--gx', `${((e.clientX - r.left) / r.width) * 100}%`);
@@ -73,7 +73,7 @@ function initGlow() {
 
 function initYear() { $$('[data-year]').forEach(n => { n.textContent = new Date().getFullYear(); }); }
 
-/* ---------------- Full-screen menu ---------------- */
+/* ---------------- Header & full-screen menu ---------------- */
 function initMenu() {
   const btn = $('[data-menu-toggle]');
   const menu = $('[data-menu]');
@@ -83,7 +83,7 @@ function initMenu() {
     const href = new URL(a.href).pathname;
     if (href === '/' ? path === '/' : path.startsWith(href)) a.setAttribute('aria-current', 'page');
   });
-  const outside = () => [$('main'), $('.site-footer'), $('.action-bar')].filter(Boolean);
+  const outside = () => [$('main'), $('.site-footer')].filter(Boolean);
   let lastFocus = null;
   const set = open => {
     btn.setAttribute('aria-expanded', String(open));
@@ -110,6 +110,40 @@ function initMenu() {
   });
 }
 
+/* ---------------- Text splitting ---------------- */
+function splitChars(el) {
+  if (el.dataset.splitDone) return [];
+  el.dataset.splitDone = '';
+  const chars = [];
+  const walk = node => {
+    [...node.childNodes].forEach(child => {
+      if (child.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        child.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.append(document.createTextNode(part)); return; }
+          const word = document.createElement('span');
+          word.style.display = 'inline-block';
+          word.style.whiteSpace = 'nowrap';
+          [...part].forEach(c => {
+            const s = document.createElement('span');
+            s.className = 'ch';
+            s.textContent = c;
+            s.setAttribute('aria-hidden', 'true');
+            word.append(s);
+            chars.push(s);
+          });
+          frag.append(word);
+        });
+        child.replaceWith(frag);
+      } else if (child.nodeType === 1 && child.tagName !== 'SUP') walk(child);
+    });
+  };
+  if (!el.hasAttribute('aria-label')) el.setAttribute('aria-label', el.textContent.trim().replace(/\s+/g, ' '));
+  walk(el);
+  return chars;
+}
+
 /* ---------------- Fit giant type to its container width ---------------- */
 function initFit() {
   const items = $$('[data-fit]');
@@ -117,7 +151,8 @@ function initFit() {
   const fit = () => items.forEach(el => {
     const inner = $('.fit-inner', el);
     if (!inner) return;
-    const avail = el.clientWidth;
+    const cs = getComputedStyle(el);
+    const avail = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     el.style.fontSize = '100px';
     const w = inner.getBoundingClientRect().width;
     if (w > 0 && avail > 0) el.style.fontSize = `${Math.floor((100 * avail / w) * 100) / 100}px`;
@@ -125,7 +160,7 @@ function initFit() {
   fit();
   document.fonts?.ready.then(fit);
   let t;
-  addEventListener('resize', () => { clearTimeout(t); t = setTimeout(fit, 120); }, { passive: true });
+  addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { fit(); requestTick(); }, 120); }, { passive: true });
 }
 
 /* ---------------- Marquees (measured, seamless) ---------------- */
@@ -142,62 +177,99 @@ function initMarquees() {
       const w = group.getBoundingClientRect().width;
       track.style.setProperty('--shift', `${w}px`);
       track.style.setProperty('--dur', `${Math.max(18, w / (Number(m.dataset.speed) || 60))}s`);
+      m._groupWidth = w;
     };
     fill();
     addEventListener('resize', fill, { passive: true });
   });
 }
 
-/* ---------------- Scroll engine (one rAF, only while scrolling) ---------------- */
-let vh = innerHeight, lastSy = scrollY, ticking = false;
+/* ---------------- Scroll / frame engine ---------------- */
+let vh = innerHeight, vw = innerWidth, sy = scrollY, lastSy = scrollY, velocity = 0;
+let ticking = false, settleFrames = 0;
+const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
 const state = {};
 const requestTick = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
 
 function collect() {
-  state.header = $('.site-header');
-  state.heroImg = $('.hero-frame img, .hero-frame video');
-  state.hero = $('.hero');
-  state.scaleIn = $$('[data-scale-in]');
+  state.heroFrame = $('[data-hero-frame]');
+  state.heroMedia = $('[data-hero-parallax]');
+  state.heroContent = $('[data-hero-content]');
+  state.chroma = $$('[data-chroma]');
+  state.mega = $$('[data-mega]');
+  state.scaleIn = $$('[data-scale-in] .work-media');
+  state.reveals = $$('[data-char-reveal]').map(el => ({ el, chars: el._chars || (el._chars = $$('.ch', el)), on: -1 }));
   state.parallax = $$('[data-speed-y]');
   state.stack = $$('[data-stack] > .step-card');
-  state.bar = $('.action-bar');
+  state.flow = $$('[data-flow]').map(el => ({ el, rows: $$('.marquee', el) }));
+  state.header = $('.site-header');
 }
 
-function frame() {
+function frame(now) {
   ticking = false;
-  const sy = scrollY;
+  sy = scrollY;
   const dv = sy - lastSy;
   lastSy = sy;
+  velocity = lerp(velocity, dv, 0.18);
   const still = reduced.matches;
 
+  // Header: solid after leaving the top, tucks away while scrolling down.
   if (state.header) {
-    state.header.classList.toggle('is-solid', sy > 24);
-    if (!root.classList.contains('menu-open')) state.header.classList.toggle('is-hidden', dv > 4 && sy > vh ? true : dv < -2 ? false : state.header.classList.contains('is-hidden'));
+    state.header.classList.toggle('is-solid', sy > 40);
+    if (!root.classList.contains('menu-open')) state.header.classList.toggle('is-hidden', dv > 4 && sy > vh * 0.9 ? true : dv < -2 ? false : state.header.classList.contains('is-hidden'));
   }
 
-  // Mobile action bar appears once the hero CTAs are out of view.
-  if (state.bar) {
-    const heroBottom = state.hero ? state.hero.getBoundingClientRect().bottom : vh * 0.6 - sy;
-    const nearEnd = sy + vh > document.documentElement.scrollHeight - 220;
-    state.bar.classList.toggle('is-on', heroBottom < vh * 0.25 && !nearEnd);
-  }
-
-  if (state.heroImg && !still) {
+  // Hero: recedes (scale + radius) as the next section slides over it.
+  if (state.heroFrame && !still) {
     const p = clamp(sy / vh);
-    state.heroImg.style.transform = `translate3d(0, ${(p * 60).toFixed(1)}px, 0) scale(${(1.06 + p * 0.06).toFixed(4)})`;
+    state.heroFrame.style.transform = `scale(${1 - p * 0.1})`;
+    state.heroFrame.style.borderRadius = `${p * 28}px`;
+    state.heroFrame.style.filter = p > 0.01 ? `brightness(${1 - p * 0.55})` : '';
+    if (state.heroContent) state.heroContent.style.transform = `translate3d(${pointer.x * 8}px, ${pointer.y * 6 - p * 90}px, 0)`;
+    if (state.heroMedia) state.heroMedia.style.transform = `translate3d(${pointer.x * -16}px, ${pointer.y * -12 + p * 60}px, 0) scale(1.04)`;
   }
 
+  // Registration split on the wordmark from pointer + scroll velocity.
+  if (state.chroma.length && !still) {
+    const split = clamp(Math.abs(velocity) * 0.12 + Math.hypot(pointer.x - pointer.tx, pointer.y - pointer.ty) * 14 + 1, 0, 4);
+    state.chroma.forEach(el => el.style.setProperty('--split', split.toFixed(2)));
+  }
+
+  // Giant works headline shrinks back as projects take the stage.
+  state.mega.forEach(el => {
+    if (still) return;
+    const host = el.closest('section');
+    const r = host.getBoundingClientRect();
+    const p = clamp((-r.top + vh * 0.1) / (vh * 0.9));
+    el.style.transform = `scale(${1 - easeOut(p) * 0.22})`;
+    el.style.opacity = String(1 - easeOut(p) * 0.82);
+  });
+
+  // Project media grows towards full size while entering.
   state.scaleIn.forEach(el => {
     if (still) { el.style.transform = ''; return; }
     const r = el.getBoundingClientRect();
     if (r.top > vh * 1.2 || r.bottom < -vh * 0.2) return;
-    const p = easeOut(clamp((vh - r.top) / (vh * 0.8)));
-    el.style.transform = `scale(${(0.9 + p * 0.1).toFixed(4)})`;
+    const p = easeOut(clamp((vh - r.top) / (vh * 0.85)));
+    el.style.transform = `scale(${0.82 + p * 0.18})`;
+    el.style.borderRadius = `${40 - p * 26}px`;
   });
 
+  // Letters light up as the sentence travels through the viewport.
+  state.reveals.forEach(item => {
+    const r = item.el.getBoundingClientRect();
+    const start = vh * 0.88, range = vh * 0.5 + r.height * 0.5;
+    const p = still ? 1 : clamp((start - r.top) / range);
+    const count = Math.round(p * item.chars.length);
+    if (count === item.on) return;
+    item.chars.forEach((c, i) => c.classList.toggle('on', i < count));
+    item.on = count;
+  });
+
+  // Differential parallax for media compositions.
   state.parallax.forEach(el => {
     if (still) return;
-    const r = el.parentElement.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
     if (r.bottom < -200 || r.top > vh + 200) return;
     const offset = (r.top + r.height / 2 - vh / 2) * Number(el.dataset.speedY);
     el.style.transform = `translate3d(0, ${offset.toFixed(1)}px, 0)`;
@@ -210,16 +282,94 @@ function frame() {
     const r = card.getBoundingClientRect();
     const nr = next.getBoundingClientRect();
     const t = clamp((r.bottom - nr.top) / r.height);
-    card.style.transform = `scale(${1 - easeOut(t) * 0.07})`;
-    card.style.filter = t > 0 ? `brightness(${1 - t * 0.3})` : '';
+    card.style.transform = `scale(${1 - easeOut(t) * 0.08})`;
+    card.style.filter = t > 0 ? `brightness(${1 - t * 0.45})` : '';
   });
+
+  // Scroll-coupled typography rows (approach section).
+  state.flow.forEach(f => {
+    const r = f.el.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > vh) return;
+    f.rows.forEach((row, i) => {
+      const w = row.firstElementChild?.getBoundingClientRect().width || 1;
+      const base = (now || 0) * 0.02 * (still ? 0 : 1) + (still ? 0 : sy * 0.45);
+      const x = ((base % w) + w) % w;
+      row.style.transform = `translate3d(${i % 2 ? x - w : -x}px, 0, 0)`;
+    });
+  });
+
+  updateServices();
+
+  // Pointer easing.
+  pointer.x = lerp(pointer.x, pointer.tx, 0.08);
+  pointer.y = lerp(pointer.y, pointer.ty, 0.08);
+  const moving = Math.abs(pointer.x - pointer.tx) > 0.001 || Math.abs(pointer.y - pointer.ty) > 0.001 || Math.abs(velocity) > 0.05;
+  const flowVisible = state.flow.some(f => { const r = f.el.getBoundingClientRect(); return r.bottom > 0 && r.top < vh; });
+  if (moving || flowVisible || svc.moving) settleFrames = 20;
+  if (settleFrames-- > 0) requestTick();
 }
 
 function initEngine() {
   collect();
   addEventListener('scroll', requestTick, { passive: true });
-  addEventListener('resize', () => { vh = innerHeight; requestTick(); }, { passive: true });
+  addEventListener('resize', () => { vh = innerHeight; vw = innerWidth; sizeServices(); requestTick(); }, { passive: true });
+  addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse') return;
+    pointer.tx = (e.clientX / vw) * 2 - 1;
+    pointer.ty = (e.clientY / vh) * 2 - 1;
+    requestTick();
+  }, { passive: true });
+  reduced.addEventListener?.('change', requestTick);
   requestTick();
+}
+
+/* ---------------- Services: 3D ring (desktop) / snap rail (touch) ---------------- */
+const svc = { section: null, cards: [], links: [], current: 0, moving: false, enabled: false };
+const svc3d = matchMedia('(min-width: 1024px) and (pointer: fine)');
+
+function initServices() {
+  svc.section = $('[data-services]');
+  if (!svc.section) return;
+  svc.cards = $$('.svc', svc.section);
+  svc.links = $$('.svc-index a', svc.section);
+  sizeServices();
+  svc3d.addEventListener?.('change', () => { sizeServices(); requestTick(); });
+}
+
+function sizeServices() {
+  if (!svc.section) return;
+  svc.enabled = svc3d.matches && !reduced.matches && svc.cards.length > 1;
+  svc.section.classList.toggle('is-3d', svc.enabled);
+  svc.section.style.height = svc.enabled ? `${100 + (svc.cards.length - 1) * 42}vh` : '';
+  if (!svc.enabled) svc.cards.forEach(c => { c.style.transform = ''; c.style.opacity = ''; c.style.zIndex = ''; c.style.pointerEvents = ''; c.removeAttribute('tabindex'); });
+}
+
+function updateServices() {
+  if (!svc.enabled) { svc.moving = false; return; }
+  const r = svc.section.getBoundingClientRect();
+  const total = r.height - vh;
+  const p = clamp(-r.top / total);
+  const target = p * (svc.cards.length - 1);
+  svc.current = lerp(svc.current, target, 0.12);
+  svc.moving = Math.abs(svc.current - target) > 0.002;
+  const step = 52; // degrees between cards on the ring
+  const radius = Math.min(vw * 0.26, 420);
+  svc.cards.forEach((card, i) => {
+    const rel = i - svc.current;
+    const a = rel * step * Math.PI / 180;
+    const x = Math.sin(a) * radius;
+    const z = (Math.cos(a) - 1) * radius;
+    const y = rel * 34;
+    const depth = clamp(1 - Math.abs(rel) * 0.38);
+    card.style.transform = `translate(-50%, -50%) translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, ${z.toFixed(1)}px) rotateY(${(rel * step).toFixed(2)}deg)`;
+    card.style.opacity = Math.abs(rel) > 2.4 ? '0' : (0.12 + depth * 0.88).toFixed(3);
+    card.style.zIndex = String(100 - Math.round(Math.abs(rel) * 10));
+    const front = Math.abs(rel) < 0.5;
+    card.style.pointerEvents = front ? 'auto' : 'none';
+    card.tabIndex = front ? 0 : -1;
+  });
+  const active = Math.round(svc.current);
+  svc.links.forEach((l, i) => l.classList.toggle('is-active', i === active));
 }
 
 /* ---------------- Works filters ---------------- */
@@ -247,18 +397,25 @@ function initFilters() {
   if (wanted && $(`[data-filter="${CSS.escape(wanted)}"]`, bar)) apply(wanted);
 }
 
-/* ---------------- Hero video (when set in content/site.json) ---------------- */
+/* ---------------- Hero media (video or generative placeholder) ---------------- */
 function initHeroMedia() {
   const v = $('[data-hero-video]');
-  if (!v || v.dataset.bound) return;
-  v.dataset.bound = '';
-  const conn = navigator.connection;
-  const lite = conn && (conn.saveData || /2g/.test(conn.effectiveType || ''));
-  const src = (innerWidth < 768 && v.dataset.srcMobile) || v.dataset.src;
-  if (lite || !src) return;
-  v.src = src;
-  if (reduced.matches) v.removeAttribute('autoplay'); else v.play().catch(() => {});
-  new IntersectionObserver(([e]) => { if (reduced.matches) return; e.isIntersecting ? v.play().catch(() => {}) : v.pause(); }).observe(v);
+  if (v && !v.dataset.bound) {
+    v.dataset.bound = '';
+    const conn = navigator.connection;
+    const lite = conn && (conn.saveData || /2g/.test(conn.effectiveType || ''));
+    const src = (innerWidth < 768 && v.dataset.srcMobile) || v.dataset.src;
+    if (!lite && src) {
+      v.src = src;
+      if (reduced.matches) v.removeAttribute('autoplay'); else v.play().catch(() => {});
+      new IntersectionObserver(([e]) => { if (reduced.matches) return; e.isIntersecting ? v.play().catch(() => {}) : v.pause(); }).observe(v);
+    }
+  }
+  const c = $('[data-hero-gl]');
+  if (c && !c.dataset.bound) {
+    c.dataset.bound = '';
+    import('./hero-gl.js').then(m => m.start(c, { reduced: reduced.matches })).catch(() => {});
+  }
 }
 
 /* ---------------- Reveal on enter (used sparingly) ---------------- */
@@ -266,7 +423,7 @@ function initReveal() {
   const items = $$('[data-reveal]');
   if (!items.length) return;
   if (!('IntersectionObserver' in window)) { items.forEach(i => i.classList.add('is-in')); return; }
-  const io = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -10% 0px' });
+  const io = new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
   items.forEach(i => io.observe(i));
 }
 
@@ -278,7 +435,8 @@ async function routeProject() {
   const data = await loadContent('projects');
   const project = published(data?.projects).find(p => p.slug === m[1]);
   if (!project) return;
-  $('main').innerHTML = projectPage(project, data.projects);
+  const main = $('main');
+  main.innerHTML = projectPage(project, data.projects);
   document.title = `${project.title} — KROMAKOPIA`;
   initRoll(); initReveal(); collect(); requestTick();
 }
@@ -287,11 +445,15 @@ async function routeProject() {
 function boot() {
   initYear();
   initRoll();
-  initGlow();
+  initGlass();
   initMenu();
-  $$('.hero .rise').forEach((el, i) => el.style.setProperty('--i', i));
+  $$('[data-split]').forEach(splitChars);
+  $$('[data-char-reveal]').forEach(splitChars);
+  $$('.hero .ch').forEach((c, i) => c.style.setProperty('--i', i));
+  $$('.hero .word').forEach((w, i) => w.style.setProperty('--i', i));
   initFit();
   initMarquees();
+  initServices();
   initFilters();
   initHeroMedia();
   initReveal();
@@ -300,7 +462,7 @@ function boot() {
   hydrate();
   const ready = () => requestAnimationFrame(() => requestAnimationFrame(() => root.classList.remove('is-loading')));
   (document.fonts?.ready || Promise.resolve()).then(ready);
-  setTimeout(ready, 1200);
+  setTimeout(ready, 1400);
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
