@@ -1,5 +1,5 @@
 // KROMAKOPIA — interaction & motion engine (vanilla, no dependencies).
-import { worksList, workFilters, servicesList, heroMedia, projectPage, published, sig, esc } from './templates.mjs';
+import { worksList, workFilters, servicesList, svcIndex, heroMedia, projectPage, published, sig, esc } from './templates.mjs';
 
 const root = document.documentElement;
 // `?motion` previews the full motion design even when the OS asks for reduced motion.
@@ -14,6 +14,9 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
 root.classList.add('js');
+// Lazy modules inherit this file's ?v= so a deploy never mixes old and new code.
+const VER = new URL(import.meta.url).search;
+const mod = name => import(`./${name}${VER}`);
 
 /* ---------------- Content (CMS-editable JSON) ---------------- */
 const contentCache = {};
@@ -44,7 +47,7 @@ async function hydrate() {
     if (el.dataset.render === 'works' && projects) changed = swap(el, worksList(published(projects.projects).slice(0, limit))) || changed;
     if (el.dataset.render === 'filters' && projects) changed = swap(el, workFilters(projects.projects)) || changed;
     if (el.dataset.render === 'services' && services) changed = swap(el, servicesList(services.services)) || changed;
-    if (el.dataset.render === 'svc-index' && services) changed = swap(el, services.services.map((s, i) => `<a href="/hizmetler/${esc(s.slug)}/"><span>${String(i + 1).padStart(2, '0')}</span>${esc(s.title)}</a>`).join('')) || changed;
+    if (el.dataset.render === 'svc-index' && services) changed = swap(el, svcIndex(services.services)) || changed;
     if (el.dataset.render === 'hero-media' && site) changed = swap(el, heroMedia(site)) || changed;
   }
   if (changed) { initRoll(); initFilters(); initHeroMedia(); initServices(); collect(); requestTick(); }
@@ -63,7 +66,7 @@ function initRoll() {
 
 function initGlass() {
   document.addEventListener('pointermove', e => {
-    const b = e.target.closest?.('.btn-glass');
+    const b = e.target.closest?.('.btn-glass, .btn-cta');
     if (!b) return;
     const r = b.getBoundingClientRect();
     b.style.setProperty('--gx', `${((e.clientX - r.left) / r.width) * 100}%`);
@@ -299,7 +302,10 @@ function frame(now) {
   });
 
   updateServices();
+  updateFlowFilm();
   updateMarkGlow();
+  updateMagnets();
+  updatePreview();
   drawStarlight(now || performance.now());
 
   // Pointer easing.
@@ -307,7 +313,7 @@ function frame(now) {
   pointer.y = lerp(pointer.y, pointer.ty, 0.08);
   const moving = Math.abs(pointer.x - pointer.tx) > 0.001 || Math.abs(pointer.y - pointer.ty) > 0.001 || Math.abs(velocity) > 0.05;
   const flowVisible = state.flow.some(f => { const r = f.el.getBoundingClientRect(); return r.bottom > 0 && r.top < vh; });
-  if (moving || flowVisible || svc.moving || glow.moving || star.alive) settleFrames = 20;
+  if (moving || flowVisible || svc.moving || glow.moving || star.alive || film.moving || mag.moving || pv.moving) settleFrames = 20;
   if (settleFrames-- > 0) requestTick();
 }
 
@@ -334,6 +340,8 @@ function initServices() {
   if (!svc.section) return;
   svc.cards = $$('.svc', svc.section);
   svc.links = $$('.svc-index a', svc.section);
+  svc.track = $('.svc-track', svc.section);
+  svc.stage = $('.svc-stage', svc.section);
   sizeServices();
   if (!svc.bound) {
     svc.bound = true;
@@ -349,6 +357,7 @@ function sizeServices() {
   svc.enabled = svc3d.matches && svc.cards.length > 1;
   svc.section.classList.toggle('is-3d', svc.enabled);
   svc.section.style.height = svc.enabled ? `${100 + (svc.cards.length - 1) * 42}vh` : '';
+  if (!svc.enabled) { if (svc.track) svc.track.style.transform = ''; if (svc.stage) svc.stage.style.perspectiveOrigin = ''; }
   if (!svc.enabled) svc.cards.forEach(c => { c.style.transform = ''; c.style.opacity = ''; c.style.zIndex = ''; c.style.pointerEvents = ''; c.removeAttribute('tabindex'); });
 }
 
@@ -362,6 +371,12 @@ function updateServices() {
   svc.moving = Math.abs(svc.current - target) > 0.002;
   const step = 52; // degrees between cards on the ring
   const radius = Math.min(vw * 0.26, 420);
+  // The camera travels along the spiral: the helix tilts from above to below
+  // and the vanishing point follows, so depth reads as the ring turns.
+  if (svc.track) {
+    svc.track.style.transform = `rotateX(${(7 - p * 14).toFixed(2)}deg)`;
+    svc.stage.style.perspectiveOrigin = `50% ${(30 + p * 30).toFixed(1)}%`;
+  }
   svc.cards.forEach((card, i) => {
     const rel = i - svc.current;
     const a = rel * step * Math.PI / 180;
@@ -539,6 +554,249 @@ function drawStarlight(now) {
   ctx.globalAlpha = 1;
 }
 
+/* ---------------- Cinematic scroll film (Fikir → Çekim → Kurgu → Motion → Yayın) ---------------- */
+// Scroll-linked like the services ring: each production stage cuts into the
+// next with its own transition, and the frame closes into a 9:16 reel at the end.
+const film = { el: null, frame: null, layers: [], imgs: [], ui: {}, steps: [], num: null, name: null, cur: 0, stage: -1, moving: false };
+const FILM_NAMES = ['Fikir', 'Çekim', 'Kurgu', 'Motion', 'Yayın'];
+
+function initFlowFilm() {
+  film.el = $('[data-flow-film]');
+  if (!film.el) return;
+  film.frame = $('.ff-frame', film.el);
+  film.layers = $$('.ff-layer', film.el);
+  film.imgs = film.layers.map(l => $('img', l));
+  film.ui = { rec: $('.ff-rec', film.el), timeline: $('.ff-timeline', film.el), head: $('.ff-timeline b', film.el), motion: $('.ff-motion', film.el), words: $$('.ff-motion span', film.el), reel: $('.ff-reel', film.el), bars: $$('.ff-reel i', film.el) };
+  film.steps = $$('.flow-steps li');
+  film.num = $('.ff-num', film.el);
+  film.name = $('.ff-name', film.el);
+}
+
+function updateFlowFilm() {
+  if (!film.el) { film.moving = false; return; }
+  const r = film.el.getBoundingClientRect();
+  if (r.bottom < -100 || r.top > vh + 100) { film.moving = false; return; }
+  const target = clamp((vh * 0.74 - r.top) / (vh * 0.7));
+  film.cur = reduced.matches ? target : lerp(film.cur, target, 0.14);
+  film.moving = Math.abs(film.cur - target) > 0.0005;
+  const pos = film.cur * 4;
+  const seg = i => easeOut(clamp((pos - (i - 1) - 0.3) / 0.7)); // transition into stage i
+  const bump = (c, w = 0.7) => clamp(1 - Math.abs(pos - c) / w);
+  const [, l1, l2, l3, l4] = film.layers;
+  // Çekim wipes in from the right, Kurgu rises like a cut, Motion opens as an iris.
+  l1.style.clipPath = `inset(0 0 0 ${((1 - seg(1)) * 100).toFixed(2)}%)`;
+  l2.style.clipPath = `inset(${((1 - seg(2)) * 100).toFixed(2)}% 0 0 0)`;
+  l3.style.clipPath = `circle(${(seg(3) * 75).toFixed(2)}% at 62% 48%)`;
+  l4.style.opacity = seg(4).toFixed(3);
+  film.imgs.forEach((im, i) => { im.style.transform = `scale(${(1.14 - clamp(pos - i + 1, 0, 2) * 0.07).toFixed(4)})`; });
+  // The frame closes into a vertical 9:16 reel for "Yayın".
+  const v = easeOut(clamp((pos - 3.4) / 0.6));
+  film.frame.style.clipPath = `inset(0 ${(v * 34.18).toFixed(2)}% round ${(10 + v * 12).toFixed(1)}px)`;
+  const { rec, timeline, head, motion, words, reel, bars } = film.ui;
+  rec.style.opacity = bump(1).toFixed(3);
+  timeline.style.opacity = bump(2).toFixed(3);
+  head.style.left = `${(clamp((pos - 1.5) / 1.2) * 100).toFixed(1)}%`;
+  motion.style.opacity = bump(3, 0.6).toFixed(3);
+  words.forEach((w, j) => {
+    const e = easeOut(clamp((pos - 2.45 - j * 0.14) / 0.35));
+    w.style.transform = `translate3d(${((1 - e) * -40).toFixed(1)}%, 0, 0)`;
+    w.style.opacity = e.toFixed(3);
+  });
+  reel.style.opacity = v.toFixed(3);
+  bars.forEach((b, j) => { b.style.setProperty('--fill', clamp((pos - 3.6) * 3 - j).toFixed(3)); });
+  const stage = Math.min(4, Math.max(0, Math.round(pos)));
+  if (stage !== film.stage) {
+    film.stage = stage;
+    film.num.textContent = String(stage + 1).padStart(2, '0');
+    film.name.textContent = FILM_NAMES[stage];
+    film.steps.forEach((li, i) => li.classList.toggle('is-current', i === stage));
+  }
+}
+
+/* ---------------- Magnetic UI ---------------- */
+// Key buttons and links lean a few pixels towards the pointer and spring back;
+// a press dips them. `translate` composes with existing hover transforms.
+const MAG_SEL = '.btn, .menu-link, .svc-index a, .reels-arrow, .cta-row';
+const mag = { active: null, live: new Set(), state: new WeakMap(), moving: false };
+
+function initMagnetic() {
+  const on = () => finePointer.matches && !reduced.matches;
+  const st = el => { let s = mag.state.get(el); if (!s) { s = { x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0 }; mag.state.set(el, s); } return s; };
+  const release = () => { if (mag.active) { const s = st(mag.active); s.tx = s.ty = 0; mag.live.add(mag.active); mag.active = null; requestTick(); } };
+  document.addEventListener('pointermove', e => {
+    if (e.pointerType !== 'mouse' || !on()) return;
+    const el = e.target.closest?.(MAG_SEL);
+    if (el !== mag.active) release();
+    if (!el) return;
+    mag.active = el;
+    const r = el.getBoundingClientRect();
+    const s = st(el);
+    const big = el.classList.contains('menu-link') || el.classList.contains('cta-row');
+    const max = big ? 8 : 6;
+    s.tx = clamp((e.clientX - (r.left + r.width / 2)) * (big ? 0.06 : 0.22), -max, max);
+    s.ty = clamp((e.clientY - (r.top + r.height / 2)) * 0.3, -4, 4);
+    mag.live.add(el);
+    requestTick();
+  }, { passive: true });
+  document.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'mouse' || !on()) return;
+    const el = e.target.closest?.(MAG_SEL);
+    if (!el) return;
+    st(el).vy += 2.4; // a small press dip, then the spring settles it
+    mag.live.add(el);
+    requestTick();
+  });
+  document.addEventListener('pointerleave', release);
+  addEventListener('blur', release);
+}
+
+function updateMagnets() {
+  mag.moving = false;
+  mag.live.forEach(el => {
+    const s = mag.state.get(el);
+    s.vx = (s.vx + (s.tx - s.x) * 0.2) * 0.62;
+    s.vy = (s.vy + (s.ty - s.y) * 0.2) * 0.62;
+    s.x += s.vx; s.y += s.vy;
+    const rest = Math.abs(s.x - s.tx) < 0.05 && Math.abs(s.y - s.ty) < 0.05 && Math.abs(s.vx) < 0.05 && Math.abs(s.vy) < 0.05;
+    if (rest && !s.tx && !s.ty) { el.style.translate = ''; s.x = s.y = s.vx = s.vy = 0; mag.live.delete(el); return; }
+    el.style.translate = `${s.x.toFixed(2)}px ${s.y.toFixed(2)}px`;
+    if (!rest) mag.moving = true;
+  });
+}
+
+/* ---------------- Pointer-following media preview (service index) ---------------- */
+const pv = { el: null, clip: null, img: null, video: null, x: 0, y: 0, tx: 0, ty: 0, on: false, moving: false, w: 220, h: 275 };
+
+function initPreview() {
+  if (!finePointer.matches || pv.el) return;
+  const el = document.createElement('div');
+  el.className = 'cursor-preview';
+  el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = '<div class="cp-clip"><img alt="" decoding="async"><video muted loop playsinline preload="none"></video></div>';
+  document.body.append(el);
+  Object.assign(pv, { el, clip: $('.cp-clip', el), img: $('img', el), video: $('video', el) });
+  const aim = e => {
+    // Beside the pointer, flipped to the other side near the right edge, never off-screen.
+    let x = e.clientX + 28, y = e.clientY - pv.h * 0.5;
+    if (x + pv.w > vw - 12) x = e.clientX - pv.w - 28;
+    pv.tx = clamp(x, 12, vw - pv.w - 12);
+    pv.ty = clamp(y, 12, vh - pv.h - 12);
+  };
+  let warmed = false;
+  document.addEventListener('pointerover', e => {
+    if (e.pointerType !== 'mouse') return;
+    const a = e.target.closest?.('[data-preview]');
+    if (!a) return;
+    if (!warmed) { warmed = true; $$('[data-preview]').forEach(n => { const i = new Image(); i.src = n.dataset.preview; }); }
+    const vsrc = a.dataset.previewVideo;
+    pv.img.src = a.dataset.preview;
+    if (vsrc && !reduced.matches) { pv.video.src = vsrc; pv.video.play().catch(() => {}); el.classList.add('has-video'); }
+    else { pv.video.pause(); el.classList.remove('has-video'); }
+    aim(e);
+    if (!pv.on) { pv.x = pv.tx; pv.y = pv.ty; }
+    pv.on = true;
+    el.classList.add('is-on');
+    requestTick();
+  });
+  document.addEventListener('pointerout', e => {
+    const a = e.target.closest?.('[data-preview]');
+    if (!a || a.contains(e.relatedTarget)) return;
+    pv.on = false;
+    el.classList.remove('is-on');
+    pv.video.pause();
+  });
+  document.addEventListener('pointermove', e => { if (pv.on && e.pointerType === 'mouse') { aim(e); requestTick(); } }, { passive: true });
+  addEventListener('scroll', () => { if (pv.on) { pv.on = false; el.classList.remove('is-on'); pv.video.pause(); } }, { passive: true });
+}
+
+function updatePreview() {
+  if (!pv.el) return;
+  const k = reduced.matches ? 1 : 0.18;
+  pv.x = lerp(pv.x, pv.tx, k);
+  pv.y = lerp(pv.y, pv.ty, k);
+  pv.moving = pv.on && (Math.abs(pv.x - pv.tx) > 0.3 || Math.abs(pv.y - pv.ty) > 0.3);
+  pv.el.style.transform = `translate3d(${pv.x.toFixed(1)}px, ${pv.y.toFixed(1)}px, 0)`;
+}
+
+/* ---------------- Three.js scenes (desktop only, loaded on approach) ---------------- */
+const desktop3d = matchMedia('(min-width: 1024px) and (hover: hover) and (pointer: fine)');
+const liteNet = () => { const c = navigator.connection; return !!(c && (c.saveData || /2g/.test(c.effectiveType || ''))); };
+const near = (el, fn, margin = '600px') => {
+  const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { io.disconnect(); fn(); } }, { rootMargin: margin });
+  io.observe(el);
+};
+
+function initKObject() {
+  const host = $('[data-k-object]');
+  if (!host) return;
+  let inst = null, loading = false;
+  const load = () => {
+    if (inst || loading || !desktop3d.matches || liteNet()) return;
+    loading = true;
+    near(host, () => mod('k-object.js').then(m => { loading = false; if (desktop3d.matches) inst = m.start(host, { reduced: reduced.matches }); }).catch(() => { loading = false; }));
+  };
+  load();
+  desktop3d.addEventListener?.('change', () => { if (!desktop3d.matches && inst) { inst.destroy(); inst = null; } else load(); });
+}
+
+/* ---------------- Reels: detail dialog, touch rail, 3D orbit on desktop ---------------- */
+function initReels() {
+  const root = $('[data-reels]');
+  if (!root || root.dataset.bound) return;
+  root.dataset.bound = '';
+  const buttons = $$('.reel', root);
+  const dialog = $('[data-reel-dialog]', root);
+  const ctrl = $('.reels-ctrl', root);
+  const now = $('[data-reels-open]', root);
+  const items = buttons.map(b => {
+    const im = $('img', b), cap = $('.reel-cap', b);
+    return { title: $('b', cap).textContent, text: cap.lastChild.textContent.trim(), poster: im.getAttribute('src'), alt: im.alt, video: b.dataset.video || '' };
+  });
+  const open = i => {
+    const it = items[i];
+    if (!it || !dialog) return;
+    const media = $('.rd-media', dialog);
+    media.innerHTML = it.video
+      ? `<video src="${esc(it.video)}" poster="${esc(it.poster)}" muted loop playsinline ${reduced.matches ? '' : 'autoplay'} controls></video>`
+      : `<img src="${esc(it.poster)}" alt="${esc(it.alt)}">`;
+    $('h3', dialog).textContent = it.title;
+    $('.rd-body p', dialog).textContent = it.text;
+    dialog.showModal();
+  };
+  buttons.forEach((b, i) => b.addEventListener('click', () => open(i)));
+  dialog?.addEventListener('click', e => { if (e.target === dialog || e.target.closest('[data-reel-close]')) dialog.close(); });
+  dialog?.addEventListener('close', () => { $('.rd-media', dialog).innerHTML = ''; });
+
+  let orbit = null, loading = false;
+  const stage = $('.reels-stage', root);
+  const label = i => { now.innerHTML = `<span>${String(i + 1).padStart(2, '0')} / ${String(items.length).padStart(2, '0')}</span>${esc(items[i].title)}<em>Yakından bak</em>`; };
+  const load = () => {
+    if (orbit || loading || !desktop3d.matches || liteNet()) return;
+    loading = true;
+    near(stage, () => mod('reels-orbit.js').then(m => {
+      loading = false;
+      if (!desktop3d.matches) return;
+      orbit = m.start({ stage, items, reduced: reduced.matches, onFront: label, onOpen: open });
+      if (!orbit) return;
+      root.classList.add('is-3d');
+      ctrl.hidden = false;
+    }).catch(() => { loading = false; }));
+  };
+  $('[data-reels-prev]', root)?.addEventListener('click', () => orbit?.prev());
+  $('[data-reels-next]', root)?.addEventListener('click', () => orbit?.next());
+  now?.addEventListener('click', () => orbit && open(orbit.front()));
+  ctrl?.addEventListener('keydown', e => {
+    if (!orbit) return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); orbit.next(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); orbit.prev(); }
+  });
+  load();
+  desktop3d.addEventListener?.('change', () => {
+    if (!desktop3d.matches && orbit) { orbit.destroy(); orbit = null; root.classList.remove('is-3d'); ctrl.hidden = true; }
+    else load();
+  });
+}
+
 /* ---------------- Works filters ---------------- */
 function initFilters() {
   const bar = $('[data-render="filters"]');
@@ -581,7 +839,7 @@ function initHeroMedia() {
   const c = $('[data-hero-gl]');
   if (c && !c.dataset.bound) {
     c.dataset.bound = '';
-    import('./hero-gl.js').then(m => m.start(c, { reduced: reduced.matches })).catch(() => {});
+    mod('hero-gl.js').then(m => m.start(c, { reduced: reduced.matches })).catch(() => {});
   }
 }
 
@@ -623,6 +881,11 @@ function boot() {
   initFit();
   initMarquees();
   initServices();
+  initFlowFilm();
+  initMagnetic();
+  initPreview();
+  initReels();
+  initKObject();
   initFilters();
   initHeroMedia();
   initReveal();

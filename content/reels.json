@@ -1,0 +1,47 @@
+{
+  "note": "Gerçek proje videoları geldiğinde her kartın \"video\" alanına MP4 adresini yazın; poster ilk kare olarak kalır.",
+  "reels": [
+    {
+      "title": "Ürün tanıtımı",
+      "text": "Ürünü ışıkla, detayla ve ritimle anlatan kısa dikey video.",
+      "poster": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=540&h=960&q=74",
+      "alt": "Gri fon önünde üst üste dizilmiş ürün şişe ve kavanozları",
+      "video": ""
+    },
+    {
+      "title": "Kamera arkası",
+      "text": "Çekim gününden samimi kareler; markanın arkasındaki ekibi gösterir.",
+      "poster": "https://images.unsplash.com/photo-1768885509990-1ebfd3e0257b?auto=format&fit=crop&w=540&h=960&q=74",
+      "alt": "Dış mekânda kamera ekipmanını kullanan iki çekim ekibi üyesi",
+      "video": ""
+    },
+    {
+      "title": "Gimbal ile Reels",
+      "text": "Telefonla, akışa uygun hızda çekilen hareketli dikey içerik.",
+      "poster": "https://images.unsplash.com/photo-1785753734738-1804a736ab92?auto=format&fit=crop&w=540&h=960&q=74",
+      "alt": "Gimbal üzerindeki telefonla dikey video çekimi",
+      "video": ""
+    },
+    {
+      "title": "Mekân turu",
+      "text": "Restoranınızı, mağazanızı ya da stüdyonuzu birkaç saniyede gezdirir.",
+      "poster": "https://images.unsplash.com/photo-1635081475758-6e4bea5942bb?auto=format&fit=crop&w=540&h=960&q=74",
+      "alt": "Bir restoranda kamerayla yapılan mekân çekimi",
+      "video": ""
+    },
+    {
+      "title": "Stüdyo ışığı",
+      "text": "Kontrollü ışıkta ürün ve portre; seri içerik için temiz kareler.",
+      "poster": "https://images.unsplash.com/photo-1527011046414-4781f1f94f8c?auto=format&fit=crop&w=540&h=960&q=74",
+      "alt": "Softbox ışığı ve bitkilerle hazırlanmış stüdyo köşesi",
+      "video": ""
+    },
+    {
+      "title": "Kurgu ritmi",
+      "text": "Altyazı, geçiş ve motion ile izlenme süresini taşıyan kurgu.",
+      "poster": "https://images.unsplash.com/photo-1614963326505-843868e1d83a?auto=format&fit=crop&w=540&h=960&q=74",
+      "alt": "Kurgu yazılımında zaman çizelgesi açık bir monitör",
+      "video": ""
+    }
+  ]
+}

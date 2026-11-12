@@ -4,7 +4,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { esc, pad, img, chromaArt, worksList, workFilters, servicesList, heroMedia, projectPage, published, sig } from '../assets/js/templates.mjs';
+import { esc, pad, img, chromaArt, worksList, workFilters, servicesList, svcIndex as svcIndexHtml, reelsList, heroMedia, projectPage, published, sig } from '../assets/js/templates.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = p => JSON.parse(readFileSync(join(ROOT, p), 'utf8'));
@@ -12,6 +12,7 @@ const site = read('content/site.json');
 const { projects } = read('content/projects.json');
 const { services } = read('content/services.json');
 const stock = read('content/stock.json');
+const { reels } = read('content/reels.json');
 const live = published(projects);
 const URL_BASE = site.url.replace(/\/$/, '');
 const BRAND = site.brand;
@@ -19,7 +20,8 @@ const C = site.contact;
 const hash = p => createHash('sha1').update(readFileSync(join(ROOT, p))).digest('hex').slice(0, 8);
 const CSS_V = hash('assets/css/kromakopia.css');
 const PB_V = hash('assets/css/package-builder.css');
-const JS_V = hash('assets/js/kromakopia.js');
+// One version for the module graph: dynamic imports reuse it (see kromakopia.js).
+const JS_V = createHash('sha1').update(['kromakopia.js', 'templates.mjs', 'hero-gl.js', 'k-object.js', 'reels-orbit.js'].map(f => readFileSync(join(ROOT, 'assets/js', f))).join('')).digest('hex').slice(0, 8);
 const OG = `${URL_BASE}/assets/og-kromakopia.png`;
 const sitemap = [];
 
@@ -111,7 +113,7 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ''}<link rel="canonical
 <link rel="stylesheet" href="/assets/css/kromakopia.css?v=${CSS_V}">
 ${css.map(h => `<link rel="stylesheet" href="${h}">`).join('\n')}
 <script type="module" src="/assets/js/kromakopia.js?v=${JS_V}"></script>
-${page === 'home' ? '<link rel="modulepreload" href="/assets/js/hero-gl.js">\n' : ''}${scripts.map(s => (s.endsWith('.js') && !s.includes('package-builder') ? `<script type="module" src="${s}"></script>` : `<script defer src="${s}"></script>`)).join('\n')}
+${page === 'home' ? `<link rel="modulepreload" href="/assets/js/hero-gl.js?v=${JS_V}">\n` : ''}${scripts.map(s => (s.endsWith('.js') && !s.includes('package-builder') ? `<script type="module" src="${s}"></script>` : `<script defer src="${s}"></script>`)).join('\n')}
 ${lds}
 </head>
 <body${page ? ` data-page="${page}"` : ''}${bodyClass ? ` class="${bodyClass}"` : ''}>
@@ -183,6 +185,33 @@ const contentBlocks = () => CONTENT_BLOCKS.map((b, i) => `<article class="work" 
     </div>
   </a>
 </article>`).join('\n');
+// Cinematic scroll film: the five production stages turn into one another while scrolling.
+const crop = (key, w, h, q = 72) => `${stock[key].src.split('?')[0]}?auto=format&fit=crop&w=${w}&h=${h}&q=${q}`;
+const FILM = [['concept', 960, 540], ['crew', 960, 540], ['editing', 960, 540], ['production', 960, 540], ['socialPhone', 540, 960]];
+const flowFilm = () => `<figure class="flow-film" data-flow-film aria-hidden="true">
+  <div class="ff-frame">${FILM.map(([k, w, h], i) => `<div class="ff-layer${i === 4 ? ' ff-vertical' : ''}" data-stage="${i}"><img src="${crop(k, w, h)}" alt="" width="${w}" height="${h}" loading="lazy" decoding="async"></div>`).join('')}
+    <div class="ff-rec"><span class="ff-corner"></span><span class="ff-corner"></span><span class="ff-corner"></span><span class="ff-corner"></span><b>REC</b></div>
+    <div class="ff-timeline"><i></i><i></i><i></i><i></i><i></i><i></i><b></b></div>
+    <div class="ff-motion"><span>FİKİR.</span><span>GÖRÜNTÜ.</span><span>ETKİ.</span></div>
+    <div class="ff-reel"><i></i><i></i><i></i></div>
+  </div>
+  <figcaption class="ff-label"><span class="ff-num">01</span><span class="ff-name">${FLOW[0]}</span></figcaption>
+</figure>`;
+
+// Vertical reels orbit (3D on desktop, swipeable rail on touch). Posters are licensed stock.
+const reelsBlock = () => `<div class="reels" data-reels>
+  <div class="reels-copy">
+    <h3 class="reels-title">Reels ve kısa video</h3>
+    <p>Dikey formatta ürettiğimiz içerik türleri. Birini seçip yakından bakın.</p>
+    <div class="reels-ctrl" hidden><p class="reels-hint">Sürükleyerek ya da oklarla çevirin.</p><button type="button" class="reels-arrow" data-reels-prev aria-label="Önceki içerik"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 10H4M9 5l-5 5 5 5"/></svg></button><button type="button" class="reels-arrow" data-reels-next aria-label="Sonraki içerik">${arrow}</button><button type="button" class="reels-now" data-reels-open aria-live="polite"></button></div>
+  </div>
+  <div class="reels-stage"><ul class="reels-list" aria-label="Dikey içerik türleri">${reelsList(reels)}</ul></div>
+  <dialog class="reel-dialog" data-reel-dialog aria-labelledby="reel-dialog-title">
+    <div class="rd-media"></div>
+    <div class="rd-body"><h3 id="reel-dialog-title"></h3><p></p><div class="actions"><a class="btn btn-solid btn-cta btn-sm" href="/proje-baslat/?hizmet=sosyal-medya-ve-icerik">Benzer içerik iste</a><button type="button" class="btn btn-line btn-sm" data-reel-close>Kapat</button></div></div>
+  </dialog>
+</div>`;
+
 const stack = () => `<div class="stack" data-stack>${STAGES.map((s, i) => `
   <article class="step-card" style="--n:${i}">
     <div class="step-copy">
@@ -213,7 +242,7 @@ const ctaSection = (title = 'AKLINIZDA BİR PROJE Mİ VAR?', sub = 'Birlikte hay
 /* ---------------- Home ---------------- */
 function home() {
   const svcHtml = servicesList(services);
-  const svcIndex = services.map((s, i) => `<a href="/hizmetler/${s.slug}/"><span>${pad(i + 1)}</span>${esc(s.title)}</a>`).join('');
+  const svcIndex = svcIndexHtml(services);
   const hm = heroMedia(site);
   const body = `
 <section class="hero" aria-labelledby="hero-title">
@@ -236,8 +265,9 @@ function home() {
 <section class="works works-content light" id="icerik" aria-labelledby="works-title">
   <div class="shell">
     <div class="works-head"><h2 id="works-title" class="h-mega" data-mega data-fit><span class="fit-inner">İÇERİK.</span></h2></div>
-    <div class="works-bar"><p>Sosyal medya ve tanıtım içeriğinizi ayrı ayrı ekiplerle çözmek zorunda değilsiniz. Fotoğraf, video, motion ve yayını tek elde topluyoruz.</p><ol class="flow-steps" aria-label="Üretim akışı">${FLOW.map(f => `<li>${f}</li>`).join('')}</ol></div>
+    <div class="works-bar"><div class="works-bar-copy"><p>Sosyal medya ve tanıtım içeriğinizi ayrı ayrı ekiplerle çözmek zorunda değilsiniz. Fotoğraf, video, motion ve yayını tek elde topluyoruz.</p><ol class="flow-steps" aria-label="Üretim akışı">${FLOW.map(f => `<li>${f}</li>`).join('')}</ol></div>${flowFilm()}</div>
     <div class="works-list">${contentBlocks()}</div>
+    ${reelsBlock()}
     <div class="works-end actions"><a class="btn btn-solid btn-cta" href="/proje-baslat/">Teklif Al</a><a class="btn btn-line" href="/calismalar/">Tamamlanan işler</a></div>
   </div>
 </section>
@@ -261,7 +291,7 @@ ${band()}
   </div>
 </section>
 <section class="approach" aria-labelledby="approach-title">
-  <div class="shell"><h2 id="approach-title" class="h-display">TEK FİKİR.<br>BİRDEN FAZLA DİSİPLİN.</h2></div>
+  <div class="shell approach-head"><h2 id="approach-title" class="h-display">TEK FİKİR.<br>BİRDEN FAZLA DİSİPLİN.</h2><div class="k-object" data-k-object aria-hidden="true"></div></div>
   <div class="approach-type" data-flow aria-hidden="true">
     <div class="marquee">${'<div class="marquee-group"><span>Fotoğraf /</span><span>Video /</span><span>Kurgu /</span><span>Motion /</span></div>'.repeat(3)}</div>
     <div class="marquee marquee-reverse">${'<div class="marquee-group"><span>Reels /</span><span>Kampanya /</span><span>Yayın /</span><span>Reklam /</span></div>'.repeat(3)}</div>

@@ -97,6 +97,23 @@ export function servicesList(services) {
   return (services || []).map(serviceCard).join('\n');
 }
 
+// Service index (desktop 3D layout). data-preview feeds the pointer-following preview.
+export function svcIndex(services) {
+  return (services || []).map((s, i) => {
+    const pv = s.preview || {};
+    const attrs = pv.src ? ` data-preview="${esc(pv.src)}"${pv.video ? ` data-preview-video="${esc(pv.video)}"` : ''}` : '';
+    return `<a href="/hizmetler/${esc(s.slug)}/"${attrs}><span>${pad(i + 1)}</span>${esc(s.title)}</a>`;
+  }).join('');
+}
+
+// Vertical reels: an accessible list of buttons that the 3D orbit enhances on desktop.
+export function reelsList(reels) {
+  return (reels || []).map((r, i) => `<li><button type="button" class="reel" data-reel="${i}"${r.video ? ` data-video="${esc(r.video)}"` : ''}>
+  <img src="${esc(r.poster)}" alt="${esc(r.alt || '')}" width="540" height="960" loading="lazy" decoding="async">
+  <span class="reel-cap"><b>${esc(r.title)}</b>${esc(r.text)}</span>
+</button></li>`).join('\n');
+}
+
 export function heroMedia(site) {
   const hero = site?.hero || {};
   if (!hero.video) return `<canvas class="hero-gl" data-hero-gl aria-hidden="true"></canvas>`;

@@ -23,7 +23,12 @@
         "stock": true
       },
       "projects": [],
-      "redirectFrom": []
+      "redirectFrom": [],
+      "preview": {
+        "src": "https://images.unsplash.com/photo-1632187981988-40f3cbaeef5e?auto=format&fit=crop&w=480&h=600&q=72",
+        "alt": "",
+        "video": ""
+      }
     },
     {
       "slug": "kreatif-kampanyalar",
@@ -47,7 +52,12 @@
         "stock": true
       },
       "projects": [],
-      "redirectFrom": []
+      "redirectFrom": [],
+      "preview": {
+        "src": "https://images.unsplash.com/photo-1785844313180-394cdbb55c34?auto=format&fit=crop&w=480&h=600&q=72",
+        "alt": "",
+        "video": ""
+      }
     },
     {
       "slug": "sosyal-medya-ve-icerik",
@@ -75,7 +85,12 @@
       ],
       "redirectFrom": [
         "content-production"
-      ]
+      ],
+      "preview": {
+        "src": "https://images.unsplash.com/photo-1785753734738-1804a736ab92?auto=format&fit=crop&w=480&h=600&q=72",
+        "alt": "",
+        "video": ""
+      }
     },
     {
       "slug": "dijital-reklam",
@@ -101,7 +116,12 @@
       "projects": [],
       "redirectFrom": [
         "performance-marketing"
-      ]
+      ],
+      "preview": {
+        "src": "https://images.unsplash.com/photo-1764663908318-54b7756776a9?auto=format&fit=crop&w=480&h=600&q=72",
+        "alt": "",
+        "video": ""
+      }
     },
     {
       "slug": "marka-kimligi",
@@ -129,7 +149,12 @@
       ],
       "redirectFrom": [
         "brand-systems"
-      ]
+      ],
+      "preview": {
+        "src": "https://images.unsplash.com/photo-1758876201723-9f050343325c?auto=format&fit=crop&w=480&h=600&q=72",
+        "alt": "",
+        "video": ""
+      }
     },
     {
       "slug": "web-ve-dijital-deneyim",
@@ -157,7 +182,12 @@
       ],
       "redirectFrom": [
         "growth-revenue"
-      ]
+      ],
+      "preview": {
+        "src": "https://images.unsplash.com/photo-1777019075773-a231fa4e4534?auto=format&fit=crop&w=480&h=600&q=72",
+        "alt": "",
+        "video": ""
+      }
     }
   ]
 }
