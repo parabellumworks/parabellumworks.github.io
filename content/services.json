@@ -1,70 +1,159 @@
 {
   "services": [
     {
-      "slug": "marka-kimligi",
-      "title": "Marka Kimliği",
-      "short": "Markanın nasıl göründüğünü, nasıl konuştuğunu ve nerede tanındığını tek bir sistemde kuruyoruz.",
-      "lead": "Logo bir başlangıç. Asıl iş, markanın ekranda, rafta ve sokakta aynı karakterle tanınmasını sağlamak.",
-      "includes": ["Marka konumu ve görsel yön", "Logo ve işaret sistemi", "Renk, tipografi ve görsel dil", "Marka kullanım kılavuzu", "Ambalaj, menü ve basılı uygulamalar"],
-      "fit": "Yeni kurulan, yenilenen ya da farklı kanallarda farklı görünen markalar için.",
-      "image": { "src": "/assets/cases/zeyzey-beauty/brand-system-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/brand-system-640.webp 640w, /assets/cases/zeyzey-beauty/brand-system-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty için tasarlanan marka sistemi" },
-      "projects": ["zeyzey-beauty"],
-      "redirectFrom": ["brand-systems"]
-    },
-    {
       "slug": "fotograf-ve-video",
       "title": "Fotoğraf ve Video",
-      "short": "Ürün, mekân, model ve lifestyle çekimlerini fikirden kurguya kadar planlayıp üretiyoruz.",
-      "lead": "İyi bir çekim kameradan önce başlar: konu, ışık, kadraj ve kullanılacağı kanal en baştan bellidir.",
-      "includes": ["Çekim konsepti ve moodboard", "Ürün ve e-ticaret fotoğrafı", "Model ve lifestyle çekimleri", "Reels ve kısa video kurgusu", "Kampanya görselleri ve renk düzenleme"],
-      "fit": "Moda, kozmetik, restoran ve e-ticaret markaları; ürününü ya da mekânını güçlü görüntülerle göstermek isteyenler için.",
-      "image": null,
+      "short": "Ürün, model, lifestyle ve mekân çekimlerini kendi ekibimizle planlıyor, çekiyor ve kurguluyoruz.",
+      "lead": "İyi bir çekim kameradan önce başlar. Konuyu, ışığı, kadrajı ve içeriğin nerede kullanılacağını en baştan planlıyor, çekimi ve kurguyu kendi ekibimizle yapıyoruz.",
+      "includes": [
+        "Çekim konsepti, moodboard ve çekim planı",
+        "Ürün ve e-ticaret fotoğrafı",
+        "Model, moda ve lifestyle çekimleri",
+        "Reels, tanıtım filmi ve kısa video kurgusu",
+        "Renk düzenleme ve kanala göre formatlar"
+      ],
+      "fit": "Moda, güzellik, lifestyle, restoran ve e-ticaret markaları; ürününü, mekânını ya da hizmetini güçlü görüntülerle anlatmak isteyen herkes.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1641236210747-48bc43e4517f?auto=format&fit=crop&w=1200&q=78",
+        "srcset": "https://images.unsplash.com/photo-1641236210747-48bc43e4517f?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1641236210747-48bc43e4517f?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1641236210747-48bc43e4517f?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1641236210747-48bc43e4517f?auto=format&fit=crop&w=1600&q=78 1600w",
+        "width": 6000,
+        "height": 4000,
+        "alt": "Stüdyoda siyah kıyafetli modeli fotoğraflayan fotoğrafçı",
+        "stock": true
+      },
       "projects": [],
       "redirectFrom": []
     },
     {
       "slug": "kreatif-kampanyalar",
       "title": "Kreatif Kampanyalar",
-      "short": "Bir lansmanı, sezonu ya da yeni ürünü tek bir güçlü fikir etrafında kanallara yayıyoruz.",
-      "lead": "Kampanya bir görsel serisi değil, insanların hatırlayacağı tek bir fikir. Sonra o fikri her formatta doğru anlatırız.",
-      "includes": ["Kreatif fikir ve kampanya konsepti", "Anahtar görsel ve mesaj sistemi", "Çekim ve prodüksiyon planı", "Sosyal medya, reklam ve basılı uyarlamalar", "Lansman takvimi"],
-      "fit": "Lansman, sezon geçişi, yeniden konumlanma veya özel gün kampanyası planlayan markalar için.",
-      "image": null,
+      "short": "Lansman, sezon ya da yeni ürün için tek bir güçlü fikir buluyor; çekimini ve tüm formatlarını üretiyoruz.",
+      "lead": "Kampanya bir görsel yığını değil, insanların hatırlayacağı tek bir fikir. Fikri buluyor, çekiyor ve her kanal için doğru formatta üretiyoruz.",
+      "includes": [
+        "Kampanya fikri ve kreatif konsept",
+        "Anahtar görsel ve mesaj sistemi",
+        "Kampanya çekimi ve prodüksiyon",
+        "Sosyal medya, reklam ve basılı uyarlamalar",
+        "Lansman ve yayın takvimi"
+      ],
+      "fit": "Lansman, sezon geçişi, yeni koleksiyon veya özel gün kampanyası planlayan markalar için.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1612731486606-2614b4d74921?auto=format&fit=crop&w=1200&q=78",
+        "srcset": "https://images.unsplash.com/photo-1612731486606-2614b4d74921?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1612731486606-2614b4d74921?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1612731486606-2614b4d74921?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1612731486606-2614b4d74921?auto=format&fit=crop&w=1600&q=78 1600w",
+        "width": 6010,
+        "height": 4252,
+        "alt": "Turuncu fon önünde siyah ceketli modelle editoryal moda çekimi",
+        "stock": true
+      },
       "projects": [],
       "redirectFrom": []
     },
     {
       "slug": "sosyal-medya-ve-icerik",
       "title": "Sosyal Medya ve İçerik",
-      "short": "Markanın sesini her hafta aynı netlikte duyurmak için içeriği planlıyor, üretiyor ve yayınlıyoruz.",
-      "lead": "Düzenli paylaşmak yetmez; her içeriğin markayı aynı yöne taşıması gerekir.",
-      "includes": ["İçerik stratejisi ve aylık plan", "Gönderi, hikâye ve carousel tasarımı", "Reels fikirleri ve kurgu", "Profil düzeni ve görsel bütünlük", "Yayın yönetimi"],
-      "fit": "Hesabını düzenli ve markasına yakışır biçimde yönetmek isteyen ama buna zamanı kalmayan ekipler için.",
-      "image": { "src": "/assets/cases/zeyzey-beauty/social-storefront-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/social-storefront-640.webp 640w, /assets/cases/zeyzey-beauty/social-storefront-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty için kurgulanan sosyal medya vitrini" },
-      "projects": ["zeyzey-beauty"],
-      "redirectFrom": ["content-production"]
+      "short": "Her ay markanıza özel çekilmiş içeriklerle planlı, düzenli ve tutarlı bir akış kuruyoruz.",
+      "lead": "Hazır şablonlarla değil, markanız için çekilmiş içeriklerle çalışıyoruz. Planlıyor, üretiyor ve yayınlıyoruz.",
+      "includes": [
+        "Aylık içerik planı",
+        "Markaya özel fotoğraf ve video üretimi",
+        "Reels fikirleri ve kurgu",
+        "Gönderi, hikâye ve carousel tasarımı",
+        "Profil düzeni ve yayın yönetimi"
+      ],
+      "fit": "Hesabını düzenli ve markasına yakışır biçimde yürütmek isteyen ama buna zamanı kalmayan ekipler için.",
+      "image": {
+        "src": "/assets/cases/zeyzey-beauty/social-storefront-1122.webp",
+        "srcset": "/assets/cases/zeyzey-beauty/social-storefront-640.webp 640w, /assets/cases/zeyzey-beauty/social-storefront-1122.webp 1122w",
+        "width": 1122,
+        "height": 1402,
+        "alt": "Zeyzey Beauty için kurgulanan sosyal medya vitrini"
+      },
+      "projects": [
+        "zeyzey-beauty"
+      ],
+      "redirectFrom": [
+        "content-production"
+      ]
     },
     {
       "slug": "dijital-reklam",
       "title": "Dijital Reklam",
-      "short": "Meta reklamlarını doğru kreatif, doğru kitle ve takip edilebilir bir dönüşüm yoluyla yönetiyoruz.",
-      "lead": "Reklam bütçesi, kreatif güçlü olduğunda işe yarar. Biz ikisini aynı masada ele alıyoruz.",
-      "includes": ["Kampanya kurgusu ve hedefleme", "Reklam kreatifleri ve testleri", "Bütçe takibi ve optimizasyon", "Aylık performans değerlendirmesi", "Dönüşüm yolu önerileri"],
-      "fit": "Reklam veren ama talebe dönüşmediğini düşünen ya da reklama kontrollü başlamak isteyen markalar için.",
-      "image": null,
+      "short": "Reklam kreatiflerini çekiyor, kampanyaları kuruyor ve sonuçlara göre geliştiriyoruz.",
+      "lead": "Reklamda farkı çoğu zaman kreatif yaratır. Reklam görsellerini ve videolarını kendimiz üretiyor, kampanyayı da aynı masada yönetiyoruz.",
+      "includes": [
+        "Reklam kreatifi çekimi ve tasarımı",
+        "Meta kampanya kurgusu ve hedefleme",
+        "Kreatif testleri",
+        "Bütçe takibi ve optimizasyon",
+        "Aylık performans değerlendirmesi"
+      ],
+      "fit": "Reklam verip istediği dönüşü alamayan ya da reklama kontrollü başlamak isteyen markalar için.",
+      "image": {
+        "src": "https://images.unsplash.com/photo-1763970586854-62e14f07ae35?auto=format&fit=crop&w=1200&q=78",
+        "srcset": "https://images.unsplash.com/photo-1763970586854-62e14f07ae35?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1763970586854-62e14f07ae35?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1763970586854-62e14f07ae35?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1763970586854-62e14f07ae35?auto=format&fit=crop&w=1600&q=78 1600w",
+        "width": 6048,
+        "height": 4032,
+        "alt": "Stüdyo ışıkları altında ahşap üzerinde ürün şişesi çekimi",
+        "stock": true
+      },
       "projects": [],
-      "redirectFrom": ["performance-marketing"]
+      "redirectFrom": [
+        "performance-marketing"
+      ]
+    },
+    {
+      "slug": "marka-kimligi",
+      "title": "Marka Kimliği",
+      "short": "Çektiğimiz her içeriğin dayandığı görsel dili kuruyoruz: logo, renk, tipografi ve uygulamalar.",
+      "lead": "Güçlü içerik, net bir marka diliyle daha güçlü olur. Gerektiğinde markanın görünümünü baştan kuruyor ya da toparlıyoruz.",
+      "includes": [
+        "Marka konumu ve görsel yön",
+        "Logo ve işaret sistemi",
+        "Renk, tipografi ve görsel dil",
+        "Marka kullanım kılavuzu",
+        "Ambalaj, menü ve basılı uygulamalar"
+      ],
+      "fit": "Yeni kurulan, yenilenen ya da farklı kanallarda farklı görünen markalar için.",
+      "image": {
+        "src": "/assets/cases/zeyzey-beauty/brand-system-1122.webp",
+        "srcset": "/assets/cases/zeyzey-beauty/brand-system-640.webp 640w, /assets/cases/zeyzey-beauty/brand-system-1122.webp 1122w",
+        "width": 1122,
+        "height": 1402,
+        "alt": "Zeyzey Beauty için tasarlanan marka sistemi"
+      },
+      "projects": [
+        "zeyzey-beauty"
+      ],
+      "redirectFrom": [
+        "brand-systems"
+      ]
     },
     {
       "slug": "web-ve-dijital-deneyim",
       "title": "Web ve Dijital Deneyim",
-      "short": "Markayı anlatan, ziyaretçiyi yönlendiren ve talebi toplayan web siteleri ve dijital deneyimler tasarlıyoruz.",
-      "lead": "Bir web sitesi markanın vitrini olduğu kadar satış yolunun da parçası. İkisini birlikte tasarlıyoruz.",
-      "includes": ["Kurumsal web sitesi ve landing page", "Dijital menü ve katalog deneyimi", "Mobil öncelikli arayüz tasarımı", "İletişim ve teklif akışları", "Ölçüme hazır kurulum"],
+      "short": "Çektiğimiz görselleri doğru sahneye koyan web siteleri, dijital menüler ve teklif akışları tasarlıyoruz.",
+      "lead": "Bir web sitesi markanın vitrini olduğu kadar satış yolunun da parçası. Görseli, içeriği ve iletişim akışını birlikte tasarlıyoruz.",
+      "includes": [
+        "Kurumsal web sitesi ve landing page",
+        "Dijital menü ve katalog deneyimi",
+        "Mobil öncelikli arayüz tasarımı",
+        "İletişim ve teklif akışları",
+        "Ölçüme hazır kurulum"
+      ],
       "fit": "Sitesi olmayan, sitesi markasını yansıtmayan ya da ziyaretçisini talebe dönüştüremeyen işletmeler için.",
-      "image": { "src": "/assets/cases/italian-chef-pizza/menu-flow.jpg", "srcset": "", "width": 1229, "height": 1536, "alt": "İtalyan Chef Pizza için tasarlanan dijital menü akışı" },
-      "projects": ["italian-chef-pizza"],
-      "redirectFrom": ["growth-revenue"]
+      "image": {
+        "src": "/assets/cases/italian-chef-pizza/menu-flow.jpg",
+        "srcset": "",
+        "width": 1229,
+        "height": 1536,
+        "alt": "İtalyan Chef Pizza için tasarlanan dijital menü akışı"
+      },
+      "projects": [
+        "italian-chef-pizza"
+      ],
+      "redirectFrom": [
+        "growth-revenue"
+      ]
     }
   ]
 }

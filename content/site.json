@@ -1,9 +1,8 @@
 {
   "brand": "KROMAKOPIA",
-  "positioning": "Bağımsız kreatif stüdyo",
+  "positioning": "Markalar için içerik ve tanıtım üreten kreatif stüdyo",
   "url": "https://parabellumworks.github.io",
   "contact": {
-    "email": "hello@parabellum.works",
     "whatsapp": "905369471196",
     "whatsappLabel": "+90 536 947 11 96",
     "instagram": ""
@@ -12,6 +11,14 @@
     "video": "",
     "videoMobile": "",
     "poster": "",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1536293283170-b4604bbe272f?auto=format&fit=crop&w=1600&q=80",
+      "srcset": "https://images.unsplash.com/photo-1536293283170-b4604bbe272f?auto=format&fit=crop&w=720&q=75 720w, https://images.unsplash.com/photo-1536293283170-b4604bbe272f?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1536293283170-b4604bbe272f?auto=format&fit=crop&w=1600&q=80 1600w, https://images.unsplash.com/photo-1536293283170-b4604bbe272f?auto=format&fit=crop&w=2200&q=80 2200w",
+      "width": 3010,
+      "height": 2007,
+      "alt": "Mercan rengi fonun önünde softbox ışığıyla yapılan bir stüdyo çekimi",
+      "stock": true
+    },
     "alt": ""
   },
   "forms": {

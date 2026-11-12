@@ -3,7 +3,8 @@
 
   // All custom-package prices and variants live here; amounts are integer TL.
   const CONFIG = {
-    storageKey: 'eightfold.custom-package.v1',
+    storageKey: 'kromakopia.custom-package.v1',
+    legacyStorageKey: 'eightfold.custom-package.v1',
     whatsapp: '905369471196',
     services: [
       { id: 'social', number: '01', title: 'Sosyal Medya Yönetimi', description: 'Profilleriniz için düzenli yayın yönetimi.', billing: 'monthly', info: { what: 'Hesabınızın içerik akışını, paylaşım düzenini ve genel dijital görünümünü yönetiriz.', fit: 'Düzenli görünmek isteyen, içerik operasyonuna zamanı kalmayan işletmeler için.', scope: 'Yayın yönetimi dahil; içerik üretim adetleri seçilen kapsama göre belirlenir.' }, options: [
@@ -63,7 +64,7 @@
     return next;
   };
   let state = blankState();
-  try { state = sanitize(JSON.parse(localStorage.getItem(CONFIG.storageKey))); } catch { /* Storage is optional. */ }
+  try { state = sanitize(JSON.parse(localStorage.getItem(CONFIG.storageKey) ?? localStorage.getItem(CONFIG.legacyStorageKey))); } catch { /* Storage is optional. */ }
   const selectedItems = () => CONFIG.services.flatMap(service => state.selected[service.id]
     ? [{ ...service.options.find(o => o.id === state.variants[service.id]), key: service.id, billing: service.billing, unit: service.unit }]
     : []);
@@ -113,7 +114,7 @@
           </div>
           <p class="builder-meta-note" data-builder-meta hidden>Meta reklam bütçesi hizmet bedeline dahil değildir ve doğrudan Meta’ya ödenir.</p>
           <details class="builder-contact"><summary>İsim ekle <span>(isteğe bağlı)</span></summary><label for="builder-name">Ad Soyad <span>(isteğe bağlı)</span></label><input id="builder-name" name="builder-name" type="text" autocomplete="name" maxlength="80"><label for="builder-business">İşletme Adı <span>(isteğe bağlı)</span></label><input id="builder-business" name="builder-business" type="text" autocomplete="organization" maxlength="100"></details>
-          <a class="btn btn-solid builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">Paketi WhatsApp’ta konuşalım ${icon('up-right')}</a>
+          <a class="btn btn-primary builder-whatsapp" data-builder-whatsapp role="link" aria-disabled="true" tabindex="-1" target="_blank" rel="noopener noreferrer">Paketi WhatsApp’ta konuşalım ${icon('up-right')}</a>
           <button class="builder-text-button builder-edit" type="button" data-builder-edit>Seçimleri düzenle</button>
           <p class="builder-send-note">Mesaj WhatsApp’ta açılır. Göndermek sizin kontrolünüzde.</p>
           <p class="builder-test-note">Test fiyatlarıdır. Nihai kapsam ve ücret görüşmede netleştirilir.</p>

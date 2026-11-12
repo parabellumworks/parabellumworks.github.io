@@ -25,18 +25,27 @@ content:
         label: İletişim
         type: object
         fields:
-          - { name: email, label: E-posta, type: string }
           - { name: whatsapp, label: WhatsApp numarası (90 ile, boşluksuz), type: string }
           - { name: whatsappLabel, label: WhatsApp görünen numara, type: string }
           - { name: instagram, label: Instagram bağlantısı, type: string }
       - name: hero
         label: Ana sayfa hero videosu
         type: object
-        description: Boş bırakılırsa üretken ışık animasyonu gösterilir. MP4 (H.264), 1080p, 6–10 MB altı önerilir.
+        description: Video eklenirse görselin yerine oynar. MP4 (H.264), 1080p, 6–10 MB altı önerilir.
         fields:
           - { name: video, label: Video (masaüstü), type: file }
           - { name: videoMobile, label: Video (mobil, dikey 9:16), type: file }
           - { name: poster, label: Poster görseli, type: image }
+          - name: image
+            label: Hero görseli (video yokken)
+            type: object
+            fields:
+              - { name: src, label: Görsel, type: image }
+              - { name: alt, label: Alternatif metin, type: string }
+              - { name: width, type: number }
+              - { name: height, type: number }
+              - { name: srcset, type: string, hidden: true }
+              - { name: stock, label: Temsili (stok) görsel, type: boolean }
           - { name: alt, label: Videonun kısa açıklaması, type: string }
       - name: forms
         label: Formlar
@@ -158,5 +167,6 @@ content:
               - { name: width, type: number }
               - { name: height, type: number }
               - { name: srcset, type: string, hidden: true }
+              - { name: stock, label: Temsili (stok) görsel, type: boolean }
           - { name: projects, label: İlgili proje adresleri, type: string, list: true }
           - { name: redirectFrom, type: string, list: true, hidden: true }

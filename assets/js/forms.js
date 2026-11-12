@@ -4,7 +4,8 @@
 const loadContent = name => fetch(`/content/${name}.json`, { cache: 'no-cache' }).then(r => (r.ok ? r.json() : null)).catch(() => null);
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-const FALLBACK = { endpoint: 'https://formsubmit.co/ajax/hello@parabellum.works', email: 'hello@parabellum.works', whatsapp: '905369471196' };
+// The delivery endpoint lives only in content/site.json.
+const FALLBACK = { whatsapp: '905369471196' };
 
 const SUBJECTS = {
   brief: 'Yeni proje briefi',
@@ -84,13 +85,12 @@ function collect(form) {
   return out;
 }
 
-const textOf = (kind, pairs) => [`${SUBJECTS[kind] || 'Talep'} — KROMAKOPIA`, '', ...pairs.map(([k, v]) => `${k}: ${v}`)].join('\n');
+const textOf = (kind, pairs) => [`${SUBJECTS[kind] || 'Talep'} | KROMAKOPIA`, '', ...pairs.map(([k, v]) => `${k}: ${v}`)].join('\n');
 
 function fallbackLinks(kind, pairs, cfg) {
   const text = textOf(kind, pairs);
   return {
-    wa: `https://wa.me/${cfg.whatsapp}?text=${encodeURIComponent(text)}`,
-    mail: `mailto:${cfg.email}?subject=${encodeURIComponent(SUBJECTS[kind] || 'Talep')}&body=${encodeURIComponent(text)}`
+    wa: `https://wa.me/${cfg.whatsapp}?text=${encodeURIComponent(text)}`
   };
 }
 
@@ -108,6 +108,7 @@ async function send(kind, form, pairs, cfg) {
   if (email) payload._replyto = email;
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), 15000);
+  if (!cfg.endpoint) throw new Error('Form adresi tanımlı değil');
   try {
     const res = await fetch(cfg.endpoint, {
       method: 'POST',
@@ -228,7 +229,7 @@ function initForm(form, cfg) {
       }
     } catch (err) {
       status.dataset.state = 'error';
-      status.innerHTML = `Talebiniz şu an iletilemedi. Bilgileriniz kaybolmadı: <a href="${links.wa}" target="_blank" rel="noopener">WhatsApp ile gönderin</a> ya da <a href="${links.mail}">e-posta ile gönderin</a>.`;
+      status.innerHTML = `Talebiniz şu an iletilemedi. Bilgileriniz kaybolmadı: <a href="${links.wa}" target="_blank" rel="noopener">WhatsApp ile gönderin</a>; birkaç dakika sonra yeniden de deneyebilirsiniz.`;
       console.warn('[form]', err.message);
     } finally {
       submit.disabled = false;
@@ -250,8 +251,7 @@ async function initBooking(cfg) {
   const forms = $$('form[data-kform]');
   const site = await loadContent('site');
   const cfg = {
-    endpoint: site?.forms?.endpoint || FALLBACK.endpoint,
-    email: site?.contact?.email || FALLBACK.email,
+    endpoint: site?.forms?.endpoint || '',
     whatsapp: site?.contact?.whatsapp || FALLBACK.whatsapp,
     calLink: site?.booking?.calLink || ''
   };
