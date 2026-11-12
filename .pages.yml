@@ -1,0 +1,162 @@
+# Pages CMS (https://pagescms.org) — GitHub tabanlı içerik paneli.
+# Giriş GitHub hesabıyla yapılır; her kayıt bu depoya bir commit olarak düşer.
+media:
+  input: assets/uploads
+  output: /assets/uploads
+  rename: safe
+
+content:
+  - name: site
+    label: Site ayarları ve hero videosu
+    type: file
+    path: content/site.json
+    format: json
+    fields:
+      - name: brand
+        type: string
+        readonly: true
+      - name: positioning
+        label: Konumlandırma
+        type: string
+      - name: url
+        type: string
+        hidden: true
+      - name: contact
+        label: İletişim
+        type: object
+        fields:
+          - { name: email, label: E-posta, type: string }
+          - { name: whatsapp, label: WhatsApp numarası (90 ile, boşluksuz), type: string }
+          - { name: whatsappLabel, label: WhatsApp görünen numara, type: string }
+          - { name: instagram, label: Instagram bağlantısı, type: string }
+      - name: hero
+        label: Ana sayfa hero videosu
+        type: object
+        description: Boş bırakılırsa üretken ışık animasyonu gösterilir. MP4 (H.264), 1080p, 6–10 MB altı önerilir.
+        fields:
+          - { name: video, label: Video (masaüstü), type: file }
+          - { name: videoMobile, label: Video (mobil, dikey 9:16), type: file }
+          - { name: poster, label: Poster görseli, type: image }
+          - { name: alt, label: Videonun kısa açıklaması, type: string }
+      - name: forms
+        label: Formlar
+        type: object
+        fields:
+          - { name: endpoint, label: Form gönderim adresi, type: string }
+          - { name: budgets, label: Proje bütçe aralıkları, type: string, list: true }
+          - { name: shootBudgets, label: Çekim bütçe aralıkları, type: string, list: true }
+      - name: booking
+        label: Görüşme takvimi
+        type: object
+        fields:
+          - { name: calLink, label: "Cal.com bağlantısı (ör. kromakopia/tanisma)", type: string }
+          - { name: durationMinutes, label: Görüşme süresi (dk), type: number }
+
+  - name: projects
+    label: Portföy projeleri
+    type: file
+    path: content/projects.json
+    format: json
+    fields:
+      - name: projects
+        label: Projeler (sıra = yayın sırası)
+        type: object
+        list: true
+        fields:
+          - { name: slug, label: "Adres (ör. marka-adi, küçük harf ve tire)", type: string, required: true }
+          - { name: published, label: Yayında, type: boolean }
+          - { name: title, label: Proje adı, type: string, required: true }
+          - { name: sector, label: Sektör, type: string }
+          - { name: label, label: "Etiket (ör. Müşteri projesi, Marka konsepti)", type: string }
+          - name: categories
+            label: Filtre kategorileri
+            type: select
+            options:
+              multiple: true
+              values:
+                - { name: marka-kimligi, label: Marka Kimliği }
+                - { name: fotograf, label: Fotoğraf }
+                - { name: video, label: Video }
+                - { name: dijital, label: Dijital }
+                - { name: kampanya, label: Kampanya }
+          - { name: services, label: Verilen hizmetler, type: string, list: true }
+          - { name: summary, label: Kısa hikâye (kartta görünür), type: text }
+          - { name: intro, label: Proje sayfası giriş metni, type: text }
+          - name: cover
+            label: Kapak görseli
+            type: object
+            fields:
+              - { name: src, label: Görsel, type: image }
+              - { name: alt, label: Alternatif metin, type: string }
+              - { name: width, label: Genişlik (px), type: number }
+              - { name: height, label: Yükseklik (px), type: number }
+              - { name: srcset, type: string, hidden: true }
+          - { name: coverVideo, label: Kapak videosu (isteğe bağlı), type: file }
+          - name: chapters
+            label: Proje bölümleri
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Başlık, type: string }
+              - { name: text, label: Metin, type: text }
+              - { name: note, label: Not, type: string }
+              - name: layout
+                label: Yerleşim
+                type: select
+                options:
+                  values:
+                    - { name: wide, label: Geniş }
+                    - { name: split, label: Görsel solda }
+                    - { name: split-reverse, label: Görsel sağda }
+              - name: image
+                label: Görsel
+                type: object
+                fields:
+                  - { name: src, label: Görsel, type: image }
+                  - { name: alt, label: Alternatif metin, type: string }
+                  - { name: width, type: number }
+                  - { name: height, type: number }
+                  - { name: srcset, type: string, hidden: true }
+          - name: steps
+            label: Süreç adımları (isteğe bağlı)
+            type: object
+            list: true
+            fields:
+              - { name: title, type: string }
+              - { name: text, type: text }
+          - name: closing
+            label: Kapanış
+            type: object
+            fields:
+              - { name: title, type: string }
+              - { name: text, type: text }
+              - { name: service, label: İlgili hizmet adresi, type: string }
+
+  - name: services
+    label: Hizmetler
+    type: file
+    path: content/services.json
+    format: json
+    fields:
+      - name: services
+        label: Hizmetler
+        type: object
+        list: true
+        fields:
+          - { name: slug, type: string, readonly: true }
+          - { name: title, label: Başlık, type: string }
+          - { name: short, label: Kısa açıklama, type: text }
+          - { name: lead, label: Sayfa giriş metni, type: text }
+          - { name: includes, label: Neler dahil, type: string, list: true }
+          - { name: fit, label: Kimler için, type: text }
+          - name: image
+            label: Görsel
+            type: object
+            fields:
+              - { name: src, label: Görsel, type: image }
+              - { name: alt, label: Alternatif metin, type: string }
+              - { name: width, type: number }
+              - { name: height, type: number }
+              - { name: srcset, type: string, hidden: true }
+          - { name: projects, label: İlgili proje adresleri, type: string, list: true }
+          - { name: redirectFrom, type: string, list: true, hidden: true }

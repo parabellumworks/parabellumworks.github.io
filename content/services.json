@@ -1,0 +1,70 @@
+{
+  "services": [
+    {
+      "slug": "marka-kimligi",
+      "title": "Marka Kimliği",
+      "short": "Markanın nasıl göründüğünü, nasıl konuştuğunu ve nerede tanındığını tek bir sistemde kuruyoruz.",
+      "lead": "Logo bir başlangıç. Asıl iş, markanın ekranda, rafta ve sokakta aynı karakterle tanınmasını sağlamak.",
+      "includes": ["Marka konumu ve görsel yön", "Logo ve işaret sistemi", "Renk, tipografi ve görsel dil", "Marka kullanım kılavuzu", "Ambalaj, menü ve basılı uygulamalar"],
+      "fit": "Yeni kurulan, yenilenen ya da farklı kanallarda farklı görünen markalar için.",
+      "image": { "src": "/assets/cases/zeyzey-beauty/brand-system-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/brand-system-640.webp 640w, /assets/cases/zeyzey-beauty/brand-system-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty için tasarlanan marka sistemi" },
+      "projects": ["zeyzey-beauty"],
+      "redirectFrom": ["brand-systems"]
+    },
+    {
+      "slug": "fotograf-ve-video",
+      "title": "Fotoğraf ve Video",
+      "short": "Ürün, mekân, model ve lifestyle çekimlerini fikirden kurguya kadar planlayıp üretiyoruz.",
+      "lead": "İyi bir çekim kameradan önce başlar: konu, ışık, kadraj ve kullanılacağı kanal en baştan bellidir.",
+      "includes": ["Çekim konsepti ve moodboard", "Ürün ve e-ticaret fotoğrafı", "Model ve lifestyle çekimleri", "Reels ve kısa video kurgusu", "Kampanya görselleri ve renk düzenleme"],
+      "fit": "Moda, kozmetik, restoran ve e-ticaret markaları; ürününü ya da mekânını güçlü görüntülerle göstermek isteyenler için.",
+      "image": null,
+      "projects": [],
+      "redirectFrom": []
+    },
+    {
+      "slug": "kreatif-kampanyalar",
+      "title": "Kreatif Kampanyalar",
+      "short": "Bir lansmanı, sezonu ya da yeni ürünü tek bir güçlü fikir etrafında kanallara yayıyoruz.",
+      "lead": "Kampanya bir görsel serisi değil, insanların hatırlayacağı tek bir fikir. Sonra o fikri her formatta doğru anlatırız.",
+      "includes": ["Kreatif fikir ve kampanya konsepti", "Anahtar görsel ve mesaj sistemi", "Çekim ve prodüksiyon planı", "Sosyal medya, reklam ve basılı uyarlamalar", "Lansman takvimi"],
+      "fit": "Lansman, sezon geçişi, yeniden konumlanma veya özel gün kampanyası planlayan markalar için.",
+      "image": null,
+      "projects": [],
+      "redirectFrom": []
+    },
+    {
+      "slug": "sosyal-medya-ve-icerik",
+      "title": "Sosyal Medya ve İçerik",
+      "short": "Markanın sesini her hafta aynı netlikte duyurmak için içeriği planlıyor, üretiyor ve yayınlıyoruz.",
+      "lead": "Düzenli paylaşmak yetmez; her içeriğin markayı aynı yöne taşıması gerekir.",
+      "includes": ["İçerik stratejisi ve aylık plan", "Gönderi, hikâye ve carousel tasarımı", "Reels fikirleri ve kurgu", "Profil düzeni ve görsel bütünlük", "Yayın yönetimi"],
+      "fit": "Hesabını düzenli ve markasına yakışır biçimde yönetmek isteyen ama buna zamanı kalmayan ekipler için.",
+      "image": { "src": "/assets/cases/zeyzey-beauty/social-storefront-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/social-storefront-640.webp 640w, /assets/cases/zeyzey-beauty/social-storefront-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty için kurgulanan sosyal medya vitrini" },
+      "projects": ["zeyzey-beauty"],
+      "redirectFrom": ["content-production"]
+    },
+    {
+      "slug": "dijital-reklam",
+      "title": "Dijital Reklam",
+      "short": "Meta reklamlarını doğru kreatif, doğru kitle ve takip edilebilir bir dönüşüm yoluyla yönetiyoruz.",
+      "lead": "Reklam bütçesi, kreatif güçlü olduğunda işe yarar. Biz ikisini aynı masada ele alıyoruz.",
+      "includes": ["Kampanya kurgusu ve hedefleme", "Reklam kreatifleri ve testleri", "Bütçe takibi ve optimizasyon", "Aylık performans değerlendirmesi", "Dönüşüm yolu önerileri"],
+      "fit": "Reklam veren ama talebe dönüşmediğini düşünen ya da reklama kontrollü başlamak isteyen markalar için.",
+      "image": null,
+      "projects": [],
+      "redirectFrom": ["performance-marketing"]
+    },
+    {
+      "slug": "web-ve-dijital-deneyim",
+      "title": "Web ve Dijital Deneyim",
+      "short": "Markayı anlatan, ziyaretçiyi yönlendiren ve talebi toplayan web siteleri ve dijital deneyimler tasarlıyoruz.",
+      "lead": "Bir web sitesi markanın vitrini olduğu kadar satış yolunun da parçası. İkisini birlikte tasarlıyoruz.",
+      "includes": ["Kurumsal web sitesi ve landing page", "Dijital menü ve katalog deneyimi", "Mobil öncelikli arayüz tasarımı", "İletişim ve teklif akışları", "Ölçüme hazır kurulum"],
+      "fit": "Sitesi olmayan, sitesi markasını yansıtmayan ya da ziyaretçisini talebe dönüştüremeyen işletmeler için.",
+      "image": { "src": "/assets/cases/italian-chef-pizza/menu-flow.jpg", "srcset": "", "width": 1229, "height": 1536, "alt": "İtalyan Chef Pizza için tasarlanan dijital menü akışı" },
+      "projects": ["italian-chef-pizza"],
+      "redirectFrom": ["growth-revenue"]
+    }
+  ]
+}

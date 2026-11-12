@@ -1,0 +1,33 @@
+# Rebuilds the static pages whenever content changes (e.g. from Pages CMS)
+# and commits the regenerated HTML back to main. GitHub Pages then publishes it.
+name: İçerikten sayfaları yeniden üret
+on:
+  push:
+    branches: [main]
+    paths: ['content/**', 'assets/js/templates.mjs', 'tools/build.mjs']
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: rebuild
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/build.mjs
+      - name: Commit regenerated pages
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "kromakopia-build"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Sayfaları içerikten yeniden üret"
+            git push
+          else
+            echo "Değişiklik yok."
+          fi

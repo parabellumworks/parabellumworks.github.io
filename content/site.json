@@ -1,0 +1,39 @@
+{
+  "brand": "KROMAKOPIA",
+  "positioning": "Bağımsız kreatif stüdyo",
+  "url": "https://parabellumworks.github.io",
+  "contact": {
+    "email": "hello@parabellum.works",
+    "whatsapp": "905369471196",
+    "whatsappLabel": "+90 536 947 11 96",
+    "instagram": ""
+  },
+  "hero": {
+    "video": "",
+    "videoMobile": "",
+    "poster": "",
+    "alt": ""
+  },
+  "forms": {
+    "endpoint": "https://formsubmit.co/ajax/hello@parabellum.works",
+    "budgets": [
+      "25.000 TL altı",
+      "25.000 – 50.000 TL",
+      "50.000 – 100.000 TL",
+      "100.000 – 250.000 TL",
+      "250.000 TL üzeri",
+      "Henüz belirlemedim"
+    ],
+    "shootBudgets": [
+      "15.000 TL altı",
+      "15.000 – 35.000 TL",
+      "35.000 – 75.000 TL",
+      "75.000 TL üzeri",
+      "Henüz belirlemedim"
+    ]
+  },
+  "booking": {
+    "calLink": "",
+    "durationMinutes": 20
+  }
+}

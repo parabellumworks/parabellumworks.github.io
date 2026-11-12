@@ -1,18 +1,51 @@
-# Eightfold
+# KROMAKOPIA
 
-Eightfold reklam ve growth ajansı web sitesi.
+Bağımsız kreatif stüdyo KROMAKOPIA'nın web sitesi. Saf HTML, CSS ve JavaScript ile GitHub Pages üzerinde yayınlanır; npm bağımlılığı yoktur.
 
-Brand Systems, Content Production, Performance Marketing ve Growth / Revenue disiplinlerini tek büyüme sistemi içinde yöneten reklam ajansının web sitesi.
+## Yapı
 
-## Sayfalar
+| Yol | İçerik |
+|---|---|
+| `content/site.json` | İletişim bilgileri, hero videosu, form adresi, bütçe aralıkları, Cal.com bağlantısı |
+| `content/projects.json` | Portföy projeleri (sıra = yayın sırası) |
+| `content/services.json` | Altı hizmet ve sayfa metinleri |
+| `tools/build.mjs` | Tüm sayfaları, `sitemap.xml` ve `robots.txt` dosyalarını içerikten üretir |
+| `assets/js/templates.mjs` | Hem üreticinin hem tarayıcının kullandığı ortak şablonlar |
+| `assets/js/kromakopia.js` | Menü, scroll animasyonları, 3D hizmet halkası, içerik güncelleme |
+| `assets/js/hero-gl.js` | Gerçek hero videosu eklenene kadar gösterilen hafif WebGL ışık animasyonu |
+| `assets/js/forms.js` | Proje briefi, çekim, görüşme ve iletişim formları |
+| `assets/js/package-builder.js` | Paket oluşturucu ve fiyat hesaplama |
+| `assets/css/kromakopia.css` | Tasarım sistemi |
 
-- Ana sayfa
-- Hizmetler ve dört hizmet detay sayfası
-- Vaka çalışmaları
-- Italian Chef Pizza vaka çalışması
-- Süreç
-- Hakkımızda
-- Çalışma modelleri
-- İletişim ve proje briefi
+Sayfa üretmek için:
 
-Site saf HTML, CSS ve JavaScript ile GitHub Pages üzerinde çalışır. Yapı alan adına bağımlı değildir.
+```bash
+node tools/build.mjs
+```
+
+Yerelde önizleme: `python -m http.server 8765` ve `http://localhost:8765`. İşletim sisteminde "hareketi azalt" açıksa animasyonlar kapanır; tüm hareketleri görmek için adrese `?motion` ekleyin.
+
+## İçerik yönetimi (kod yazmadan)
+
+İçerik `content/` klasöründeki JSON dosyalarında durur. İki yoldan düzenlenebilir:
+
+1. **Pages CMS** (önerilen): [app.pagescms.org](https://app.pagescms.org) adresinde GitHub hesabıyla giriş yapıp bu depoyu seçin. `.pages.yml` paneli tanımlar: site ayarları ve hero videosu, portföy projeleri, hizmetler. Yüklenen görseller ve videolar `assets/uploads/` klasörüne kaydedilir.
+2. **GitHub web düzenleyici**: dosyayı GitHub'da açıp kalem simgesiyle düzenleyin.
+
+Her kayıt `main` dalına bir commit gönderir. Sayfaların otomatik yeniden üretimi için `tools/rebuild-workflow.yml` dosyasını GitHub'da `.github/workflows/rebuild.yml` olarak ekleyin (iş akışı dosyaları `workflow` yetkisi gerektirir). Bu yapılana kadar proje detay ve hizmet sayfalarındaki değişiklikler için `node tools/build.mjs` çalıştırılmalıdır. Ana sayfa ve işler listesi, yeni içeriği yeniden üretimi beklemeden tarayıcıda da günceller.
+
+- **Hero videosu:** `site.json → hero.video` (masaüstü, yatay), `hero.videoMobile` (dikey) ve `hero.poster`. Boşsa üretken ışık animasyonu görünür.
+- **Yeni proje:** `projects.json` listesine yeni bir nesne ekleyin. `slug` sayfa adresidir (`/calismalar/<slug>/`). `published: false` projeyi gizler. Filtreler yalnızca projesi olan kategorileri gösterir.
+- **Bütçe aralıkları:** `site.json → forms.budgets` ve `forms.shootBudgets`.
+
+## Formlar
+
+Formlar `site.json → forms.endpoint` adresine (FormSubmit AJAX) gönderilir. FormSubmit ilk gönderimde hedef e-postaya bir **"Activate Form"** bağlantısı yollar; bu bağlantı tıklanana kadar gönderimler iletilmez ve ziyaretçiye WhatsApp ve e-posta ile gönderme seçenekleri gösterilir. Spam koruması: gizli alan, süre kontrolü ve alan doğrulama.
+
+## Görüşme planlama
+
+`site.json → booking.calLink` alanına Cal.com etkinlik bağlantısı (ör. `kromakopia/tanisma`) yazıldığında `/gorusme-planla/` sayfasında takvim görünür. Bağlantı boşken sayfa, gerçek bir görüşme talep formu gösterir.
+
+## Yönlendirmeler
+
+Eski hizmet adresleri (`/hizmetler/brand-systems/` ve diğerleri), konsept vaka sayfaları ve `/fiyatlar/` yeni adreslere yönlendirilir.

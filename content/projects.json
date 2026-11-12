@@ -1,0 +1,143 @@
+{
+  "projects": [
+    {
+      "slug": "zeyzey-beauty",
+      "published": true,
+      "title": "ZEYZEY BEAUTY",
+      "sector": "Güzellik",
+      "label": "Marka konsepti",
+      "categories": ["marka-kimligi", "dijital"],
+      "services": ["Marka Kimliği", "Dijital Vitrin", "Sosyal Medya", "Basılı Materyaller"],
+      "summary": "Bir güzellik markasının kimliğini, dijital vitrinini ve müşteriye dokunduğu her noktayı sıfırdan kurguladık.",
+      "intro": "Zeyzey Beauty için yalnızca bir logo değil; dijitalden fiziksele uzanan, aynı dili konuşan bir marka sistemi tasarlandı.",
+      "cover": {
+        "src": "/assets/cases/zeyzey-beauty/brand-system-1122.webp",
+        "srcset": "/assets/cases/zeyzey-beauty/brand-system-640.webp 640w, /assets/cases/zeyzey-beauty/brand-system-1122.webp 1122w",
+        "width": 1122,
+        "height": 1402,
+        "alt": "Zeyzey Beauty logo, renk paleti ve marka sistemi sunumu"
+      },
+      "coverVideo": "",
+      "chapters": [
+        {
+          "title": "Marka sistemi",
+          "text": "Logo, renk paleti, tipografi ve genel görsel dil tek bir sistem altında oluşturuldu.",
+          "layout": "wide",
+          "image": { "src": "/assets/cases/zeyzey-beauty/brand-system-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/brand-system-640.webp 640w, /assets/cases/zeyzey-beauty/brand-system-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty logo, renk paleti ve marka sistemi sunumu" }
+        },
+        {
+          "title": "Dijital vitrin",
+          "text": "Hizmetleri sade biçimde anlatan ve müşteriyi randevuya yönlendiren mobil deneyim tasarlandı.",
+          "layout": "split",
+          "image": { "src": "/assets/cases/zeyzey-beauty/digital-storefront-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/digital-storefront-640.webp 640w, /assets/cases/zeyzey-beauty/digital-storefront-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty mobil dijital vitrin ve randevu deneyimi" }
+        },
+        {
+          "title": "Hizmet menüsü",
+          "text": "Hizmetler ve fiyatlar, salon içinde hızlı okunan premium bir menü yapısına dönüştürüldü.",
+          "layout": "split-reverse",
+          "image": { "src": "/assets/cases/zeyzey-beauty/service-menu-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/service-menu-640.webp 640w, /assets/cases/zeyzey-beauty/service-menu-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty salon içi hizmet menüsü tasarımı" }
+        },
+        {
+          "title": "Sosyal medya vitrini",
+          "text": "Instagram görünümü; marka dili, içerik yapısı ve profil bütünlüğü üzerinden yeniden kurgulandı.",
+          "layout": "split",
+          "image": { "src": "/assets/cases/zeyzey-beauty/social-storefront-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/social-storefront-640.webp 640w, /assets/cases/zeyzey-beauty/social-storefront-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty Instagram profil ve içerik vitrini konsepti" }
+        },
+        {
+          "title": "Kartvizit",
+          "text": "Dijital kimliğin fiziksel temas noktasına taşındığı sade ve premium kartvizit seti.",
+          "layout": "split-reverse",
+          "image": { "src": "/assets/cases/zeyzey-beauty/business-card-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/business-card-640.webp 640w, /assets/cases/zeyzey-beauty/business-card-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty premium kartvizit seti" }
+        },
+        {
+          "title": "Sadakat kartı",
+          "text": "Tekrar ziyaretleri desteklemek için marka kimliğiyle uyumlu bir sadakat kartı sistemi tasarlandı.",
+          "layout": "split",
+          "image": { "src": "/assets/cases/zeyzey-beauty/loyalty-card-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/loyalty-card-640.webp 640w, /assets/cases/zeyzey-beauty/loyalty-card-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty marka kimliğiyle uyumlu sadakat kartı konsepti" }
+        },
+        {
+          "title": "Randevu deneyimi",
+          "text": "Salon içindeki fiziksel temas, QR üzerinden dijital randevu akışına bağlandı.",
+          "note": "Konsept görsel",
+          "layout": "split-reverse",
+          "image": { "src": "/assets/cases/zeyzey-beauty/appointment-experience-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/appointment-experience-640.webp 640w, /assets/cases/zeyzey-beauty/appointment-experience-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty QR üzerinden dijital randevu akışı konsepti" }
+        },
+        {
+          "title": "Paketleme deneyimi",
+          "text": "Marka deneyimi, müşterinin eline geçen son fiziksel detaya kadar taşındı.",
+          "layout": "wide",
+          "image": { "src": "/assets/cases/zeyzey-beauty/packaging-experience-1122.webp", "srcset": "/assets/cases/zeyzey-beauty/packaging-experience-640.webp 640w, /assets/cases/zeyzey-beauty/packaging-experience-1122.webp 1122w", "width": 1122, "height": 1402, "alt": "Zeyzey Beauty premium paketleme ve hediye kutusu konsepti" }
+        }
+      ],
+      "steps": [],
+      "closing": {
+        "title": "Bir logo değil, bir marka sistemi.",
+        "text": "Dijital ve fiziksel temas noktaları aynı görsel dil altında birleştirildi.",
+        "service": "marka-kimligi"
+      }
+    },
+    {
+      "slug": "italian-chef-pizza",
+      "published": true,
+      "title": "İtalyan Chef Pizza",
+      "sector": "Restoran",
+      "label": "Müşteri projesi",
+      "categories": ["dijital"],
+      "services": ["Dijital Menü", "Bilgi Mimarisi", "Mobil Deneyim"],
+      "summary": "Geniş bir menüyü, telefonda hızlı karar verilen iştah açıcı bir dijital deneyime dönüştürdük.",
+      "intro": "Ürün seçimini kolaylaştıran, markayı taşıyan ve ileride ölçülebilen bir dijital menü sistemi.",
+      "cover": {
+        "src": "/assets/cases/italian-chef-pizza/hero.jpg",
+        "srcset": "",
+        "width": 1229,
+        "height": 1536,
+        "alt": "İtalyan Chef Pizza menüsünün ürün odaklı sunumu"
+      },
+      "coverVideo": "",
+      "chapters": [
+        {
+          "title": "Ürün deneyimi",
+          "text": "Menüyü bir bakışta okunur kılan güçlü bir giriş.",
+          "layout": "wide",
+          "image": { "src": "/assets/cases/italian-chef-pizza/hero.jpg", "srcset": "", "width": 1229, "height": 1536, "alt": "İtalyan Chef Pizza menüsünün ürün odaklı sunumu" }
+        },
+        {
+          "title": "Menü akışı",
+          "text": "Arama, favoriler ve kampanyalar aynı ritimde ilerliyor.",
+          "layout": "split",
+          "image": { "src": "/assets/cases/italian-chef-pizza/menu-flow.jpg", "srcset": "", "width": 1229, "height": 1536, "alt": "İtalyan Chef Pizza menüsünde kategori ve kampanya akışı" }
+        },
+        {
+          "title": "Marka ve arayüz",
+          "text": "Görsel dil, ekranın içinde de tutarlı kalıyor.",
+          "layout": "split-reverse",
+          "image": { "src": "/assets/cases/italian-chef-pizza/menu-detail.jpg", "srcset": "", "width": 1229, "height": 1536, "alt": "İtalyan Chef Pizza markası ve menü arayüzünün birlikte sunumu" }
+        },
+        {
+          "title": "Ürün detayı",
+          "text": "Gerçek menüden alınan detaylar, görsel dilin ve ürün düzeninin birlikte nasıl çalıştığını gösteriyor.",
+          "layout": "split",
+          "image": { "src": "/assets/italian-chef-menu.jpg", "srcset": "", "width": 709, "height": 1536, "alt": "İtalyan Chef Pizza menüsünden yakın ürün görünümü" }
+        },
+        {
+          "title": "Geri bildirim yüzeyi",
+          "text": "Deneyimin bir sonraki temasına açılan bir yüzey.",
+          "layout": "split-reverse",
+          "image": { "src": "/assets/cases/italian-chef-pizza/reviews.jpg", "srcset": "", "width": 1229, "height": 1536, "alt": "İtalyan Chef Pizza için tasarlanan geri bildirim yüzeyi" }
+        }
+      ],
+      "steps": [
+        { "title": "Problem", "text": "Geniş ürün seçeneği, mobil menüde karar vermeyi zorlaştırıyordu." },
+        { "title": "Teşhis", "text": "Ürün hiyerarşisi, kategori akışı ve aksiyon alanları yeterince yönlendirici değildi." },
+        { "title": "Strateji", "text": "Menüyü bir ürün listesi değil, karar deneyimi olarak yeniden kurguladık." },
+        { "title": "Uygulama", "text": "Mobil bilgi mimarisi, net ürün kartları ve kampanya görünürlüğü tasarladık." },
+        { "title": "Çıktı", "text": "Daha açık, daha yönlendirici ve ölçüme hazır bir dijital menü sistemi." }
+      ],
+      "closing": {
+        "title": "Müşteri deneyiminiz nerede tıkanıyor?",
+        "text": "Menüden rezervasyona, ziyaretçinin karar verdiği her ekranı birlikte inceleyelim.",
+        "service": "web-ve-dijital-deneyim"
+      }
+    }
+  ]
+}
