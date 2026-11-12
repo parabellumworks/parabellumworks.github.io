@@ -3,7 +3,7 @@
     {
       "slug": "fotograf-ve-video",
       "title": "Fotoğraf ve Video",
-      "short": "Ürün, model, lifestyle ve mekân çekimlerini ekibimizle planlıyor, çekiyor ve kurguluyoruz.",
+      "short": "Ürün, lifestyle, model ve mekân çekimlerini planlıyor, çekiyor ve kurguluyoruz. Gerektiğinde kendi içerik üreticilerimizle üretimi hızlandırıyoruz.",
       "lead": "İyi bir çekim kameradan önce başlar. Konuyu, ışığı, kadrajı ve içeriğin nerede kullanılacağını en baştan planlıyor, çekimi ve kurguyu kendi ekibimizle yapıyoruz.",
       "includes": [
         "Çekim konsepti, moodboard ve çekim planı",
@@ -52,7 +52,7 @@
     {
       "slug": "sosyal-medya-ve-icerik",
       "title": "Sosyal Medya ve İçerik",
-      "short": "Her ay markanıza özel çekilmiş içeriklerle planlı, düzenli ve tutarlı bir akış kuruyoruz.",
+      "short": "Sosyal medyada çalışan içerikleri uçtan uca üretiyoruz: plan, çekim, kurgu, motion ve yayın tek elde.",
       "lead": "Hazır şablonlarla değil, markanız için çekilmiş içeriklerle çalışıyoruz. Planlıyor, üretiyor ve yayınlıyoruz.",
       "includes": [
         "Aylık içerik planı",
@@ -63,11 +63,12 @@
       ],
       "fit": "Hesabını düzenli ve markasına yakışır biçimde yürütmek isteyen ama buna zamanı kalmayan ekipler için.",
       "image": {
-        "src": "/assets/cases/zeyzey-beauty/social-storefront-1122.webp",
-        "srcset": "/assets/cases/zeyzey-beauty/social-storefront-640.webp 640w, /assets/cases/zeyzey-beauty/social-storefront-1122.webp 1122w",
-        "width": 1122,
-        "height": 1402,
-        "alt": "Zeyzey Beauty için kurgulanan sosyal medya vitrini"
+        "src": "https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=1200&q=78",
+        "srcset": "https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=1600&q=78 1600w",
+        "width": 2000,
+        "height": 1334,
+        "alt": "Tripoddaki telefonla manzaraya karşı içerik çeken kişi",
+        "stock": true
       },
       "projects": [
         "zeyzey-beauty"
@@ -116,11 +117,12 @@
       ],
       "fit": "Yeni kurulan, yenilenen ya da farklı kanallarda farklı görünen markalar için.",
       "image": {
-        "src": "/assets/cases/zeyzey-beauty/brand-system-1122.webp",
-        "srcset": "/assets/cases/zeyzey-beauty/brand-system-640.webp 640w, /assets/cases/zeyzey-beauty/brand-system-1122.webp 1122w",
-        "width": 1122,
-        "height": 1402,
-        "alt": "Zeyzey Beauty için tasarlanan marka sistemi"
+        "src": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1200&q=78",
+        "srcset": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1600&q=78 1600w",
+        "width": 2000,
+        "height": 3000,
+        "alt": "Gri fon önünde üst üste dizilmiş ürün şişe ve kavanozları",
+        "stock": true
       },
       "projects": [
         "zeyzey-beauty"
@@ -143,11 +145,12 @@
       ],
       "fit": "Sitesi olmayan, sitesi markasını yansıtmayan ya da ziyaretçisini talebe dönüştüremeyen işletmeler için.",
       "image": {
-        "src": "/assets/cases/italian-chef-pizza/menu-flow.jpg",
-        "srcset": "",
-        "width": 1229,
-        "height": 1536,
-        "alt": "İtalyan Chef Pizza için tasarlanan dijital menü akışı"
+        "src": "https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=1200&q=78",
+        "srcset": "https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=1600&q=78 1600w",
+        "width": 2000,
+        "height": 1334,
+        "alt": "Tablet ekranında dijital içerik sayfası",
+        "stock": true
       },
       "projects": [
         "italian-chef-pizza"

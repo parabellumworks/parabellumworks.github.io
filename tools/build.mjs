@@ -86,7 +86,7 @@ function layout({ path, title, description, body, page = '', scripts = [], css =
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
 ${noindex ? '<meta name="robots" content="noindex">\n' : ''}<link rel="canonical" href="${canonical}">
-<meta name="theme-color" content="#0c0d10">
+<meta name="theme-color" content="#252525">
 <link rel="icon" href="/assets/kromakopia-icon.svg" type="image/svg+xml">
 <link rel="icon" href="/assets/kromakopia-icon-512.png" type="image/png" sizes="512x512">
 <link rel="apple-touch-icon" href="/assets/kromakopia-touch.png">
@@ -110,7 +110,7 @@ ${noindex ? '<meta name="robots" content="noindex">\n' : ''}<link rel="canonical
 <link rel="stylesheet" href="/assets/css/kromakopia.css?v=${CSS_V}">
 ${css.map(h => `<link rel="stylesheet" href="${h}">`).join('\n')}
 <script type="module" src="/assets/js/kromakopia.js"></script>
-${scripts.map(s => (s.endsWith('.js') && !s.includes('package-builder') ? `<script type="module" src="${s}"></script>` : `<script defer src="${s}"></script>`)).join('\n')}
+${page === 'home' ? '<link rel="modulepreload" href="/assets/js/hero-gl.js">\n' : ''}${scripts.map(s => (s.endsWith('.js') && !s.includes('package-builder') ? `<script type="module" src="${s}"></script>` : `<script defer src="${s}"></script>`)).join('\n')}
 ${lds}
 </head>
 <body${page ? ` data-page="${page}"` : ''}${bodyClass ? ` class="${bodyClass}"` : ''}>
@@ -151,15 +151,37 @@ function redirectPage(from, to) {
 const rendered = (name, html, extra = '') => `data-render="${name}" data-sig="${sig(html)}"${extra}`;
 
 /* ---------------- Reusable sections ---------------- */
-const BAND_ITEMS = ['Ürün çekimi', 'Model ve moda çekimi', 'Reels ve tanıtım filmi', 'Kampanya görselleri', 'Sosyal medya içeriği', 'Dijital reklam', 'Marka kimliği', 'Web'];
+const BAND_ITEMS = ['Sosyal medya içeriği', 'Reels ve kısa video', 'Ürün ve model çekimi', 'Mekânda çekim', 'Kurgu ve motion', 'Tanıtım filmi', 'Kampanya görselleri', 'Yayın ve reklam'];
 const band = (items = BAND_ITEMS, reverse = false) => `<div class="band${reverse ? ' marquee-reverse' : ''}" aria-hidden="true"><div class="band-strip" data-marquee data-speed="55"><div class="marquee"><div class="marquee-group">${items.map(i => `<span>${i}</span>`).join('')}</div></div></div></div>`;
 
 const STAGES = [
   { title: 'Keşif', text: 'Markayı, hedefleri ve ihtiyaçları anlıyoruz.', out: ['Brief görüşmesi', 'Hedef ve kapsam', 'Takvim ve bütçe'], image: stock.discovery, caption: 'Temsili görsel' },
-  { title: 'Kreatif Konsept', text: 'Stratejiyi, yaratıcı fikri ve görsel yönü belirliyoruz.', out: ['Kreatif fikir', 'Görsel yön', 'Moodboard ve plan'], image: projects.find(p => p.slug === 'zeyzey-beauty')?.chapters[0]?.image, caption: 'Zeyzey Beauty, marka sistemi' },
-  { title: 'Çekim ve Üretim', text: 'Fotoğraf, video, tasarım ve dijital üretimi ekibimizle gerçekleştiriyoruz.', out: ['Fotoğraf ve video', 'Kurgu ve renk', 'Tasarım ve web'], image: projects.find(p => p.slug === 'italian-chef-pizza')?.chapters[2]?.image, caption: 'İtalyan Chef Pizza, menü arayüzü' },
-  { title: 'Yayın ve Gelişim', text: 'İçerikleri hayata geçiriyor, sonuçları değerlendiriyoruz.', out: ['Yayın planı', 'Reklam ve ölçüm', 'Gelişim önerileri'], image: projects.find(p => p.slug === 'zeyzey-beauty')?.chapters[3]?.image, caption: 'Zeyzey Beauty, sosyal medya vitrini' }
+  { title: 'Kreatif Konsept', text: 'Fikri, içerik planını ve görsel yönü belirliyoruz.', out: ['Kreatif fikir', 'İçerik takvimi', 'Çekim planı'], image: stock.concept, caption: 'Temsili görsel' },
+  { title: 'Çekim ve Üretim', text: 'Çekimi kendi ekibimiz ve içerik üreticilerimizle yapıyor; kurguyu ve motion’ı aynı masada bitiriyoruz.', out: ['Fotoğraf ve video', 'Kurgu ve motion', 'Formatlara uyarlama'], image: stock.crew, caption: 'Temsili görsel' },
+  { title: 'Yayın ve Gelişim', text: 'İçerikleri yayına alıyor, sonuçlara bakıp bir sonraki üretimi buna göre planlıyoruz.', out: ['Yayın planı', 'Reklam ve ölçüm', 'Gelişim önerileri'], image: stock.publish, caption: 'Temsili görsel' }
 ];
+
+// Home content blocks: what we produce, shown with licensed stock (never as client work).
+const CONTENT_BLOCKS = [
+  { title: 'Fotoğraf ve Video', text: 'Ürün, lifestyle, model ve mekân çekimlerini planlıyor, çekiyor ve kurguluyoruz.', tags: ['Ürün çekimi', 'Model ve lifestyle', 'Tanıtım filmi'], image: stock.shootModel, service: 'fotograf-ve-video' },
+  { title: 'Sosyal Medya İçeriği', text: 'Reels, kısa video ve gönderileri her ay planlıyor, çekiyor ve yayına hazır teslim ediyoruz.', tags: ['Reels ve kısa video', 'İçerik takvimi', 'Dikey formatlar'], image: stock.socialPhone, service: 'sosyal-medya-ve-icerik' },
+  { title: 'Motion & Kurgu', text: 'Çektiğimiz görüntüyü kurgu, renk ve motion design ile ritmi olan içeriğe çeviriyoruz; kod tabanlı (Remotion) şablonlarla seri üretiyoruz.', tags: ['Kurgu ve renk', 'Motion design', 'Altyazı ve şablon'], image: stock.editing, service: 'fotograf-ve-video' },
+  { title: 'Gerçek Mekânda Çekim', text: 'Restoranınızda, mağazanızda ya da sahada; ekip ve ekipmanla gelip markayı kendi ortamında çekiyoruz.', tags: ['Mekân ve saha', 'Ekip ve ekipman', 'Gerektiğinde model'], image: stock.location, service: 'fotograf-ve-video' },
+  { title: 'Kampanya ve Tanıtım', text: 'Lansman ya da sezon için tek bir fikir buluyor; tanıtım filmini, kampanya görsellerini ve reklam formatlarını birlikte üretiyoruz.', tags: ['Kampanya fikri', 'Tanıtım filmi', 'Reklam formatları'], image: stock.campaign, service: 'kreatif-kampanyalar' }
+];
+const FLOW = ['Fikir', 'Çekim', 'Kurgu', 'Motion', 'Yayın'];
+const contentBlocks = () => CONTENT_BLOCKS.map((b, i) => `<article class="work" data-scale-in>
+  <a class="work-link" href="/proje-baslat/?hizmet=${b.service}">
+    <div class="work-media">${img(b.image, { sizes: '(max-width: 760px) 92vw, 60vw' })}${stockTag(b.image)}</div>
+    <div class="work-meta">
+      <span class="work-index">${pad(i + 1)}</span>
+      <h3 class="work-title">${b.title}</h3>
+      <p class="work-summary">${b.text}</p>
+      <ul class="work-tags" aria-label="Kapsam">${b.tags.map(t => `<li>${t}</li>`).join('')}</ul>
+      <span class="work-cta">Teklif al</span>
+    </div>
+  </a>
+</article>`).join('\n');
 const stack = () => `<div class="stack" data-stack>${STAGES.map((s, i) => `
   <article class="step-card" style="--n:${i}">
     <div class="step-copy">
@@ -189,13 +211,9 @@ const ctaSection = (title = 'AKLINIZDA BİR PROJE Mİ VAR?', sub = 'Birlikte hay
 
 /* ---------------- Home ---------------- */
 function home() {
-  const worksHtml = worksList(live);
-  const filtersHtml = workFilters(live);
   const svcHtml = servicesList(services);
   const svcIndex = services.map((s, i) => `<a href="/hizmetler/${s.slug}/"><span>${pad(i + 1)}</span>${esc(s.title)}</a>`).join('');
   const hm = heroMedia(site);
-  const zz = projects.find(p => p.slug === 'zeyzey-beauty');
-  const ic = projects.find(p => p.slug === 'italian-chef-pizza');
   const body = `
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-frame" data-hero-frame>
@@ -205,8 +223,8 @@ function home() {
       <h1 id="hero-title" class="sr-only">${BRAND}: markalar için fotoğraf, video ve kreatif içerik üreten stüdyo. Fikir. Görüntü. Etki.</h1>
       <p class="hero-slogan" aria-hidden="true"><span class="word">FİKİR.</span><span class="word">GÖRÜNTÜ.</span><span class="word">ETKİ.</span></p>
       <div class="hero-aside">
-        <p>Markalar için fotoğraf, video, tanıtım ve kreatif içerik üretiyoruz. Çekimi planlıyor, prodüksiyonu ekibimizle yönetiyoruz.</p>
-        <div class="actions"><a class="btn btn-solid btn-cta" href="/proje-baslat/">Proje Başlat</a><a class="btn btn-glass" href="#isler">İşlerimizi Keşfet</a></div>
+        <p>Kendi yaratıcı ekibimiz ve içerik üreticilerimizle markanızın içerik sürecini uçtan uca üstleniyoruz. Fikirden çekime, kurgudan motion’a ve yayına kadar.</p>
+        <div class="actions"><a class="btn btn-solid btn-cta" href="/proje-baslat/">Proje Başlat</a><a class="btn btn-glass" href="#icerik">Ne Üretiyoruz?</a></div>
       </div>
       <p class="hero-mark" data-fit data-split data-chroma aria-hidden="true"><span class="fit-inner"><span class="hm-line">KROMA</span><span class="hm-line hm-shift">KOPIA<sup>®</sup></span></span></p>
     </div>
@@ -214,12 +232,12 @@ function home() {
   </div>
 </section>
 <div class="after-hero">
-<section class="works light" id="isler" aria-labelledby="works-title">
+<section class="works works-content light" id="icerik" aria-labelledby="works-title">
   <div class="shell">
-    <div class="works-head"><h2 id="works-title" class="h-mega" data-mega data-fit><span class="fit-inner">İŞLERİMİZ.</span></h2></div>
-    <div class="works-bar"><p>Çekimden kimliğe, ekrandan rafa: markalar için ürettiklerimizden seçtiklerimiz.</p><div class="filters" role="group" aria-label="İşleri filtrele" ${rendered('filters', filtersHtml)}>${filtersHtml}</div></div>
-    <div class="works-list" ${rendered('works', worksHtml)}>${worksHtml}</div>
-    <div class="works-end"><a class="btn btn-line" href="/calismalar/">Tüm işler</a></div>
+    <div class="works-head"><h2 id="works-title" class="h-mega" data-mega data-fit><span class="fit-inner">İÇERİK.</span></h2></div>
+    <div class="works-bar"><p>Sosyal medya ve tanıtım içeriğinizi ayrı ayrı ekiplerle çözmek zorunda değilsiniz. Fotoğraf, video, motion ve yayını tek elde topluyoruz.</p><ol class="flow-steps" aria-label="Üretim akışı">${FLOW.map(f => `<li>${f}</li>`).join('')}</ol></div>
+    <div class="works-list">${contentBlocks()}</div>
+    <div class="works-end actions"><a class="btn btn-solid btn-cta" href="/proje-baslat/">Teklif Al</a><a class="btn btn-line" href="/calismalar/">Tamamlanan işler</a></div>
   </div>
 </section>
 ${band()}
@@ -230,13 +248,13 @@ ${band()}
     <div class="story-cols">
       <div><h3>Biçim</h3><p>Çekimin dayandığı görsel dili kuruyoruz: ışık, renk, kadraj ve marka kimliği aynı dili konuşuyor.</p></div>
       <div><h3>Hareket</h3><p>Fotoğraf, video ve kurguyla markayı canlandırıyoruz. Ürün, model ve lifestyle çekimlerini aynı akışta üretiyoruz.</p></div>
-      <div><h3>Karakter</h3><p>Küçük ve bağımsız bir stüdyoyuz. Fikri bulan, çekimi planlayan ve prodüksiyonu yöneten aynı ekip.</p></div>
+      <div><h3>Karakter</h3><p>Fikri bulan, çekimi yapan, kurguyu ve yayını yöneten aynı ekip. Siz brief verin; gerisini biz üstlenelim.</p></div>
     </div>
   </div>
 </section>
 <section class="services light" data-services aria-labelledby="svc-title">
   <div class="services-pin shell">
-    <header class="services-head"><h2 id="svc-title" class="h-display">NE YAPIYORUZ?</h2><div><p class="lead">Odağımız fotoğraf, video ve tanıtım içeriği. Kampanya, reklam, kimlik ve web aynı ekiple bunun etrafında ilerliyor.</p><p class="actions" style="margin-top:18px"><a class="btn btn-solid btn-cta btn-sm" href="/proje-baslat/">Teklif Al</a><a class="btn btn-line btn-sm" href="/hizmetler/">Tüm hizmetler</a></p></div></header>
+    <header class="services-head"><h2 id="svc-title" class="h-display">NE YAPIYORUZ?</h2><div><p class="lead">Odağımız sosyal medya ve tanıtım içeriği. Çekim, kurgu, motion, reklam, kimlik ve web aynı ekiple bunun etrafında ilerliyor.</p><p class="actions" style="margin-top:18px"><a class="btn btn-solid btn-cta btn-sm" href="/proje-baslat/">Teklif Al</a><a class="btn btn-line btn-sm" href="/hizmetler/">Tüm hizmetler</a></p></div></header>
     <nav class="svc-index" aria-label="Hizmet listesi" ${rendered('svc-index', svcIndex)}>${svcIndex}</nav>
     <div class="svc-stage"><div class="svc-track" ${rendered('services', svcHtml)}>${svcHtml}</div></div>
   </div>
@@ -244,28 +262,28 @@ ${band()}
 <section class="approach" aria-labelledby="approach-title">
   <div class="shell"><h2 id="approach-title" class="h-display">TEK FİKİR.<br>BİRDEN FAZLA DİSİPLİN.</h2></div>
   <div class="approach-type" data-flow aria-hidden="true">
-    <div class="marquee">${'<div class="marquee-group"><span>Fotoğraf /</span><span>Video /</span><span>Tasarım /</span><span>Dijital /</span></div>'.repeat(3)}</div>
-    <div class="marquee marquee-reverse">${'<div class="marquee-group"><span>Kimlik /</span><span>Kampanya /</span><span>İçerik /</span><span>Web /</span></div>'.repeat(3)}</div>
+    <div class="marquee">${'<div class="marquee-group"><span>Fotoğraf /</span><span>Video /</span><span>Kurgu /</span><span>Motion /</span></div>'.repeat(3)}</div>
+    <div class="marquee marquee-reverse">${'<div class="marquee-group"><span>Reels /</span><span>Kampanya /</span><span>Yayın /</span><span>Reklam /</span></div>'.repeat(3)}</div>
   </div>
   <div class="shell approach-grid">
     <div class="approach-copy">
-      <p class="lead">Bir kampanya fikri; çekim planını, sosyal medya formatlarını ve reklam görsellerini aynı anda belirler. Bu yüzden fikri bulan, çekimi planlayan ve kurguyu yapan aynı ekip.</p>
+      <p class="lead">Çekimi bir ekibe, kurguyu bir başkasına, yayını üçüncü birine vermek zorunda değilsiniz. Fikirden yayına kadar içerik sürecini kendi ekibimiz ve içerik üreticilerimizle yönetiyoruz.</p>
       <dl>
         <div><dt>Fikir</dt><dd>Strateji ve kreatif yön, herkesin anlayacağı tek bir cümlede netleşir.</dd></div>
-        <div><dt>Prodüksiyon</dt><dd>Çekimi planlıyor, seti ve ekibi organize ediyor, fotoğraf ve videoyu üretiyoruz.</dd></div>
-        <div><dt>Dijital</dt><dd>Sosyal medya, reklam ve web aynı görüntüyü doğru kanalda çalıştırır.</dd></div>
+        <div><dt>Prodüksiyon</dt><dd>Çekimi planlıyor, ekibi ve mekânı organize ediyor; fotoğraf, video, kurgu ve motion’ı üretiyoruz.</dd></div>
+        <div><dt>Yayın</dt><dd>İçerikleri sosyal medya ve reklam formatlarına uyarlıyor, takvime göre yayına hazırlıyoruz.</dd></div>
       </dl>
     </div>
     <div class="approach-media">
-      <figure data-speed-y="-0.06">${img(zz.chapters[7].image, { sizes: '(max-width: 900px) 62vw, 30vw' })}<figcaption>Zeyzey Beauty, ambalaj</figcaption></figure>
-      <figure data-speed-y="0.1">${img(ic.chapters[1].image, { sizes: '(max-width: 900px) 62vw, 30vw' })}<figcaption>İtalyan Chef Pizza, dijital menü</figcaption></figure>
-      <figure data-speed-y="-0.14">${img(zz.chapters[4].image, { sizes: '(max-width: 900px) 46vw, 22vw' })}<figcaption>Zeyzey Beauty, kartvizit</figcaption></figure>
+      <figure data-speed-y="-0.06">${img(stock.filmmakers, { sizes: '(max-width: 900px) 62vw, 30vw' })}<figcaption>Temsili görsel</figcaption></figure>
+      <figure data-speed-y="0.1">${img(stock.postDesk, { sizes: '(max-width: 900px) 62vw, 30vw' })}<figcaption>Temsili görsel</figcaption></figure>
+      <figure data-speed-y="-0.14">${img(stock.gimbal, { sizes: '(max-width: 900px) 46vw, 22vw' })}<figcaption>Temsili görsel</figcaption></figure>
     </div>
   </div>
 </section>
 <section class="process light" aria-labelledby="process-title">
   <div class="shell">
-    <div class="process-head"><h2 id="process-title" class="h-display">FİKİRDEN YAYINA.</h2><p class="lead">Dört adım. Her birinin sonunda elinizde somut bir çıktı var.</p></div>
+    <div class="process-head"><h2 id="process-title" class="h-display">FİKİRDEN YAYINA.</h2><p class="lead">Dört adım, tek ekip. Her birinin sonunda elinizde somut bir çıktı var.</p></div>
     ${stack()}
   </div>
 </section>
@@ -274,7 +292,7 @@ ${ctaSection()}
   return layout({
     path: '/',
     title: `${BRAND}: Markalar için fotoğraf, video ve kreatif içerik`,
-    description: 'KROMAKOPIA; markalar için fotoğraf, video, tanıtım ve kreatif içerik üreten bağımsız stüdyo. Çekimden kurguya prodüksiyonu ekibimizle yönetiyor, marka kimliği ve web tarafını da destekliyoruz.',
+    description: 'KROMAKOPIA; markalar için sosyal medya ve tanıtım içeriği üreten kreatif stüdyo. Fikirden çekime, kurgu ve motion’dan yayına kadar içerik sürecini kendi ekibimizle üstleniyoruz.',
     body,
     page: 'home',
     ld: [{ '@context': 'https://schema.org', '@type': 'WebSite', name: BRAND, url: `${URL_BASE}/`, inLanguage: 'tr' }]

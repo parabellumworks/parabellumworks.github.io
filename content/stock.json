@@ -22,5 +22,117 @@
     "height": 5355,
     "alt": "Softbox ışığı ve bitkilerle hazırlanmış stüdyo köşesi",
     "stock": true
+  },
+  "shootModel": {
+    "src": "https://images.unsplash.com/photo-1758613655581-0e3491b0f556?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1758613655581-0e3491b0f556?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1758613655581-0e3491b0f556?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1758613655581-0e3491b0f556?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1758613655581-0e3491b0f556?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1126,
+    "alt": "Fotoğrafçı, ışık kurulu sette modele yön veriyor",
+    "stock": true
+  },
+  "socialPhone": {
+    "src": "https://images.unsplash.com/photo-1785753734738-1804a736ab92?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1785753734738-1804a736ab92?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1785753734738-1804a736ab92?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1785753734738-1804a736ab92?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1785753734738-1804a736ab92?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 3000,
+    "alt": "Gimbal üzerindeki telefonla dikey video çekimi",
+    "stock": true
+  },
+  "editing": {
+    "src": "https://images.unsplash.com/photo-1614963326505-843868e1d83a?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1614963326505-843868e1d83a?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1614963326505-843868e1d83a?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1614963326505-843868e1d83a?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1614963326505-843868e1d83a?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1334,
+    "alt": "Kurgu yazılımında zaman çizelgesi açık bir monitör",
+    "stock": true
+  },
+  "location": {
+    "src": "https://images.unsplash.com/photo-1635081475758-6e4bea5942bb?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1635081475758-6e4bea5942bb?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1635081475758-6e4bea5942bb?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1635081475758-6e4bea5942bb?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1635081475758-6e4bea5942bb?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 2666,
+    "alt": "Bir restoranda kamerayla yapılan mekân çekimi",
+    "stock": true
+  },
+  "campaign": {
+    "src": "https://images.unsplash.com/photo-1785844313180-394cdbb55c34?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1785844313180-394cdbb55c34?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1785844313180-394cdbb55c34?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1785844313180-394cdbb55c34?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1785844313180-394cdbb55c34?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1330,
+    "alt": "Dış mekân setinde klaket tutan ekip",
+    "stock": true
+  },
+  "concept": {
+    "src": "https://images.unsplash.com/photo-1758876201723-9f050343325c?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1758876201723-9f050343325c?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1758876201723-9f050343325c?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1758876201723-9f050343325c?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1758876201723-9f050343325c?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1126,
+    "alt": "Duvardaki yapışkan notlarla planlanan içerik fikirleri",
+    "stock": true
+  },
+  "crew": {
+    "src": "https://images.unsplash.com/photo-1632187981988-40f3cbaeef5e?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1632187981988-40f3cbaeef5e?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1632187981988-40f3cbaeef5e?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1632187981988-40f3cbaeef5e?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1632187981988-40f3cbaeef5e?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1334,
+    "alt": "Kamera kurulumunun etrafında çalışan çekim ekibi",
+    "stock": true
+  },
+  "publish": {
+    "src": "https://images.unsplash.com/photo-1764663908318-54b7756776a9?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1764663908318-54b7756776a9?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1764663908318-54b7756776a9?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1764663908318-54b7756776a9?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1764663908318-54b7756776a9?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1334,
+    "alt": "Telefonda yayınlanan video içerik",
+    "stock": true
+  },
+  "filmmakers": {
+    "src": "https://images.unsplash.com/photo-1768885509990-1ebfd3e0257b?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1768885509990-1ebfd3e0257b?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1768885509990-1ebfd3e0257b?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1768885509990-1ebfd3e0257b?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1768885509990-1ebfd3e0257b?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 3000,
+    "alt": "Dış mekânda kamera ekipmanını kullanan iki çekim ekibi üyesi",
+    "stock": true
+  },
+  "postDesk": {
+    "src": "https://images.unsplash.com/photo-1777019075773-a231fa4e4534?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1777019075773-a231fa4e4534?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1777019075773-a231fa4e4534?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1777019075773-a231fa4e4534?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1777019075773-a231fa4e4534?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1334,
+    "alt": "Monitörler ve fotoğraf ekipmanıyla kurgu masası",
+    "stock": true
+  },
+  "gimbal": {
+    "src": "https://images.unsplash.com/photo-1774291757950-c2cb55f3fdb8?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1774291757950-c2cb55f3fdb8?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1774291757950-c2cb55f3fdb8?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1774291757950-c2cb55f3fdb8?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1774291757950-c2cb55f3fdb8?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1334,
+    "alt": "Akıllı telefona takılı gimbal sabitleyici",
+    "stock": true
+  },
+  "creator": {
+    "src": "https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1764681859957-a1f8926746e7?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1334,
+    "alt": "Tripoddaki telefonla manzaraya karşı içerik çeken kişi",
+    "stock": true
+  },
+  "productBrand": {
+    "src": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 3000,
+    "alt": "Gri fon önünde üst üste dizilmiş ürün şişe ve kavanozları",
+    "stock": true
+  },
+  "digital": {
+    "src": "https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=1200&q=78",
+    "srcset": "https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=640&q=75 640w, https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=960&q=75 960w, https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=1200&q=78 1200w, https://images.unsplash.com/photo-1781606989135-caf5a1b8bcf4?auto=format&fit=crop&w=1600&q=78 1600w",
+    "width": 2000,
+    "height": 1334,
+    "alt": "Tablet ekranında dijital içerik sayfası",
+    "stock": true
   }
 }

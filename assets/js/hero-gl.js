@@ -19,11 +19,14 @@ float fbm(vec2 p) {
   for (int i = 0; i < 5; i++) { v += a * noise(p); p = p * 2.03 + vec2(1.7, 9.2); a *= 0.5; }
   return v;
 }
+// Offsets travel on circles, so the smoke flows continuously and loops
+// seamlessly (90 s) instead of drifting into darker or emptier states.
+vec2 orbit(float t, float r, float ph) { float a = t * 0.0698 + ph; return r * vec2(cos(a), sin(a)); }
 float field(vec2 uv, float t) {
-  vec2 q = vec2(fbm(uv + vec2(0.0, t * 0.03)), fbm(uv + vec2(5.2, 1.3) - t * 0.025));
-  float f = fbm(uv + 1.8 * q + vec2(t * 0.012, 0.0));
+  vec2 q = vec2(fbm(uv + orbit(t, 0.45, 0.0)), fbm(uv + vec2(5.2, 1.3) + orbit(t, 0.4, 2.1)));
+  float f = fbm(uv + 1.8 * q + orbit(t, 0.22, 4.2));
   // Soft folds of light, like a lit fabric or frosted glass.
-  float light = smoothstep(0.3, 0.8, f);
+  float light = smoothstep(0.24, 0.78, f);
   float ridge = smoothstep(0.06, 0.0, abs(f - 0.62)) * 0.35;
   return light * 0.8 + ridge;
 }
@@ -35,10 +38,10 @@ void main() {
   vec3 col = vec3(field(p + vec2(k, 0.0), t), field(p, t), field(p - vec2(k, 0.0), t));
   float lum = dot(col, vec3(0.333));
   // Mostly monochrome; only a whisper of the colour separation on the folds.
-  col = mix(vec3(lum), col, 0.4) * vec3(1.08, 0.9, 0.78);
-  vec3 base = vec3(0.118, 0.114, 0.11);
-  float vig = smoothstep(1.2, 0.2, length((uv - vec2(0.62, 0.62)) * vec2(1.0, 1.25)));
-  col = base + col * (0.32 + 0.7 * vig);
+  col = mix(vec3(lum), col, 0.4) * vec3(1.12, 0.88, 0.72);
+  vec3 base = vec3(0.16, 0.14, 0.13);
+  float vig = smoothstep(1.3, 0.1, length((uv - vec2(0.6, 0.6)) * vec2(1.0, 1.25)));
+  col = base + col * (0.4 + 0.62 * vig);
   col += (hash(gl_FragCoord.xy + floor(t * 24.0)) - 0.5) * 0.018;
   gl_FragColor = vec4(col, 1.0);
 }`;
@@ -76,7 +79,7 @@ export function start(canvas, { reduced = false } = {}) {
   addEventListener('pointermove', e => { ptr.tx = e.clientX / innerWidth - 0.5; ptr.ty = 0.5 - e.clientY / innerHeight; }, { passive: true });
 
   let visible = true, raf = 0, last = 0;
-  const t0 = performance.now() - 40000;
+  const t0 = performance.now();
   const draw = now => {
     raf = 0;
     // The hero stays pinned under the page, so also stop once it is covered.
